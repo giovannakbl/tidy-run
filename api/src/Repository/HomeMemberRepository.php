@@ -39,6 +39,25 @@ class HomeMemberRepository extends ServiceEntityRepository
         }
     }
 
+    public function getQueryByFilter($filter){
+        $qb = $this->createQueryBuilder('hm');
+        if (isset($filter['id'])) {
+            $qb->andWhere('hm.id = :id');
+            $qb->setParameter('id', $filter['id']);
+        }
+        if (isset($filter['tidy_user_id'])) {
+            $qb->andWhere('hm.tidy_user = :tidy_user_id');
+            $qb->setParameter('tidy_user_id', $filter['tidy_user_id']);
+        }
+        if (isset($filter['tidy_user_email'])) {
+            $qb->join('hm.tidy_user', 'tu');
+            $qb->andWhere('tu.email = :tidy_user_email');
+            $qb->setParameter('tidy_user_email', $filter['tidy_user_email']);
+        }
+
+        return $qb->getQuery();
+    }
+
 //    /**
 //     * @return HomeMember[] Returns an array of HomeMember objects
 //     */
