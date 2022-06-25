@@ -35,23 +35,23 @@ class Challenge
     private $status;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date")
      */
     private $start_date;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date")
      */
     private $end_date;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $prize;
 
     /**
      * @ORM\ManyToOne(targetEntity=TidyUser::class, inversedBy="challenges")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $tidy_user;
 

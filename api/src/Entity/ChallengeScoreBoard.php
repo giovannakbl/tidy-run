@@ -34,7 +34,7 @@ class ChallengeScoreBoard
 
     /**
      * @ORM\ManyToOne(targetEntity=Challenge::class, inversedBy="challengeScoreBoards")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $challenge;
 

@@ -24,16 +24,16 @@ class HomeMemberController extends AbstractController
      */
     public function listHomeMembers(HomeMemberRepository $homeMemberRepository): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
                 'status_name' => 'UserNotFound'
             ], 404);
         }
-        $tidy_user_id = $tidy_user->getId();
-        $homeMembers = $homeMemberRepository->findBy(array('tidy_user' => $tidy_user_id));
+        $tidyUser_id = $tidyUser->getId();
+        $homeMembers = $homeMemberRepository->findBy(array('tidy_user' => $tidyUser_id));
         if ($homeMembers == null) {
             return $this->json([
                 'home_members' => []
@@ -61,8 +61,8 @@ class HomeMemberController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -76,7 +76,7 @@ class HomeMemberController extends AbstractController
                 $homeMember->setName($data['name']);
                 $homeMember->setAvatarIcon($data['avatar_icon']);
                 $homeMember->setIconColor($data['icon_color']);
-                $homeMember->setTidyUser($tidy_user);
+                $homeMember->setTidyUser($tidyUser);
                 $em->persist($homeMember);
                 $em->flush();
                 return $this->json([
@@ -106,8 +106,8 @@ class HomeMemberController extends AbstractController
      */
     public function show($id, HomeMemberRepository $homeMemberRepository): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -115,7 +115,7 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
         $homeMember = $homeMemberRepository->find($id);
-        if ($homeMember == null || $homeMember->getTidyUser() != $tidy_user) {
+        if ($homeMember == null || $homeMember->getTidyUser() != $tidyUser) {
             return $this->json([
                 'status_message' => 'Home Member Not Found',
                 'status_code' => 602,
@@ -123,9 +123,9 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
         if ($homeMember->getDeletedAt() == null) {
-            $home_member_is_active = true;
+            $homeMemberIsActive = true;
         } else {
-            $home_member_is_active = false;
+            $homeMemberIsActive = false;
         }
         $result = [
             'id' => $homeMember->getId(),
@@ -136,7 +136,7 @@ class HomeMemberController extends AbstractController
         ];
         return $this->json([
             'home_member' => $result,
-            'home_member_is_active' => $home_member_is_active
+            'home_member_is_active' => $homeMemberIsActive
         ]);
     }
 
@@ -147,8 +147,8 @@ class HomeMemberController extends AbstractController
     public function edit($id, HomeMemberRepository $homeMemberRepository, EntityManagerInterface $em, Request $request): Response
     {
         $data = $request->toArray();
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -156,7 +156,7 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
         $homeMember = $homeMemberRepository->find($id);
-        if ($homeMember == null || $homeMember->getTidyUser() != $tidy_user || $homeMember->getDeletedAt() != null) {
+        if ($homeMember == null || $homeMember->getTidyUser() != $tidyUser || $homeMember->getDeletedAt() != null) {
             return $this->json([
                 'status_message' => 'Home Member Not Found',
                 'status_code' => 602,
@@ -198,8 +198,8 @@ class HomeMemberController extends AbstractController
      */
     public function delete($id, HomeMemberRepository $homeMemberRepository, EntityManagerInterface $em): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -207,7 +207,7 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
         $homeMember = $homeMemberRepository->find($id);
-        if ($homeMember == null || $homeMember->getTidyUser() != $tidy_user || $homeMember->getDeletedAt() != null) {
+        if ($homeMember == null || $homeMember->getTidyUser() != $tidyUser || $homeMember->getDeletedAt() != null) {
             return $this->json([
                 'status_message' => 'Home Member Not Found',
                 'status_code' => 602,
@@ -215,12 +215,11 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
             try {
-                $current_date = new DateTimeImmutable();
-                $homeMember->setDeletedAt($current_date);
+                $currentDate = new DateTimeImmutable();
+                $homeMember->setDeletedAt($currentDate);
                 $em->flush();
                 return $this->json([
-                    'status_message' => 'Home Member deleted',
-                    'deleted_date' => $current_date
+                    'status_message' => 'Home Member deleted'
                 ]);
             } catch (\Exception $exception) {
                 return $this->json([

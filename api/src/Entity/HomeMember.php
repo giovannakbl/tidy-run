@@ -41,7 +41,7 @@ class HomeMember
 
     /**
      * @ORM\ManyToOne(targetEntity=TidyUser::class, inversedBy="homeMembers")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $tidy_user;
 

@@ -49,7 +49,7 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity=Challenge::class, inversedBy="tasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $challenge;
 

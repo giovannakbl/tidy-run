@@ -39,7 +39,7 @@ class ModelTask
 
     /**
      * @ORM\ManyToOne(targetEntity=TidyUser::class, inversedBy="modelTasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $tidy_user;
 

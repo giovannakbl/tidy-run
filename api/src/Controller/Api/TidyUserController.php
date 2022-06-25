@@ -25,17 +25,17 @@ class TidyUserController extends AbstractController
         $data = $request->toArray();
         if (isset($data['email']) && isset($data['password'])) {
             try {
-                $tidy_user = new TidyUser();
-                $tidy_user->setEmail($data['email']);
-                $hashedPassword = $passwordHasher->hashPassword($tidy_user, $data['password']);
-                $tidy_user->setPassword($hashedPassword);
-                $tidy_user->setRoles(["ROLE_USER"]);
-                $em->persist($tidy_user);
+                $tidyUser = new TidyUser();
+                $tidyUser->setEmail($data['email']);
+                $hashedPassword = $passwordHasher->hashPassword($tidyUser, $data['password']);
+                $tidyUser->setPassword($hashedPassword);
+                $tidyUser->setRoles(["ROLE_USER"]);
+                $em->persist($tidyUser);
                 $em->flush();
                 return $this->json([
                     'tidy_user' => [
-                        'id' => $tidy_user->getId(),
-                        'email' => $tidy_user->getEmail()
+                        'id' => $tidyUser->getId(),
+                        'email' => $tidyUser->getEmail()
                     ]
                 ]);
             } catch (\Exception $exception) {
@@ -63,8 +63,8 @@ class TidyUserController extends AbstractController
      */
     public function show(): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -72,9 +72,9 @@ class TidyUserController extends AbstractController
             ], 404);
         }
         $result = [
-            'id' => $tidy_user->getId(),
-            'email' => $tidy_user->getEmail(),
-            'home_name' => $tidy_user->getHomeName()
+            'id' => $tidyUser->getId(),
+            'email' => $tidyUser->getEmail(),
+            'home_name' => $tidyUser->getHomeName()
         ];
         return $this->json([
             'tidy_user' => $result
@@ -87,8 +87,8 @@ class TidyUserController extends AbstractController
     public function edit(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $data = $request->toArray();
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -98,21 +98,21 @@ class TidyUserController extends AbstractController
         if (isset($data['email']) || isset($data['password']) || isset($data['home_name'])) {
             try {
                 if (isset($data['email'])) {
-                    $tidy_user->setEmail($data['email']);
+                    $tidyUser->setEmail($data['email']);
                 }
                 if (isset($data['password'])) {
-                    $hashedPassword = $passwordHasher->hashPassword($tidy_user, $data['password']);
-                    $tidy_user->setPassword($hashedPassword);
+                    $hashedPassword = $passwordHasher->hashPassword($tidyUser, $data['password']);
+                    $tidyUser->setPassword($hashedPassword);
                 }
                 if (isset($data['home_name'])) {
-                    $tidy_user->setHomeName($data['home_name']);
+                    $tidyUser->setHomeName($data['home_name']);
                 }
                 $em->flush();
                 return $this->json([
                     'tidy_user' => [
-                        'id' => $tidy_user->getId(),
-                        'email' => $tidy_user->getEmail(),
-                        'home_name' => $tidy_user->getHomeName()
+                        'id' => $tidyUser->getId(),
+                        'email' => $tidyUser->getEmail(),
+                        'home_name' => $tidyUser->getHomeName()
                     ]
                 ]);
             } catch (\Exception $exception) {
@@ -136,8 +136,8 @@ class TidyUserController extends AbstractController
      */
     public function delete(TidyUserRepository $tidyUserRepository): Response
     {
-        $tidy_user = $this->getUser();
-        if ($tidy_user == null) {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
             return $this->json([
                 'status_message' => 'User Not Found',
                 'status_code' => 601,
@@ -145,7 +145,7 @@ class TidyUserController extends AbstractController
             ], 404);
         }
         try {
-            $tidyUserRepository->remove($tidy_user, true);
+            $tidyUserRepository->remove($tidyUser, true);
             return $this->json([
                 'status_message' => 'User deleted',
             ]);

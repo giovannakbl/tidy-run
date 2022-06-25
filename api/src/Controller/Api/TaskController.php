@@ -1,0 +1,447 @@
+<?php
+
+namespace App\Controller\Api;
+
+use App\Entity\Task;
+use App\Repository\ChallengeRepository;
+use App\Repository\HomeMemberRepository;
+use App\Repository\ModelTaskRepository;
+use App\Repository\TaskRepository;
+use DateTime;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
+use SebastianBergmann\Comparator\DateTimeComparator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/api/v1/tasks")
+ */
+class TaskController extends AbstractController
+{
+    /**
+     * @Route("/challenge_tasks/{id}", methods={"GET"})
+     */
+    public function listTasksInChallenge($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository): Response
+    {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $challenge = $challengeRepository->find($id);
+        if ($challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Challenge Not Found',
+                'status_code' => 605,
+                'status_name' => 'ChallengeNotFound'
+            ], 404);
+        }
+        $tasks = $taskRepository->findBy(array('challenge' => $challenge->getId()));
+        if ($tasks == null) {
+            return $this->json([
+                'tasks' => []
+            ]);
+        }
+        $result = [];
+        foreach ($tasks as $task) {
+            $result[] = [
+                'id' => $task->getId(),
+                'name' => $task->getName(),
+                'task_icon' => $task->getTaskIcon(),
+                'icon_color' => $task->getIconColor(),
+                'difficulty' => $task->getDifficulty(),
+                'points_earned' => $task->getPointsEarned(),
+                'completed_at' => $task->getCompletedAt(),
+                'home_member_id' => $task->getHomeMember()
+            ];
+        }
+        return $this->json([
+            'tasks' => $result
+        ]);
+    }
+
+    /**
+     * @Route("", methods={"POST"})
+     */
+    public function new(Request $request, EntityManagerInterface $em, ChallengeRepository $challengeRepository, ModelTaskRepository $modelTaskRepository): Response
+    {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $data = $request->toArray();
+        if (isset($data['model_task_id']) && isset($data['challenge_id'])) {
+            $challengeId = $data['challenge_id'];
+            $challenge = $challengeRepository->find($challengeId);
+            if ($challenge->getStatus() != 'created' && $challenge->getStatus() != 'active') {
+                return $this->json([
+                    'status_message' => 'Bad Request'
+                ], 400);
+            }
+            if ($challenge == null || $challenge->getTidyUser() != $tidyUser) {
+                return $this->json([
+                    'status_message' => 'Challenge Not Found',
+                    'status_code' => 605,
+                    'status_name' => 'ChallengeNotFound'
+                ], 404);
+            }
+            try {
+                $task = new Task();
+                $modelTask = $modelTaskRepository->find($data['model_task_id']);
+                $name = $modelTask->getName();
+                $taskIcon = $modelTask->getTaskIcon();
+                $iconColor = $modelTask->getIconColor();
+                $difficulty = $modelTask->getDifficulty();
+                $task->setName($name);
+                $task->setTaskIcon($taskIcon);
+                $task->setIconColor($iconColor);
+                $task->setDifficulty($difficulty);
+                $task->setChallenge($challenge);
+                $em->persist($task);
+                if ($challenge->getStatus() == 'created') {
+                    $challenge->setStatus('active');
+                }
+                $em->flush();
+                return $this->json([
+                    'task' => [
+                        'id' => $task->getId(),
+                        'name' => $task->getName(),
+                        'task_icon' => $task->getTaskIcon(),
+                        'icon_color' => $task->getIconColor(),
+                        'difficulty' => $task->getDifficulty(),
+                        'points_earned' => $task->getPointsEarned(),
+                        'completed_at' => $task->getCompletedAt(),
+                        'home_member_id' => $task->getHomeMember()
+                    ]
+                ]);
+            } catch (\Exception $exception) {
+                return $this->json([
+                    'status_message' => 'Internal Server Error'
+                ], 500);
+            }
+        } else {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+    }
+
+
+    /**
+     * @Route("/{id}", methods={"GET"})
+     */
+    public function show($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository): Response
+    {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $task = $taskRepository->find($id);
+        $challenge = $challengeRepository->find($task->getChallenge());
+        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Task Not Found',
+                'status_code' => 606,
+                'status_name' => 'TaskNotFound'
+            ], 404);
+        }
+        return $this->json([
+            'task' => [
+                'id' => $task->getId(),
+                'name' => $task->getName(),
+                'task_icon' => $task->getTaskIcon(),
+                'icon_color' => $task->getIconColor(),
+                'difficulty' => $task->getDifficulty(),
+                'points_earned' => $task->getPointsEarned(),
+                'completed_at' => $task->getCompletedAt(),
+                'home_member_id' => $task->getHomeMember()
+            ]
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}", methods={"PUT"})
+     */
+    public function edit($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, EntityManagerInterface $em, Request $request): Response
+    {
+        $data = $request->toArray();
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $task = $taskRepository->find($id);
+        $challenge = $challengeRepository->find($task->getChallenge());
+        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Task Not Found',
+                'status_code' => 606,
+                'status_name' => 'TaskNotFound'
+            ], 404);
+        }
+        if ($challenge->getStatus() != 'created' && $challenge->getStatus() != 'active') {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+        if (isset($data['name']) || isset($data['task_icon']) || isset($data['icon_color']) || isset($data['difficulty'])) {
+            try {
+                if (isset($data['name'])) {
+                    $task->setName($data['name']);
+                }
+                if (isset($data['task_icon'])) {
+                    $task->setTaskIcon($data['task_icon']);
+                }
+                if (isset($data['icon_color'])) {
+                    $task->setIconColor($data['icon_color']);
+                }
+                if (isset($data['difficulty'])) {
+                    $task->setDifficulty($data['difficulty']);
+                }
+                $em->flush();
+                return $this->json([
+                    'task' => [
+                        'id' => $task->getId(),
+                        'name' => $task->getName(),
+                        'task_icon' => $task->getTaskIcon(),
+                        'icon_color' => $task->getIconColor(),
+                        'difficulty' => $task->getDifficulty(),
+                        'points_earned' => $task->getPointsEarned(),
+                        'completed_at' => $task->getCompletedAt(),
+                        'home_member_id' => $task->getHomeMember()
+                    ]
+                ]);
+            } catch (\Exception $exception) {
+                return $this->json([
+                    'status_message' => 'Internal Server Error'
+                ], 500);
+            }
+        } else {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+    }
+
+    /**
+     * @Route("/{id}", methods={"DELETE"})
+     */
+    public function delete($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, EntityManagerInterface $em): Response
+    {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $task = $taskRepository->find($id);
+        $challenge = $challengeRepository->find($task->getChallenge());
+        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Task Not Found',
+                'status_code' => 606,
+                'status_name' => 'TaskNotFound'
+            ], 404);
+        }
+        if ($challenge->getStatus() != 'created' && $challenge->getStatus() != 'active') {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+        try {
+            $taskRepository->remove($task, true);
+            if ($challenge->getTasks() == null) {
+                $challenge->setStatus('created');
+            }
+            $em->flush();
+            return $this->json([
+                'status_message' => 'Task deleted'
+            ]);
+        } catch (\Exception $exception) {
+            return $this->json([
+                'status_message' => 'Internal Server Error'
+            ], 500);
+        }
+    }
+
+    /**
+     * @Route("/complete/{id}", methods={"PUT"})
+     */
+    public function completeTask($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, HomeMemberRepository $homeMemberRepository, EntityManagerInterface $em, Request $request): Response
+    {
+        $data = $request->toArray();
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $task = $taskRepository->find($id);
+        $challenge = $challengeRepository->find($task->getChallenge());
+        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Task Not Found',
+                'status_code' => 606,
+                'status_name' => 'TaskNotFound'
+            ], 404);
+        }
+        if ($task->getCompletedAt() != null) {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+        if ($challenge->getStatus() != 'active' && $challenge->getStatus() != 'started') {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+        if (isset($data['home_member_id']) && isset($data['completed_at'])) {
+            try {
+                $homeMember = $homeMemberRepository->find($data['home_member_id']);
+                $task->setHomeMember($homeMember);
+                $currentDate = new DateTimeImmutable();
+                $completedAt = $data['completed_at'];
+                $task->setCompletedAt($completedAt);
+                $challengeEnd = $challenge->getStartDate();
+                $challengeStart = $challenge->getEndDate();
+                $challengeDiff = $challengeEnd->diff($challengeStart);
+                $challengeDurationInDays = ($challengeDiff->days);
+                $timeRemainingDiff = $challengeEnd->diff($currentDate);
+                $timeRemainingInDays = ($timeRemainingDiff->days);
+                if ($currentDate > $challengeEnd) {
+                    $bonusPoints = 0;
+                } else {
+                    $bonusPoints = round(($timeRemainingInDays / $challengeDurationInDays) * 100);
+                }
+                $taskDifficulty = $task->getDifficulty();
+                switch ($taskDifficulty) {
+                    case 'easy':
+                        $totalPoints = 100 + $bonusPoints;
+                        break;
+                    case 'medium':
+                        $totalPoints = 200 + $bonusPoints;
+                        break;
+                    case 'hard':
+                        $totalPoints = 300 + $bonusPoints;
+                        break;
+                    default:
+                        return $this->json([
+                            'status_message' => 'Internal Server Error'
+                        ], 500);
+                }
+                $task->setPointsEarned($totalPoints);
+                $em->flush();
+                $tasks = $challenge->getTasks();
+                $isChallengeCompleted = true;
+                foreach ($tasks as $task) {
+                    if ($task->getCompletedAt() == null) {
+                        $isChallengeCompleted = false;
+                        break;
+                    }
+                }
+                if ($isChallengeCompleted) {
+                    $challenge->setStatus('completed');
+                }
+                return $this->json([
+                    'task' => [
+                        'id' => $task->getId(),
+                        'name' => $task->getName(),
+                        'task_icon' => $task->getTaskIcon(),
+                        'icon_color' => $task->getIconColor(),
+                        'difficulty' => $task->getDifficulty(),
+                        'points_earned' => $task->getPointsEarned(),
+                        'completed_at' => $task->getCompletedAt(),
+                        'home_member_id' => $task->getHomeMember()
+                    ]
+                ]);
+            } catch (\Exception $exception) {
+                return $this->json([
+                    'status_message' => 'Internal Server Error'
+                ], 500);
+            }
+        } else {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+    }
+
+    /**
+     * @Route("/remove_completion/{id}", methods={"PUT"})
+     */
+    public function removeTaskCompletion($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, EntityManagerInterface $em, Request $request): Response
+    {
+        $tidyUser = $this->getUser();
+        if ($tidyUser == null) {
+            return $this->json([
+                'status_message' => 'User Not Found',
+                'status_code' => 601,
+                'status_name' => 'UserNotFound'
+            ], 404);
+        }
+        $task = $taskRepository->find($id);
+        $challenge = $challengeRepository->find($task->getChallenge());
+        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+            return $this->json([
+                'status_message' => 'Task Not Found',
+                'status_code' => 606,
+                'status_name' => 'TaskNotFound'
+            ], 404);
+        }
+        if ($task->getCompletedAt() == null) {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+        if ($challenge->getStatus() == 'started' || $challenge->getStatus() == 'completed') {
+            try {
+                $task->setHomeMember(null);
+                $task->setCompletedAt(null);
+                $task->setPointsEarned(null);
+                $em->flush();
+                return $this->json([
+                    'task' => [
+                        'id' => $task->getId(),
+                        'name' => $task->getName(),
+                        'task_icon' => $task->getTaskIcon(),
+                        'icon_color' => $task->getIconColor(),
+                        'difficulty' => $task->getDifficulty(),
+                        'points_earned' => $task->getPointsEarned(),
+                        'completed_at' => $task->getCompletedAt(),
+                        'home_member_id' => $task->getHomeMember()
+                    ]
+                ]);
+            } catch (\Exception $exception) {
+                return $this->json([
+                    'status_message' => 'Internal Server Error'
+                ], 500);
+            }
+        } else {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
+        }
+    }
+}
