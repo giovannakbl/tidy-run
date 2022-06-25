@@ -2,8 +2,10 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\ChallengeScoreBoard;
 use App\Entity\Task;
 use App\Repository\ChallengeRepository;
+use App\Repository\ChallengeScoreBoardRepository;
 use App\Repository\HomeMemberRepository;
 use App\Repository\ModelTaskRepository;
 use App\Repository\TaskRepository;
@@ -287,7 +289,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/complete/{id}", methods={"PUT"})
      */
-    public function completeTask($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, HomeMemberRepository $homeMemberRepository, EntityManagerInterface $em, Request $request): Response
+    public function completeTask($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, HomeMemberRepository $homeMemberRepository, ChallengeScoreBoardRepository $challengeScoreBoardRepository, EntityManagerInterface $em, Request $request): Response
     {
         $data = $request->toArray();
         $tidyUser = $this->getUser();
@@ -353,16 +355,39 @@ class TaskController extends AbstractController
                 }
                 $task->setPointsEarned($totalPoints);
                 $em->flush();
-                $tasks = $challenge->getTasks();
+                $tasksInChallenge = $challenge->getTasks();
                 $isChallengeCompleted = true;
-                foreach ($tasks as $task) {
-                    if ($task->getCompletedAt() == null) {
+                foreach ($tasksInChallenge as $taskInChallenge) {
+                    if ($taskInChallenge->getCompletedAt() == null) {
                         $isChallengeCompleted = false;
                         break;
                     }
                 }
                 if ($isChallengeCompleted) {
                     $challenge->setStatus('completed');
+                    $tasksInChallenge = $challenge->getTasks();
+                    $participants = [];
+                    foreach ($tasksInChallenge as $task) {
+                        $homeMemberId = $task->getHomeMember()->getId();
+                        $taskPoints = $task->getPointsEarned();
+                        $participants[$homeMemberId] = isset($participants[$homeMemberId]) ? $participants[$homeMemberId] + $taskPoints : $taskPoints;
+                    }
+                    usort(
+                        $participants,
+                        fn ($object1, $object2) =>
+                        $object1 > $object2
+                    );
+                    $positionInRank = 1;
+                    foreach ($participants as $homeMemberId => $totalPoints) {
+                        $challengeScoreBoard = new ChallengeScoreBoard();
+                        $homeMember = $homeMemberRepository->find($homeMemberId);
+                        $challengeScoreBoard->setHomeMember($homeMember);
+                        $challengeScoreBoard->setChallenge($challenge);
+                        $challengeScoreBoard->setRankInChallenge($positionInRank);
+                        $em->persist($challengeScoreBoard);
+                        $em->flush();
+                        $positionInRank += 1;
+                    }
                 }
                 return $this->json([
                     'task' => [
@@ -391,7 +416,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/remove_completion/{id}", methods={"PUT"})
      */
-    public function removeTaskCompletion($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, EntityManagerInterface $em, Request $request): Response
+    public function removeTaskCompletion($id, TaskRepository $taskRepository, ChallengeRepository $challengeRepository, EntityManagerInterface $em, ChallengeScoreBoardRepository $challengeScoreBoardRepository, Request $request): Response
     {
         $tidyUser = $this->getUser();
         if ($tidyUser == null) {
@@ -420,6 +445,26 @@ class TaskController extends AbstractController
                 $task->setHomeMember(null);
                 $task->setCompletedAt(null);
                 $task->setPointsEarned(null);
+                if ($challenge->getStatus() == 'completed') {
+                    $challengeScoreBoards = $challengeScoreBoardRepository->findBy(array('challenge' => $challenge));
+                    foreach ($challengeScoreBoards as $challengeScoreBoard) {
+                        $challengeScoreBoardRepository->remove($challengeScoreBoard, true);
+                    }             
+                }
+                $tasksInChallenge = $challenge->getTasks();
+                $isChallengeActive = false;
+                foreach ($tasksInChallenge as $taskInChallenge) {
+                    if ($taskInChallenge->getCompletedAt() != null) {
+                        $isChallengeCompleted = true;
+                        break;
+                    }
+                }
+                if ($isChallengeActive) {
+                    $challenge->setStatus('active');
+                } else {
+                    $challenge->setStatus('started');
+                }
+
                 $em->flush();
                 return $this->json([
                     'task' => [

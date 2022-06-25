@@ -18,11 +18,6 @@ class ChallengeScoreBoard
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $total_points;
