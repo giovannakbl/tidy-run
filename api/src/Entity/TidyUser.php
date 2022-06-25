@@ -63,6 +63,11 @@ class TidyUser implements UserInterface, PasswordAuthenticatedUserInterface
         $this->homeMembers = new ArrayCollection();
         $this->challenges = new ArrayCollection();
     }
+    
+    public function __toString()
+    {
+        return $this->id;
+    }
 
     public function getId(): ?int
     {

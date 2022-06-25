@@ -216,7 +216,7 @@ class TaskController extends AbstractController
             ], 404);
         }
         $task = $taskRepository->find($id);
-        $challenge = $challengeRepository->find($task->getChallenge());
+        $challenge = $task != null ? $challengeRepository->find($task->getChallenge()) : null;
         if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
             return $this->json([
                 'status_message' => 'Task Not Found',
@@ -244,6 +244,7 @@ class TaskController extends AbstractController
                     $task->setDifficulty($data['difficulty']);
                 }
                 $em->flush();
+                $homeMemberId = $task->getHomeMember() != null ? $task->getHomeMember()->getId() : $task->getHomeMember();
                 return $this->json([
                     'task' => [
                         'id' => $task->getId(),
@@ -253,8 +254,8 @@ class TaskController extends AbstractController
                         'difficulty' => $task->getDifficulty(),
                         'points_earned' => $task->getPointsEarned(),
                         'completed_at' => $task->getCompletedAt(),
-                        'home_member_id' => $task->getHomeMember(),
-                        'challenge_id' => $task->getChallenge()
+                        'home_member_id' => $homeMemberId,
+                        'challenge_id' => $task->getChallenge()->getId()
                     ]
                 ]);
             } catch (\Exception $exception) {

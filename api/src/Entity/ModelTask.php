@@ -43,6 +43,11 @@ class ModelTask
      */
     private $tidy_user;
 
+    public function __toString()
+    {
+        return $this->id;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

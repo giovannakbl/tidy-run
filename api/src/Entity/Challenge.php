@@ -71,6 +71,11 @@ class Challenge
         $this->challengeScoreBoards = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
