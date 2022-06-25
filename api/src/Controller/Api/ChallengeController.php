@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Challenge;
 use App\Repository\ChallengeRepository;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Void_;
@@ -83,8 +84,10 @@ class ChallengeController extends AbstractController
                 $challenge->setName($data['name']);
                 $challenge->setStatus('created');
                 $challenge->setTidyUser($tidyUser);
-                $challenge->setStartDate($data['start_date']);
-                $challenge->setEndDate($data['end_date']);
+                $startDate = new DateTime($data['start_date']);
+                $challenge->setStartDate($startDate);
+                $endDate = new DateTime($data['end_date']);
+                $challenge->setEndDate($endDate);
                 $challenge->setPrize($data['prize']);
                 $em->persist($challenge);
                 $em->flush();
@@ -180,10 +183,12 @@ class ChallengeController extends AbstractController
                     $challenge->setName($data['name']);
                 }
                 if (isset($data['start_date'])) {
-                    $challenge->setStartDate($data['start_date']);
+                    $startDate = new DateTime($data['start_date']);
+                    $challenge->setStartDate($startDate);
                 }
                 if (isset($data['end_date'])) {
-                    $challenge->setEndDate($data['end_date']);
+                    $endDate = new DateTime($data['end_date']);
+                    $challenge->setEndDate($endDate);
                 }
                 if (isset($data['prize'])) {
                     $challenge->setPrize($data['prize']);
