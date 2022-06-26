@@ -51,6 +51,7 @@ class TaskController extends AbstractController
         }
         $result = [];
         foreach ($tasks as $task) {
+            $homeMember = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
             $result[] = [
                 'id' => $task->getId(),
                 'name' => $task->getName(),
@@ -59,8 +60,8 @@ class TaskController extends AbstractController
                 'difficulty' => $task->getDifficulty(),
                 'points_earned' => $task->getPointsEarned(),
                 'completed_at' => $task->getCompletedAt(),
-                'home_member_id' => $task->getHomeMember(),
-                'challenge_id' => $task->getChallenge()
+                'home_member_id' => $homeMember,
+                'challenge_id' => $task->getChallenge()->getId()
             ];
         }
         return $this->json([
@@ -130,7 +131,7 @@ class TaskController extends AbstractController
                         'points_earned' => $task->getPointsEarned(),
                         'completed_at' => $task->getCompletedAt(),
                         'home_member_id' => $task->getHomeMember(),
-                        'challenge_id' => $task->getChallenge()
+                        'challenge_id' => $task->getChallenge()->getId()
                     ]
                 ]);
             } catch (\Exception $exception) {
@@ -328,8 +329,9 @@ class TaskController extends AbstractController
             ], 404);
         }
         $task = $taskRepository->find($id);
-        $challenge = $challengeRepository->find($task->getChallenge());
-        if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
+        $challenge = $task != null ? $challengeRepository->find($task->getChallenge()) : null;
+        $challengeTidyUser = $challenge != null ? $challenge->getTidyUser() : null;
+        if ($task == null || $challenge == null || $challengeTidyUser != $tidyUser) {
             return $this->json([
                 'status_message' => 'Task Not Found',
                 'status_code' => 606,
@@ -346,12 +348,22 @@ class TaskController extends AbstractController
                 'status_message' => 'Bad Request'
             ], 400);
         }
+        if (isset($data['home_member_id'])) {
+            $homeMember = $homeMemberRepository->find($data['home_member_id']);
+            if ($homeMember == null || $homeMember->getTidyUser() != $tidyUser) {
+                return $this->json([
+                    'status_message' => 'Home Member Not Found',
+                    'status_code' => 602,
+                    'status_name' => 'HomeMemberNotFound'
+                ], 404);
+            }
+        }
         if (isset($data['home_member_id']) && isset($data['completed_at'])) {
             try {
-                $homeMember = $homeMemberRepository->find($data['home_member_id']);
+                
                 $task->setHomeMember($homeMember);
                 $currentDate = new DateTimeImmutable();
-                $completedAt = $data['completed_at'];
+                $completedAt = new DateTimeImmutable($data['completed_at']);
                 $task->setCompletedAt($completedAt);
                 $challengeEnd = $challenge->getStartDate();
                 $challengeStart = $challenge->getEndDate();

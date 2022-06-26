@@ -7,7 +7,7 @@ services:
     ports:
       - ${API_PORT:-8000}:8000
     build:
-      context: .
+      context: ./api
     volumes:
       - ./api/:/var/www/symfony/
       - /var/www/symfony/vendor
@@ -15,6 +15,16 @@ services:
     environment:
       APP_ENV: dev
       DATABASE_URL: mysql://user:password@db:3306/tidy-run?serverVersion=5.7&charset=utf8mb4
+    networks:
+      - backend
+  app:
+    ports:
+      - ${APP_PORT:-3000}:3000
+    build:
+      context: ./app
+    volumes:
+      - ./app/:/app
+      - /app/node_modules
   db:
     image: mysql:5.7
     environment:
@@ -26,3 +36,7 @@ services:
       - '3306:3306'
     volumes:
       - ./data/mysql:/var/lib/mysql
+    networks:
+      - backend
+networks:
+  backend:
