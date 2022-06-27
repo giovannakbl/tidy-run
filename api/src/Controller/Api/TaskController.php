@@ -51,7 +51,7 @@ class TaskController extends AbstractController
         }
         $result = [];
         foreach ($tasks as $task) {
-            $homeMember = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
+            $homeMemberId = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
             $result[] = [
                 'id' => $task->getId(),
                 'name' => $task->getName(),
@@ -60,7 +60,7 @@ class TaskController extends AbstractController
                 'difficulty' => $task->getDifficulty(),
                 'points_earned' => $task->getPointsEarned(),
                 'completed_at' => $task->getCompletedAt(),
-                'home_member_id' => $homeMember,
+                'home_member_id' => $homeMemberId,
                 'challenge_id' => $task->getChallenge()->getId()
             ];
         }
@@ -121,6 +121,7 @@ class TaskController extends AbstractController
                     $challenge->setStatus('active');
                 }
                 $em->flush();
+                $homeMemberId = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
                 return $this->json([
                     'task' => [
                         'id' => $task->getId(),
@@ -130,7 +131,7 @@ class TaskController extends AbstractController
                         'difficulty' => $task->getDifficulty(),
                         'points_earned' => $task->getPointsEarned(),
                         'completed_at' => $task->getCompletedAt(),
-                        'home_member_id' => $task->getHomeMember(),
+                        'home_member_id' => $homeMemberId,
                         'challenge_id' => $task->getChallenge()->getId()
                     ]
                 ]);
@@ -186,6 +187,7 @@ class TaskController extends AbstractController
                 'status_name' => 'ChallengeNotFound'
             ], 404);
         }
+        $homeMemberId = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
         return $this->json([
             'task' => [
                 'id' => $task->getId(),
@@ -195,7 +197,7 @@ class TaskController extends AbstractController
                 'difficulty' => $task->getDifficulty(),
                 'points_earned' => $task->getPointsEarned(),
                 'completed_at' => $task->getCompletedAt(),
-                'home_member_id' => $task->getHomeMember(),
+                'home_member_id' => $homeMemberId,
                 'challenge_id' => $task->getChallenge()->getId()
             ]
         ]);
@@ -285,7 +287,7 @@ class TaskController extends AbstractController
             ], 404);
         }
         $task = $taskRepository->find($id);
-        $challenge = $challengeRepository->find($task->getChallenge());
+        $challenge = $task != null ? $challengeRepository->find($task->getChallenge()) : null;
         if ($task == null || $challenge == null || $challenge->getTidyUser() != $tidyUser) {
             return $this->json([
                 'status_message' => 'Task Not Found',
@@ -360,31 +362,30 @@ class TaskController extends AbstractController
         }
         if (isset($data['home_member_id']) && isset($data['completed_at'])) {
             try {
-                
                 $task->setHomeMember($homeMember);
-                $currentDate = new DateTimeImmutable();
                 $completedAt = new DateTimeImmutable($data['completed_at']);
                 $task->setCompletedAt($completedAt);
-                $challengeEnd = $challenge->getStartDate();
-                $challengeStart = $challenge->getEndDate();
-                $challengeDiff = $challengeEnd->diff($challengeStart);
-                $challengeDurationInDays = ($challengeDiff->days);
-                $timeRemainingDiff = $challengeEnd->diff($currentDate);
-                $timeRemainingInDays = ($timeRemainingDiff->days);
-                if ($currentDate > $challengeEnd) {
+                $challengeEnd = $challenge->getEndDate();
+                $challengeStart = $challenge->getStartDate();
+                $challengeDurationInDays = $challengeStart->diff($challengeEnd)->format("%r%a") + 1;
+                $timeRemainingInDays = $completedAt->diff($challengeEnd)->format("%r%a") + 1;
+                if ($timeRemainingInDays <= 0) {
                     $bonusPoints = 0;
-                } else {
+                } else if ($timeRemainingInDays > $challengeDurationInDays) {
+                    $bonusPoints = 100;
+                }
+                 else {
                     $bonusPoints = round(($timeRemainingInDays / $challengeDurationInDays) * 100);
                 }
                 $taskDifficulty = $task->getDifficulty();
                 switch ($taskDifficulty) {
-                    case 'easy':
+                    case 'Easy':
                         $totalPoints = 100 + $bonusPoints;
                         break;
-                    case 'medium':
+                    case 'Medium':
                         $totalPoints = 200 + $bonusPoints;
                         break;
-                    case 'hard':
+                    case 'Hard':
                         $totalPoints = 300 + $bonusPoints;
                         break;
                     default:
@@ -404,30 +405,36 @@ class TaskController extends AbstractController
                 }
                 if ($isChallengeCompleted) {
                     $challenge->setStatus('completed');
+                    $em->flush();
                     $tasksInChallenge = $challenge->getTasks();
                     $participants = [];
                     foreach ($tasksInChallenge as $task) {
-                        $homeMemberId = $task->getHomeMember()->getId();
+                        $taskHomeMemberId = $task->getHomeMember()->getId();
                         $taskPoints = $task->getPointsEarned();
-                        $participants[$homeMemberId] = isset($participants[$homeMemberId]) ? $participants[$homeMemberId] + $taskPoints : $taskPoints;
+                        $participants[$taskHomeMemberId] = isset($participants[$taskHomeMemberId]) ? $participants[$taskHomeMemberId] + $taskPoints : $taskPoints;
                     }
-                    usort(
+                    uasort(
                         $participants,
-                        fn ($object1, $object2) =>
-                        $object1 > $object2
+                        fn ($value1, $value2) =>
+                        $value1 < $value2
                     );
                     $positionInRank = 1;
-                    foreach ($participants as $homeMemberId => $totalPoints) {
+                    foreach ($participants as $rankHomeMemberId => $rankPoints) {
                         $challengeScoreBoard = new ChallengeScoreBoard();
-                        $homeMember = $homeMemberRepository->find($homeMemberId);
-                        $challengeScoreBoard->setHomeMember($homeMember);
+                        $rankHomeMember = $homeMemberRepository->find($rankHomeMemberId);
+                        $challengeScoreBoard->setHomeMember($rankHomeMember);
                         $challengeScoreBoard->setChallenge($challenge);
                         $challengeScoreBoard->setRankInChallenge($positionInRank);
+                        $challengeScoreBoard->setTotalPoints($rankPoints);
                         $em->persist($challengeScoreBoard);
                         $em->flush();
                         $positionInRank += 1;
                     }
+                } else if ($challenge->getStatus() != 'started') {
+                    $challenge->setStatus('started');
+                    $em->flush();
                 }
+                $homeMemberId = $task->getHomeMember() != null ? $task->getHomeMember()->getId() : $task->getHomeMember();
                 return $this->json([
                     'task' => [
                         'id' => $task->getId(),
@@ -437,8 +444,9 @@ class TaskController extends AbstractController
                         'difficulty' => $task->getDifficulty(),
                         'points_earned' => $task->getPointsEarned(),
                         'completed_at' => $task->getCompletedAt(),
-                        'home_member_id' => $task->getHomeMember(),
-                        'challenge_id' => $task->getChallenge()
+                        'home_member_id' => $homeMemberId,
+                        'challenge_id' => $task->getChallenge()->getId(),
+                        'challenge_status' => $challenge->getStatus()
                     ]
                 ]);
             } catch (\Exception $exception) {
@@ -504,7 +512,7 @@ class TaskController extends AbstractController
                 } else {
                     $challenge->setStatus('started');
                 }
-
+                $homeMemberId = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
                 $em->flush();
                 return $this->json([
                     'task' => [
@@ -515,8 +523,9 @@ class TaskController extends AbstractController
                         'difficulty' => $task->getDifficulty(),
                         'points_earned' => $task->getPointsEarned(),
                         'completed_at' => $task->getCompletedAt(),
-                        'home_member_id' => $task->getHomeMember(),
-                        'challenge_id' => $task->getChallenge()
+                        'home_member_id' => $homeMemberId,
+                        'challenge_id' => $task->getChallenge()->getId(),
+                        
                     ]
                 ]);
             } catch (\Exception $exception) {

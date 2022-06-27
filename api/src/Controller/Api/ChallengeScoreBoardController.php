@@ -53,8 +53,8 @@ class ChallengeScoreBoardController extends AbstractController
                 'id' => $challengeScoreBoard->getId(),
                 'total_points' => $challengeScoreBoard->getTotalPoints(),
                 'rank_in_challenge' => $challengeScoreBoard->getRankInChallenge(),
-                'home_member_id' => $challengeScoreBoard->getHomeMember(),
-                'challenge_id' => $challengeScoreBoard->getChallenge()
+                'home_member_id' => $challengeScoreBoard->getHomeMember()->getId(),
+                'challenge_id' => $challengeScoreBoard->getChallenge()->getId()
             ];
         }
         return $this->json([

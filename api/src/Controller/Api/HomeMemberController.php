@@ -188,9 +188,12 @@ class HomeMemberController extends AbstractController
                     return $this->json([
                         'status_message' => 'Internal Server Error'
                     ], 500);
-                }
-            
-    } 
+                }    
+    } else {
+        return $this->json([
+            'status_message' => 'Bad Request'
+        ], 400);
+    }
 }
 
     /**

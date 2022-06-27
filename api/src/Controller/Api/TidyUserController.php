@@ -20,11 +20,19 @@ class TidyUserController extends AbstractController
     /**
      * @Route("/register", methods={"POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, EntityManagerInterface $em, TidyUserRepository $tidyUserRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $data = $request->toArray();
         if (isset($data['email']) && isset($data['password'])) {
             try {
+                $isTidyUserRegistered = $tidyUserRepository->findBy(array('email'=>$data['email'])) != null;
+                if ($isTidyUserRegistered) {
+                    return $this->json([
+                        'status_message' => 'Email is already registered',
+                        'status_code' => 603,
+                        'status_name' => 'DuplicatedEmail'
+                    ], 400);
+                }
                 $tidyUser = new TidyUser();
                 $tidyUser->setEmail($data['email']);
                 $hashedPassword = $passwordHasher->hashPassword($tidyUser, $data['password']);
@@ -39,17 +47,9 @@ class TidyUserController extends AbstractController
                     ]
                 ]);
             } catch (\Exception $exception) {
-                if ($exception->getCode() == 1062) {
-                    return $this->json([
-                        'status_message' => 'Email is already registered',
-                        'status_code' => 603,
-                        'status_name' => 'DuplicatedEmail'
-                    ], 400);
-                } else {
                     return $this->json([
                         'status_message' => 'Internal Server Error'
-                    ], 500);
-                }
+                    ], 500);        
             }
         } else {
             return $this->json([

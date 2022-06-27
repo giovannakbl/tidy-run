@@ -3,7 +3,10 @@
 namespace App\Controller\Api;
 
 use App\Entity\Challenge;
+use App\Entity\ChallengeScoreBoard;
 use App\Repository\ChallengeRepository;
+use App\Repository\ChallengeScoreBoardRepository;
+use App\Repository\HomeMemberRepository;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -215,6 +218,10 @@ class ChallengeController extends AbstractController
                     'status_message' => 'Internal Server Error'
                 ], 500);
             }
+        } else {
+            return $this->json([
+                'status_message' => 'Bad Request'
+            ], 400);
         }
     }
 
@@ -261,7 +268,7 @@ class ChallengeController extends AbstractController
     /**
      * @Route("/terminate/{id}", methods={"PUT"})
      */
-    public function terminateChallenge($id, ChallengeRepository $challengeRepository, EntityManagerInterface $em): Response
+    public function terminateChallenge($id, ChallengeRepository $challengeRepository, HomeMemberRepository $homeMemberRepository, EntityManagerInterface $em): Response
     {
         $tidyUser = $this->getUser();
         if ($tidyUser == null) {
@@ -287,6 +294,32 @@ class ChallengeController extends AbstractController
         try {
             $challenge->setStatus('terminated');
             $em->flush();
+            $tasksInChallenge = $challenge->getTasks();
+            $participants = [];
+            foreach ($tasksInChallenge as $task) {
+                if ($task->getCompletedAt() != null ) {
+                $taskHomeMemberId = $task->getHomeMember()->getId();
+                $taskPoints = $task->getPointsEarned();
+                $participants[$taskHomeMemberId] = isset($participants[$taskHomeMemberId]) ? $participants[$taskHomeMemberId] + $taskPoints : $taskPoints;
+                }
+            }
+            uasort(
+                $participants,
+                fn ($value1, $value2) =>
+                $value1 < $value2
+                );
+            $positionInRank = 1;
+            foreach ($participants as $rankHomeMemberId => $rankPoints) {
+                $challengeScoreBoard = new ChallengeScoreBoard();
+                $rankHomeMember = $homeMemberRepository->find($rankHomeMemberId);
+                $challengeScoreBoard->setHomeMember($rankHomeMember);
+                $challengeScoreBoard->setChallenge($challenge);
+                $challengeScoreBoard->setRankInChallenge($positionInRank);
+                $challengeScoreBoard->setTotalPoints($rankPoints);
+                $em->persist($challengeScoreBoard);
+                $em->flush();
+                $positionInRank += 1;
+            }
             return $this->json([
                 'challenge' => [
                     'id' => $challenge->getId(),
@@ -308,7 +341,7 @@ class ChallengeController extends AbstractController
     /**
      * @Route("/reopen/{id}", methods={"PUT"})
      */
-    public function reopen($id, ChallengeRepository $challengeRepository, EntityManagerInterface $em): Response
+    public function reopen($id, ChallengeRepository $challengeRepository, ChallengeScoreBoardRepository $challengeScoreBoardRepository, EntityManagerInterface $em): Response
     {
         $tidyUser = $this->getUser();
         if ($tidyUser == null) {
@@ -333,6 +366,10 @@ class ChallengeController extends AbstractController
         }
         try {
             $challenge->setStatus('started');
+            $challengeScoreBoards = $challengeScoreBoardRepository->findBy(array('challenge' => $challenge));
+            foreach ($challengeScoreBoards as $challengeScoreBoard) {
+                $challengeScoreBoardRepository->remove($challengeScoreBoard, true);
+            }      
             $em->flush();
             return $this->json([
                 'challenge' => [
