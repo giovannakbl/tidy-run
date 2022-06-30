@@ -1,57 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
 import './App.css';
+import ChallengeList from './pages/ChallengeList';
+import Challenge from './pages/Challenge';
+import ChallengeEdit from './pages/ChallengeEdit';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+
+  <BrowserRouter>
+    <Routes>
+      <Route index element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/challenge-list" element={<ChallengeList />} />
+      <Route path="/challenge-edit/:challengeId" element={<ChallengeEdit />} />
+      <Route path="/challenge/:challengeId" element={<Challenge />} />
+    </Routes>
+  </BrowserRouter>
   );
 }
 
