@@ -1,46 +1,48 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { connect } from 'react-redux';
 import { allChallengesRequest } from "../store/ChallengeList/actions";
 import { logoutRequest } from "../store/Auth/actions";
 
 
 
-const ChallengeList = ({auth, challengeList}) => {
-// const [challengeList, setChallengeList] = useState([]);
+const ChallengeList = ({auth, challengeList, challenge}) => {
 let navigate = useNavigate(); 
+const a = useSelector(state => state.challengeList);
+
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log(challengeList);
-    getAllChallenges();
-    // setChallengeList(challenges.data);
-  }, []);
-
-  
-//   useEffect(() => {
-//     // console.log(challenges);
-//     // setChallengeList(challenges.data);
-//     // console.log(challengeList);
-//   }, [challenges]);
-
+  // useEffect(() => {
+  //   getAllChallenges();
+  // }, []);
   const getAllChallenges = () => {
     dispatch(allChallengesRequest(auth.data.token));
   };
+
+  useEffect(() => {
+    // dispatch(getAllChallenges());
+    // getAllChallenges();
+    // dispatch(allChallengesRequest(auth.data.token));
+    dispatch(allChallengesRequest(auth.data.token));
+    console.log('Did it');
+    // Safe to add dispatch to the dependencies array
+  }, [challenge.loading]);
+
+  
   const handleLogout = () => {
     dispatch(logoutRequest());
-    console.log(auth);
     return <Navigate to="/login" replace />;
   };
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
+
 
   if (auth.data.token == null) return <Navigate to="/login" replace />;
 
   return (
     <>
       <button onClick={handleLogout} >Cerrar sesión</button>
+      <button onClick={() => {
+           navigate("/");
+          }} >Dashboard</button>
       <h1>Challenges</h1>
       <h2>Check out your Challenges</h2>
       {challengeList.loading ? <p>Loading...</p> : challengeList.error ? <p>Error</p> :

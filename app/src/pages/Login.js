@@ -1,16 +1,14 @@
-import { useContext, useState, useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { loginRequest } from "../store/Auth/actions";
-import { useSelector, useDispatch } from 'react-redux'
-import {bindActionCreators} from 'redux'
+import { useDispatch } from 'react-redux'
+
 
 
 const Login = ({auth}) => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
-  console.log(auth.data.token)
 
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,10 +18,6 @@ const Login = ({auth}) => {
     e.preventDefault();
     dispatch(loginRequest(formValues));
   };
-
-  useEffect(() => {
-    console.log(auth);
-  }, [auth.loading]);
   
   if (auth.data.token) return <Navigate to="/" replace />;
 

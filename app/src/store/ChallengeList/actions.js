@@ -6,13 +6,13 @@ export const allChallengesRequest =
   async dispatch => {
     try {
       dispatch({type: ChallengeListActionTypes.FETCH_ALL_CHALLENGES_REQUEST})
-      const asyncResp = await getAllChallengesApi(token)
+      const asyncResp = await getAllChallengesApi(token);
+      console.log("List fetched");
       return dispatch({
         type: ChallengeListActionTypes.FETCH_ALL_CHALLENGES_SUCCESS,
         payload: asyncResp
       })
     } catch (e) {
-        console.log("Got it");
       return dispatch({
         type: ChallengeListActionTypes.FETCH_ALL_CHALLENGES_ERROR
       })
@@ -27,7 +27,6 @@ async function getAllChallengesApi(token) {
       "Authorization": "Bearer " + token,
     },
   })
-  console.log(res);
   if(!res.ok) {
     throw new Error("Failed HTTTP");
   }

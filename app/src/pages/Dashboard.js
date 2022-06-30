@@ -1,66 +1,42 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-// import { AuthContext } from "../components/AuthContext";
-import { useSelector, useDispatch } from 'react-redux'
-import { useStore } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
 import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
-import { loginRequest, logoutRequest } from "../store/Auth/actions";
+import { logoutRequest } from "../store/Auth/actions";
 
 
 const Dashboard = ({auth, tidyUser}) => {
   const dispatch = useDispatch();
   let navigate = useNavigate(); 
-  // console.log(auth);
   const [formValues, setFormValues] = useState({email: undefined, password: undefined, home_name: undefined});
-
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(tidyUserEdit(auth.data.token, formValues));
-    // setFormValues({});
     handleLogout();
   };
-
-  useEffect(() => {
-    console.log(tidyUser);
-  }, [tidyUser.data]);
-
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
-  
-
   const getTidyUser = () => {
     dispatch(tidyUserRequest(auth.data.token));
   };
-
   const handleLogout = () => {
     dispatch(logoutRequest());
-    console.log(auth);
+
     return <Navigate to="/login" replace />;
   };
 
   useEffect(() => {
     getTidyUser();
-    console.log(auth);
   }, []);
-
-  useEffect(() => {
-    console.log(auth);
-  
-  }, [auth]);
 
 
   if (auth.data.token == null) return <Navigate to="/login" replace />;
 
   return (
     <>
-      <button onClick={handleLogout} >Cerrar sesión</button>
+      <button onClick={handleLogout} >Logout</button>
       <button onClick={() => {
            navigate("/challenge-list");
           }} >Challenge list</button>

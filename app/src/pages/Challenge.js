@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
-
+import { useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
-import { allChallengesRequest } from "../store/ChallengeList/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { fetchChallengeRequest } from "../store/Challenge/actions";
 
@@ -14,7 +12,6 @@ let navigate = useNavigate();
 let { challengeId } = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(challenge);
     getChallenge();
   }, []);
 
@@ -23,17 +20,9 @@ let { challengeId } = useParams();
   };
   const handleLogout = () => {
     dispatch(logoutRequest());
-    console.log(auth);
+
     return <Navigate to="/login" replace />;
   };
-  useEffect(() => {
-    console.log(challenge);
-   }, [challenge.loading]);
-
-
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
 
   if (auth.data.token == null) return <Navigate to="/login" replace />;
 
@@ -44,7 +33,7 @@ let { challengeId } = useParams();
               navigate("/challenge-list")
             }
             >Go back to Challenge List</button>
-      {challenge.data.status == 'created' || challenge.data.status == 'active' ? <button onClick={() => 
+      {challenge.loading ? null : challenge.data.status == 'created' || challenge.data.status == 'active' ? <button onClick={() => 
               navigate("/challenge-edit/" + challengeId)
             }
             >Edit Challenge</button> : null}

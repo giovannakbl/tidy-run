@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux'
-import { editChallengeRequest, fetchChallengeRequest } from "../store/Challenge/actions";
+import { deleteChallengeRequest, editChallengeRequest } from "../store/Challenge/actions";
 
 const ChallengeEdit = ({auth, challenge}) => {
     let { challengeId } = useParams();
@@ -16,24 +16,32 @@ const ChallengeEdit = ({auth, challenge}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(editChallengeRequest(auth.data.token, challengeId, formValues));
+    navigate("/challenge/" + challengeId);
   };
+  const handleDeleteChallenge = (e) => {
+    dispatch(deleteChallengeRequest(auth.data.token, challengeId)).then(
+    navigate("/challenge-list"));
+    
+  }
   
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
-  if (challenge.data.status != 'created' && challenge.data.status != 'active') {
-    return (
-        <>
-        <h1>You cannot edit this Challenge because it has already started</h1>
-        </>);
-  }
+  // if (challenge.data.status != 'created' && challenge.data.status != 'active') {
+  //   return (
+  //       <>
+  //       <h1>You cannot edit this Challenge because it has already started</h1>
+  //       </>);
+  // }
 
   return (
     <>
-    
+    {challenge.loading ? <p>Loading...</p> : challenge.error ? <p>Error</p> : challenge.data.status != 'created' && challenge.data.status != 'active' ? <h1>You cannot edit this Challenge because it has already started</h1> : <>
     <button onClick={() => 
               navigate("/challenge/" + challengeId)
             }
             >Go back to Challenge</button>
+    <button onClick={handleDeleteChallenge}
+            >Delete Challenge</button>            
       <h1>{challenge.data.status}</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
@@ -74,6 +82,8 @@ const ChallengeEdit = ({auth, challenge}) => {
         />
         <button type="submit">Save Changes</button>
       </form>
+      </>
+}
     </>
   );
 };

@@ -26,12 +26,10 @@ async function fetchChallengeApi(token, challengeId) {
       "Authorization": "Bearer " + token,
     },
   })
-  console.log(res);
   if(!res.ok) {
     throw new Error("Failed HTTTP");
   }
   return res.json()
-
 }
 
 export const editChallengeRequest =
@@ -60,7 +58,6 @@ async function editChallengeApi(token, challengeId, formValues) {
       "Authorization": "Bearer " + token,
     },
   })
-  console.log(res);
   if(!res.ok) {
     throw new Error("Failed HTTTP");
   }
@@ -68,3 +65,34 @@ async function editChallengeApi(token, challengeId, formValues) {
 
 }
 
+export const deleteChallengeRequest =
+  (token, challengeId) =>
+  async dispatch => {
+    try {
+      dispatch({type: ChallengeActionTypes.DELETE_CHALLENGE_REQUEST})
+      const asyncResp = await deleteChallengeApi(token, challengeId);
+      console.log(challengeId + "deleted");
+      return dispatch({
+        type: ChallengeActionTypes.DELETE_CHALLENGE_SUCCESS,
+        payload: asyncResp
+      })
+    } catch (e) {
+      return dispatch({
+        type: ChallengeActionTypes.DELETE_CHALLENGE_ERROR
+      })
+    }
+  }
+
+async function deleteChallengeApi(token, challengeId) {
+  const res = await fetch(baseURL + "/api/v1/challenges/" + challengeId, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+  })
+  if(!res.ok) {
+    throw new Error("Failed HTTTP");
+  }
+  return res.json()
+}
