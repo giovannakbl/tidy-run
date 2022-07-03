@@ -1,48 +1,45 @@
 import { useState } from "react";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { connect } from 'react-redux';
-import { useDispatch } from 'react-redux'
+import {bindActionCreators} from 'redux';
+// import { useDispatch } from 'react-redux'
 import { deleteChallengeRequest, editChallengeRequest } from "../store/Challenge/actions";
 
-const ChallengeEdit = ({auth, challenge}) => {
+
+const ChallengeEdit = ({auth, challenge, editChallengeRequest, deleteChallengeRequest}) => {
     let { challengeId } = useParams();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   let date = undefined;
   const [formValues, setFormValues] = useState({ name: undefined, start_date: undefined, end_date: undefined, prize: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(editChallengeRequest(auth.data.token, challengeId, formValues));
+    await editChallengeRequest(auth.data.token, challengeId, formValues);
     navigate("/challenge/" + challengeId);
   };
-  const handleDeleteChallenge = (e) => {
-    dispatch(deleteChallengeRequest(auth.data.token, challengeId)).then(
-    navigate("/challenge-list"));
+  const handleDeleteChallenge = async () => {
+    await deleteChallengeRequest(auth.data.token, challengeId);
+    navigate("/challenge-list");
     
   }
   
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
-  // if (challenge.data.status != 'created' && challenge.data.status != 'active') {
-  //   return (
-  //       <>
-  //       <h1>You cannot edit this Challenge because it has already started</h1>
-  //       </>);
-  // }
+  
 
   return (
     <>
-    {challenge.loading ? <p>Loading...</p> : challenge.error ? <p>Error</p> : challenge.data.status != 'created' && challenge.data.status != 'active' ? <h1>You cannot edit this Challenge because it has already started</h1> : <>
+    {challenge.loading ? <p>Loading...</p> : challenge.error ? <p>Error</p> : challenge.data.challenge.status != 'created' && challenge.data.challenge.status != 'active' ? <h1>You cannot edit this Challenge because it has already started</h1> : <>
     <button onClick={() => 
               navigate("/challenge/" + challengeId)
             }
             >Go back to Challenge</button>
     <button onClick={handleDeleteChallenge}
             >Delete Challenge</button>            
-      <h1>{challenge.data.status}</h1>
+      <h1>{challenge.data.challenge.status}</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
@@ -50,7 +47,7 @@ const ChallengeEdit = ({auth, challenge}) => {
           name="name"
           type="text"
           onChange={handleInputChange}
-          defaultValue={challenge.data.name}
+          defaultValue={challenge.data.challenge.name}
           value={formValues.name}
         />
         <label htmlFor="start_date">Start Date</label>
@@ -59,7 +56,7 @@ const ChallengeEdit = ({auth, challenge}) => {
           name="start_date"
           type="date"
           onChange={handleInputChange}
-          defaultValue={challenge.data.start_date.split("T")[0]}
+          defaultValue={challenge.data.challenge.start_date.split("T")[0]}
           value={formValues.start_date}
         />
         <label htmlFor="end_date">End Date</label>
@@ -68,7 +65,7 @@ const ChallengeEdit = ({auth, challenge}) => {
           name="end_date"
           type="date"
           onChange={handleInputChange}
-          defaultValue={challenge.data.end_date.split("T")[0]}
+          defaultValue={challenge.data.challenge.end_date.split("T")[0]}
           value={formValues.end_date}
         />
         <label htmlFor="prize">Prize</label>
@@ -77,7 +74,7 @@ const ChallengeEdit = ({auth, challenge}) => {
           name="prize"
           type="text"
           onChange={handleInputChange}
-          defaultValue={challenge.data.prize}
+          defaultValue={challenge.data.challenge.prize}
           value={formValues.prize}
         />
         <button type="submit">Save Changes</button>
@@ -95,5 +92,11 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    editChallengeRequest,
+    deleteChallengeRequest
+  }, dispatch)
+}
 
-export default connect(mapStateToProps)(ChallengeEdit)
+export default connect(mapStateToProps, mapDispatchToProps)(ChallengeEdit)

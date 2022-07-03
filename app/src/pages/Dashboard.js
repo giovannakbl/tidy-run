@@ -4,27 +4,25 @@ import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
 import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
+import { bindActionCreators } from 'redux';
 
-
-const Dashboard = ({auth, tidyUser}) => {
+const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest}) => {
   const dispatch = useDispatch();
   let navigate = useNavigate(); 
   const [formValues, setFormValues] = useState({email: undefined, password: undefined, home_name: undefined});
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(tidyUserEdit(auth.data.token, formValues));
+    await tidyUserEdit(auth.data.token, formValues);
     handleLogout();
   };
-  const getTidyUser = () => {
-    dispatch(tidyUserRequest(auth.data.token));
+  const getTidyUser = async () => {
+    await tidyUserRequest(auth.data.token);
   };
-  const handleLogout = () => {
-    dispatch(logoutRequest());
-
-    return <Navigate to="/login" replace />;
+  const handleLogout = async () => {
+    await logoutRequest();
   };
 
   useEffect(() => {
@@ -87,6 +85,12 @@ const mapStateToProps = (state) => {
     auth:state.auth
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    tidyUserEdit,
+    tidyUserRequest, 
+    logoutRequest,
+  }, dispatch)
+}
 
-
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

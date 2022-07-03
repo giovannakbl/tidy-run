@@ -3,10 +3,10 @@ import { Navigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { loginRequest } from "../store/Auth/actions";
 import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux';
 
 
-
-const Login = ({auth}) => {
+const Login = ({auth, loginRequest}) => {
   const dispatch = useDispatch();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
 
@@ -14,9 +14,9 @@ const Login = ({auth}) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginRequest(formValues));
+    await loginRequest(formValues);
   };
   
   if (auth.data.token) return <Navigate to="/" replace />;
@@ -54,5 +54,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-
-export default connect(mapStateToProps)(Login)
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    loginRequest
+  }, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

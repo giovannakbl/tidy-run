@@ -3,7 +3,6 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { combineReducers } from "redux";
 import { authReducer } from './Auth/reducer';
 import { challengeReducer } from './Challenge/reducer';
-import { challengeListReducer } from './ChallengeList/reducer';
 import { tidyUserReducer } from './TidyUser/reducer';
 
 export const baseURL = "http://localhost:8000";
@@ -32,7 +31,6 @@ export const store = configureStore({
   reducer: combineReducers({
     tidyUser: tidyUserReducer,
     auth: authReducer,
-    challengeList: challengeListReducer,
     challenge: challengeReducer
   }),
   // preloadedState: persistedState

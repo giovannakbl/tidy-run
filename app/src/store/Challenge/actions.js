@@ -1,5 +1,39 @@
 import { ChallengeActionTypes } from "./types";
 import { baseURL } from "..";
+import { loginRequest } from "../Auth/actions";
+
+export const allChallengesRequest =
+  (token) =>
+  async dispatch => {
+    try {
+      dispatch({type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_REQUEST})
+      const asyncResp = await getAllChallengesApi(token);
+      console.log("List fetched");
+      return dispatch({
+        type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_SUCCESS,
+        payload: asyncResp
+      })
+    } catch (e) {
+      return dispatch({
+        type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_ERROR
+      })
+    }
+  }
+
+async function getAllChallengesApi(token) {
+  const res = await fetch(baseURL + "/api/v1/challenges", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+  })
+  if(!res.ok) {
+    throw new Error("Failed HTTTP");
+  }
+  return res.json()
+
+}
 
 export const fetchChallengeRequest =
   (token, challengeId) =>
@@ -62,7 +96,6 @@ async function editChallengeApi(token, challengeId, formValues) {
     throw new Error("Failed HTTTP");
   }
   return res.json()
-
 }
 
 export const deleteChallengeRequest =
@@ -95,4 +128,39 @@ async function deleteChallengeApi(token, challengeId) {
     throw new Error("Failed HTTTP");
   }
   return res.json()
+}
+
+export const createChallengeRequest =
+  (token, formValues) =>
+  async dispatch => {
+    try {
+      dispatch({type: ChallengeActionTypes.CREATE_CHALLENGE_REQUEST})
+      const asyncResp = await createChallengeApi(token, formValues);
+      console.log("Criado");
+      dispatch({
+        type: ChallengeActionTypes.CREATE_CHALLENGE_SUCCESS,
+        payload: asyncResp
+      });
+      return asyncResp;
+    } catch (e) {
+      console.log("Nao conseguiu criar");
+      dispatch({type: ChallengeActionTypes.CREATE_CHALLENGE_ERROR});
+      throw e;
+    }
+  }
+
+async function createChallengeApi(token, formValues) {
+  const res = await fetch(baseURL + "/api/v1/challenges", {
+    method: "POST",
+    body: JSON.stringify(formValues),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+  })
+  console.log(res);
+  if(!res.ok) {
+    throw new Error("Failed HTTTP");
+  }
+  return await res.json()
 }

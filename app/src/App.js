@@ -6,6 +6,7 @@ import './App.css';
 import ChallengeList from './pages/ChallengeList';
 import Challenge from './pages/Challenge';
 import ChallengeEdit from './pages/ChallengeEdit';
+import ChallengeNew from './pages/ChallengeNew';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/challenge-list" element={<ChallengeList />} />
       <Route path="/challenge-edit/:challengeId" element={<ChallengeEdit />} />
       <Route path="/challenge/:challengeId" element={<Challenge />} />
+      <Route path="/challenge-new" element={<ChallengeNew/>} />
     </Routes>
   </BrowserRouter>
   );
