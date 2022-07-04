@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import {useNavigate, Navigate } from "react-router-dom";
+import { useNavigate ,Navigate } from "react-router-dom";
 import { connect } from 'react-redux';
-import { loginRequest } from "../store/Auth/actions";
+import { createTidyUserRequest } from "../store/TidyUser/actions";
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
 
-const Login = ({auth, loginRequest}) => {
+const Register = ({tidyUser, createTidyUserRequest}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({ username: "", password: "" });
+  const [formValues, setFormValues] = useState({ email: undefined, password: undefined});
 
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -17,22 +17,21 @@ const Login = ({auth, loginRequest}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await loginRequest(formValues);
+    await createTidyUserRequest(formValues);
+    navigate("/login");
   };
   
-  if (auth.data.token) return <Navigate to="/" replace />;
-
   return (
     <>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Email</label>
+        <label htmlFor="email">Email</label>
         <input
-          id="username"
-          name="username"
+          id="email"
+          name="email"
           type="email"
           onChange={handleInputChange}
-          value={formValues.username}
+          value={formValues.email}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -42,10 +41,10 @@ const Login = ({auth, loginRequest}) => {
           onChange={handleInputChange}
           value={formValues.password}
         />
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit">Create account</button>
       </form>
-      <button onClick={() => navigate("/register")}>
-        You don't have an account? Go to Register
+      <button onClick={() => navigate("/login")}>
+        Allready have an account? Go to Login
       </button>
     </>
   );
@@ -53,14 +52,13 @@ const Login = ({auth, loginRequest}) => {
 
 const mapStateToProps = (state) => {
   return {
-    tidyUser:state.tidyUser,
-    auth:state.auth
+    tidyUser:state.tidyUser
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loginRequest
+    createTidyUserRequest
   }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

@@ -14,7 +14,7 @@ const ModelTaskNew = ({
     const initialForm = {
         taskIcon: "Mop",
         iconColor: "Red",
-        difficulty: "Green"
+        difficulty: "Easy"
     };
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({

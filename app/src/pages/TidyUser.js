@@ -2,19 +2,21 @@ import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
-import { tidyUserRequest } from "../store/TidyUser/actions";
+import {  tidyUserRequest, deleteTidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from 'redux';
 
-const Dashboard = ({auth, tidyUser, tidyUserRequest, logoutRequest}) => {
+const Dashboard = ({auth, tidyUser, tidyUserRequest, deleteTidyUserRequest, logoutRequest}) => {
   const dispatch = useDispatch();
   let navigate = useNavigate(); 
-  const [formValues, setFormValues] = useState({email: undefined, password: undefined, home_name: undefined});
-  const handleInputChange = (e) => {
-    setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
+  };
+  const deleteTidyUser = async () => {
+    await logoutRequest();
+    await deleteTidyUserRequest(auth.data.token);
+    
   };
   const handleLogout = async () => {
     await logoutRequest();
@@ -30,20 +32,25 @@ const Dashboard = ({auth, tidyUser, tidyUserRequest, logoutRequest}) => {
   return (
     <>
       <button onClick={handleLogout} >Logout</button>
-      <button onClick={() => {
-           navigate("/challenge-list");
-          }} >Challenge list</button>
           <button onClick={() => {
-           navigate("/home-members");
-          }} >Home Members list</button>
-           <button onClick={() => {
-           navigate("/account");
-          }} >Account Settings</button>
-      <h1>Dashboard</h1>
-      <h2>Check out your Dashboard</h2>
-      <h3>This content is private</h3>
+           navigate("/");
+          }} >Go back to Dashboard</button>
+      <h1>User info</h1>
+      <h2>Email: {tidyUser.data.email}</h2>
+      <button onClick={() => {
+           navigate("/account/email");
+          }} >Change your email</button>
+          
+      <p>id: {tidyUser.data.id}</p>
       <p>family: {tidyUser.data.home_name}</p>
-      
+      <button onClick={() => {
+           navigate("/account/home-name");
+          }} >Change your family name</button>
+          <p>Password</p>
+      <button onClick={() => {
+           navigate("/account/password");
+          }} >Change your password</button>
+          <button onClick={deleteTidyUser} >Delete my account</button>
     </>
   );
 };
@@ -57,6 +64,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     tidyUserRequest, 
+    deleteTidyUserRequest,
     logoutRequest,
   }, dispatch)
 }

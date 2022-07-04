@@ -2,16 +2,21 @@ import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
-import { tidyUserRequest } from "../store/TidyUser/actions";
+import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from 'redux';
 
-const Dashboard = ({auth, tidyUser, tidyUserRequest, logoutRequest}) => {
+const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest}) => {
   const dispatch = useDispatch();
   let navigate = useNavigate(); 
-  const [formValues, setFormValues] = useState({email: undefined, password: undefined, home_name: undefined});
+  const [formValues, setFormValues] = useState({password: undefined});
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await tidyUserEdit(auth.data.token, formValues);
+    handleLogout();
   };
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
@@ -31,19 +36,22 @@ const Dashboard = ({auth, tidyUser, tidyUserRequest, logoutRequest}) => {
     <>
       <button onClick={handleLogout} >Logout</button>
       <button onClick={() => {
-           navigate("/challenge-list");
-          }} >Challenge list</button>
-          <button onClick={() => {
-           navigate("/home-members");
-          }} >Home Members list</button>
-           <button onClick={() => {
            navigate("/account");
-          }} >Account Settings</button>
-      <h1>Dashboard</h1>
-      <h2>Check out your Dashboard</h2>
-      <h3>This content is private</h3>
-      <p>family: {tidyUser.data.home_name}</p>
+          }} >Go back to user details</button>
+      <h1>Change your password</h1>
       
+      
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="password">New Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          onChange={handleInputChange}
+          value={formValues.password}
+        />
+        <button type="submit">Save Changes</button>
+      </form>
     </>
   );
 };
@@ -56,6 +64,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
+    tidyUserEdit,
     tidyUserRequest, 
     logoutRequest,
   }, dispatch)

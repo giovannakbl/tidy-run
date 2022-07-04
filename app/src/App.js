@@ -19,6 +19,11 @@ import ChallengeTasks from './pages/ChallengeTasks';
 import TaskNew from './pages/TaskNew';
 import TaskEdit from './pages/TaskEdit';
 import TaskComplete from './pages/TaskComplete';
+import TidyUser from './pages/TidyUser';
+import TidyUserEditEmail from './pages/TidyUserEditEmail';
+import TidyUserEditHomeName from './pages/TidyUserEditHomeName';
+import TidyUserEditPassword from './pages/TidyUserEditPassword';
+import Register from './pages/Register';
 
 
 
@@ -30,6 +35,7 @@ function App() {
     <Routes>
       <Route index element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/challenge-list" element={<ChallengeList />} />
       <Route path="/challenge-edit/:challengeId" element={<ChallengeEdit />} />
       <Route path="/challenge/:challengeId" element={<Challenge />} />
@@ -45,6 +51,10 @@ function App() {
       <Route path="/home-member-new" element={<HomeMemberNew/>} />
       <Route path="/home-member/:homeMemberId" element={<HomeMember/>} />
       <Route path="/home-member-edit/:homeMemberId" element={<HomeMemberEdit/>} />
+      <Route path="/account" element={<TidyUser />} />
+      <Route path="/account/email" element={<TidyUserEditEmail />} />
+      <Route path="/account/home-name" element={<TidyUserEditHomeName />} />
+      <Route path="/account/password" element={<TidyUserEditPassword />} />
       
     </Routes>
   </BrowserRouter>
