@@ -38,6 +38,9 @@ const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest
       <button onClick={() => {
            navigate("/challenge-list");
           }} >Challenge list</button>
+          <button onClick={() => {
+           navigate("/home-members");
+          }} >Home Members list</button>
       <h1>Dashboard</h1>
       <h2>Check out your Dashboard {tidyUser.data.email}</h2>
       <h3>This content is private</h3>

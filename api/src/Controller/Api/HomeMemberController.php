@@ -70,7 +70,7 @@ class HomeMemberController extends AbstractController
             ], 404);
         }
         $data = $request->toArray();
-        if (isset($data['name']) && isset($data['avatar_icon']) && isset($data['icon_color'])) {
+        if (isset($data['name']) && isset($data['avatar_icon']) && isset($data['icon_color']) && strlen($data['name']) > 0 && strlen(trim($data['name'])) > 0) {
             try {
                 $homeMember = new HomeMember();
                 $homeMember->setName($data['name']);
@@ -163,10 +163,17 @@ class HomeMemberController extends AbstractController
                 'status_name' => 'HomeMemberNotFound'
             ], 404);
         }
+        
             if (isset($data['name']) || isset($data['avatar_icon']) || isset($data['icon_color'])) {
                 try {
                     if (isset($data['name'])) {
-                        $homeMember->setName($data['name']);
+                        if (strlen($data['name']) > 0 && strlen(trim($data['name'])) > 0) {
+                            $homeMember->setName($data['name']);
+                        } else {
+                            return $this->json([
+                                'status_message' => 'Bad Request'
+                            ], 400);
+                        }
                     }
                     if (isset($data['avatar_icon'])) {
                         $homeMember->setAvatarIcon($data['avatar_icon']);

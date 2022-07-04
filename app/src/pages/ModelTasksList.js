@@ -2,27 +2,19 @@ import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { connect } from 'react-redux';
-import { allChallengesRequest } from "../store/Challenge/actions";
+import { allModelTasksRequest } from "../store/ModelTasks/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from 'redux';
 
 
-const ChallengeList = ({auth, challenge, allChallengesRequest, logoutRequest}) => {
+const ModelTasksList = ({auth, modelTasks, allModelTasksRequest, logoutRequest}) => {
 let navigate = useNavigate(); 
-
-
-  const dispatch = useDispatch();
   useEffect(() => {
-    getAllChallenges();
+    getAllModelTasks();
   }, []);
-
-  const  getAllChallenges = async () => {
-    await allChallengesRequest(auth.data.token);
+  const  getAllModelTasks = async () => {
+    await allModelTasksRequest(auth.data.token);
   };
-
-  
-
-  
   const handleLogout = async () => {
     await logoutRequest();
   };
@@ -37,20 +29,16 @@ let navigate = useNavigate();
            navigate("/");
           }} >Dashboard</button>
       <button onClick={() => {
-           navigate("/challenge-new");
-          }} >Create new Challenge</button>
-      <button onClick={() => {
-           navigate("/model-tasks");
-          }} >Go to Model Tasks</button>
-
-      <h1>Challenges</h1>
-      <h2>Check out your Challenges</h2>
-      {challenge.loading ? <p>Loading...</p> : challenge.error ? <p>Error</p> :
+           navigate("/model-task-new");
+          }} >Create new Model Task</button>
+      <h1>Model Tasks</h1>
+      <h2>Check out your Model Tasks</h2>
+      {modelTasks.loading ? <p>Loading...</p> : modelTasks.error ? <p>Error</p> :
       <ul>
-        {challenge.data.challengeList.map((item) => (
+        {modelTasks.data.modelTasksList.map((item) => (
           <li key={item.id}>
             <button onClick={() => 
-              navigate("/challenge/" + item.id)
+              navigate("/model-task/" + item.id)
             }
             >
               {item.name}
@@ -66,14 +54,14 @@ let navigate = useNavigate();
 const mapStateToProps = (state) => {
   return {
     auth:state.auth,
-    challenge:state.challenge
+    modelTasks:state.modelTasks,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    allChallengesRequest,
-    logoutRequest
+    allModelTasksRequest,
+    logoutRequest,
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChallengeList)
+export default connect(mapStateToProps, mapDispatchToProps)(ModelTasksList)
