@@ -39,16 +39,18 @@ export const fetchChallengeRequest =
   (token, challengeId) =>
   async dispatch => {
     try {
-      dispatch({type: ChallengeActionTypes.FETCH_CHALLENGE_REQUEST})
-      const asyncResp = await fetchChallengeApi(token, challengeId)
-      return dispatch({
+      dispatch({type: ChallengeActionTypes.FETCH_CHALLENGE_REQUEST});
+      const asyncResp = await fetchChallengeApi(token, challengeId);
+      dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_SUCCESS,
         payload: asyncResp
       })
+      return asyncResp;
     } catch (e) {
-      return dispatch({
+      dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_ERROR
       })
+      throw e;
     }
   }
 
@@ -163,4 +165,66 @@ async function createChallengeApi(token, formValues) {
     throw new Error("Failed HTTTP");
   }
   return await res.json()
+}
+
+export const terminateChallengeRequest =
+  (token, challengeId) =>
+  async dispatch => {
+    try {
+      dispatch({type: ChallengeActionTypes.TERMINATE_CHALLENGE_REQUEST})
+      const asyncResp = await terminateChallengeApi(token, challengeId)
+      return dispatch({
+        type: ChallengeActionTypes.TERMINATE_CHALLENGE_SUCCESS,
+        payload: asyncResp
+      })
+    } catch (e) {
+      return dispatch({
+        type: ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR
+      })
+    }
+  }
+
+async function terminateChallengeApi(token, challengeId) {
+  const res = await fetch(baseURL + "/api/v1/challenges/terminate/" + challengeId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+  })
+  if(!res.ok) {
+    throw new Error("Failed HTTTP");
+  }
+  return res.json()
+}
+
+export const reopenChallengeRequest =
+  (token, challengeId) =>
+  async dispatch => {
+    try {
+      dispatch({type: ChallengeActionTypes.REOPEN_CHALLENGE_REQUEST})
+      const asyncResp = await reopenChallengeApi(token, challengeId)
+      return dispatch({
+        type: ChallengeActionTypes.REOPEN_CHALLENGE_SUCCESS,
+        payload: asyncResp
+      })
+    } catch (e) {
+      return dispatch({
+        type: ChallengeActionTypes.REOPEN_CHALLENGE_ERROR
+      })
+    }
+  }
+
+async function reopenChallengeApi(token, challengeId) {
+  const res = await fetch(baseURL + "/api/v1/challenges/reopen/" + challengeId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token,
+    },
+  })
+  if(!res.ok) {
+    throw new Error("Failed HTTTP");
+  }
+  return res.json()
 }

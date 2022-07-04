@@ -24,7 +24,9 @@ const challengeReducer = (state = initialStateChallenge, action) => {
         case ChallengeActionTypes.DELETE_CHALLENGE_REQUEST:
         case ChallengeActionTypes.EDIT_CHALLENGE_REQUEST:
         case ChallengeActionTypes.FETCH_CHALLENGE_REQUEST:
-        case ChallengeActionTypes.CREATE_CHALLENGE_REQUEST: {
+        case ChallengeActionTypes.CREATE_CHALLENGE_REQUEST:
+        case ChallengeActionTypes.TERMINATE_CHALLENGE_REQUEST:   
+        case ChallengeActionTypes.REOPEN_CHALLENGE_REQUEST: {
           return { ...state, loading: true, error: undefined };
         }
         case ChallengeActionTypes.FETCH_ALL_CHALLENGES_SUCCESS: {
@@ -32,7 +34,9 @@ const challengeReducer = (state = initialStateChallenge, action) => {
         }
         case ChallengeActionTypes.EDIT_CHALLENGE_SUCCESS:
         case ChallengeActionTypes.FETCH_CHALLENGE_SUCCESS:
-        case ChallengeActionTypes.CREATE_CHALLENGE_SUCCESS: {
+        case ChallengeActionTypes.CREATE_CHALLENGE_SUCCESS:
+        case ChallengeActionTypes.TERMINATE_CHALLENGE_SUCCESS:
+        case ChallengeActionTypes.REOPEN_CHALLENGE_SUCCESS: {
           return { ...state, loading: false, error: undefined,  data: {...state.data, challenge: action.payload.challenge }};
         }
         case ChallengeActionTypes.DELETE_CHALLENGE_SUCCESS: {
@@ -42,7 +46,9 @@ const challengeReducer = (state = initialStateChallenge, action) => {
         case ChallengeActionTypes.DELETE_CHALLENGE_ERROR:
         case ChallengeActionTypes.EDIT_CHALLENGE_ERROR:
         case ChallengeActionTypes.FETCH_CHALLENGE_ERROR:
-        case ChallengeActionTypes.CREATE_CHALLENGE_ERROR: {
+        case ChallengeActionTypes.CREATE_CHALLENGE_ERROR: 
+        case ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR:
+        case ChallengeActionTypes.REOPEN_CHALLENGE_ERROR: {
           return { ...state, loading: false, error: "We have an error here",  data: [] };
         }
         default: {

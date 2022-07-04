@@ -16,9 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ChallengeScoreBoardController extends AbstractController
 {
     /**
-     * @Route("/{id}", methods={"GET"})
+     * @Route("/{challengeId}", methods={"GET"})
      */
-    public function listChallengeScoreBoards($id, ChallengeScoreBoardRepository $challengeScoreBoardRepository, ChallengeRepository $challengeRepository): Response
+    public function listChallengeScoreBoards($challengeId, ChallengeScoreBoardRepository $challengeScoreBoardRepository, ChallengeRepository $challengeRepository): Response
     {
         $tidyUser = $this->getUser();
         if ($tidyUser == null) {
@@ -28,7 +28,7 @@ class ChallengeScoreBoardController extends AbstractController
                 'status_name' => 'UserNotFound'
             ], 404);
         }
-        $challenge = $challengeRepository->find($id);
+        $challenge = $challengeRepository->find($challengeId);
         if ($challenge == null || $challenge->getTidyUser() != $tidyUser) {
             return $this->json([
                 'status_message' => 'Challenge Not Found',

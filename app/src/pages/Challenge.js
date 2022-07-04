@@ -3,12 +3,13 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
-import { fetchChallengeRequest } from "../store/Challenge/actions";
+import { fetchChallengeRequest, terminateChallengeRequest, reopenChallengeRequest } from "../store/Challenge/actions";
 import {
   fetchTasksInChallengeRequest,
   removeCompletionTaskRequest,
 } from "../store/Tasks/actions";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
+import { fetchScoreBoardsRequest } from "../store/ScoreBoards/actions";
 import { bindActionCreators } from "redux";
 
 const Challenge = ({
@@ -16,19 +17,24 @@ const Challenge = ({
   challenge,
   tasks,
   homeMembers,
+  scoreBoards,
   fetchTasksInChallengeRequest,
   removeCompletionTaskRequest,
   allHomeMembersRequest,
   fetchChallengeRequest,
+  terminateChallengeRequest, 
+  reopenChallengeRequest,
+  fetchScoreBoardsRequest,
   logoutRequest,
 }) => {
   let navigate = useNavigate();
   let { challengeId } = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    getChallenge();
     getTasksInChallenge();
     getHomeMembers();
+    getScoreBoards();
+    
   }, []);
 
   const getChallenge = async () => {
@@ -40,10 +46,23 @@ const Challenge = ({
   const getHomeMembers = async () => {
     await allHomeMembersRequest(auth.data.token);
   };
+  const getScoreBoards = async () => {
+    const res = await fetchChallengeRequest(auth.data.token, challengeId);
+    const challengeStatus = res.challenge.status;
+    if (challengeStatus == "completed" || challengeStatus == "terminated" ) {
+      await fetchScoreBoardsRequest(auth.data.token, challengeId);
+    }
+  };
   const removeCompletionTask = async (taskId) => {
     await removeCompletionTaskRequest(auth.data.token, taskId);
     getChallenge();
     getTasksInChallenge();
+  };
+  const terminateChallenge = async () => {
+    await terminateChallengeRequest(auth.data.token, challengeId);
+  };
+  const reopenChallenge = async () => {
+    await reopenChallengeRequest(auth.data.token, challengeId);
   };
 
   const handleLogout = async () => {
@@ -80,7 +99,12 @@ const Challenge = ({
             <button onClick={() => navigate("/challenge-edit/" + challengeId)}>
               Edit Challenge Info
             </button>
-          ) : null}
+          ) : challenge.data.challenge.status == "started" ? (
+            <button onClick={terminateChallenge}>Terminate this Challenge</button>
+          ) : challenge.data.challenge.status == "terminated" ? (
+            <button onClick={reopenChallenge}>Reopen this Challenge</button>
+          )
+          : null}
         </>
       )}
       <h1>Challenge Tasks</h1>
@@ -172,7 +196,7 @@ const Challenge = ({
                           ).name
                         }
                       </li>
-                      {challenge.status == "terminated" ? null : (
+                      {challenge.data.challenge.status == "terminated" ? null : (
                         <li>
                           <button onClick={() => removeCompletionTask(item.id)}>
                             Remove completion of task
@@ -183,7 +207,7 @@ const Challenge = ({
                   ) : (
                     <>
                       <li>Status: incomplete</li>
-                      {challenge.status == "terminated" ? null : (
+                      {challenge.data.challenge.status == "terminated" ? null : (
                         <li>
                           <button
                             onClick={() =>
@@ -202,6 +226,33 @@ const Challenge = ({
           )}
         </>
       )}
+
+      {challenge.loading ? null : challenge.error ? null : challenge.data.challenge.status != "completed" &&
+        challenge.data.challenge.status != "terminated" ? null : scoreBoards.loading ? (
+        <p>Loading...</p>
+      ) : scoreBoards.error ? (
+        <p>Error</p>
+      ) : ( 
+        <>
+        <h3>Ranking:</h3>
+          {scoreBoards.data.scoreBoards.map((item) => (
+            <ul>
+              <li>Position: {item.rank_in_challenge}</li>
+              <li>Home member id: {item.home_member_id}</li>
+              <li>Total points: {item.total_points}</li>
+              <li>
+                Name of the Home Member:
+                {
+                  homeMembers.data.homeMembersList.find(
+                    (homeMember) => homeMember.id === item.home_member_id
+                  ).name
+                }
+              </li>
+            </ul>
+          ))}
+        </>
+      )
+      }
     </>
   );
 };
@@ -212,16 +263,20 @@ const mapStateToProps = (state) => {
     challenge: state.challenge,
     tasks: state.tasks,
     homeMembers: state.homeMembers,
+    scoreBoards: state.scoreBoards,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       fetchChallengeRequest,
+      terminateChallengeRequest, 
+      reopenChallengeRequest,
       logoutRequest,
       fetchTasksInChallengeRequest,
       allHomeMembersRequest,
       removeCompletionTaskRequest,
+      fetchScoreBoardsRequest,
     },
     dispatch
   );

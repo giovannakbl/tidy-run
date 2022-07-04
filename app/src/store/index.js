@@ -7,6 +7,7 @@ import { homeMembersReducer } from './HomeMembers/reducer';
 import { modelTasksReducer } from './ModelTasks/reducer';
 import { tasksReducer } from './Tasks/reducer';
 import { tidyUserReducer } from './TidyUser/reducer';
+import { scoreBoardsReducer } from './ScoreBoards/reducer';
 
 export const baseURL = "http://localhost:8000";
 
@@ -37,7 +38,8 @@ export const store = configureStore({
     challenge: challengeReducer,
     modelTasks: modelTasksReducer,
     homeMembers: homeMembersReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    scoreBoards: scoreBoardsReducer,
   }),
   // preloadedState: persistedState
 });
