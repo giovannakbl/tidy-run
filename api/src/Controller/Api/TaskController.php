@@ -500,17 +500,17 @@ class TaskController extends AbstractController
                     }             
                 }
                 $tasksInChallenge = $challenge->getTasks();
-                $isChallengeActive = false;
+                $isChallengeStarted = false;
                 foreach ($tasksInChallenge as $taskInChallenge) {
                     if ($taskInChallenge->getCompletedAt() != null) {
-                        $isChallengeCompleted = true;
+                        $isChallengeStarted = true;
                         break;
                     }
                 }
-                if ($isChallengeActive) {
-                    $challenge->setStatus('active');
-                } else {
+                if ($isChallengeStarted) {
                     $challenge->setStatus('started');
+                } else {
+                    $challenge->setStatus('active');
                 }
                 $homeMemberId = $task->getHomeMember() == null ? $task->getHomeMember() : $task->getHomeMember()->getId();
                 $em->flush();
