@@ -1,5 +1,4 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from "redux";
 import { authReducer } from './Auth/reducer';
 import { challengeReducer } from './Challenge/reducer';
@@ -10,6 +9,33 @@ import { tidyUserReducer } from './TidyUser/reducer';
 import { scoreBoardsReducer } from './ScoreBoards/reducer';
 
 export const baseURL = "http://localhost:8000";
+
+export const standardOptions = {
+  taskIcon: [
+    {
+      name: "Mop"
+    },
+    {
+      name: "Brush hehe"
+    }
+  ],
+  iconColor: [
+    {
+      name: "Red"
+    }
+  ],
+  difficulty: [
+    {
+      name: "Easy"
+    },
+    {
+      name: "Medium"
+    },
+    {
+      name: "Hard"
+    }
+  ]
+};
 
 // export const loadState = () => {
 //   try {

@@ -1,18 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux'
 import { connect } from 'react-redux';
 import { tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from 'redux';
 
 const Dashboard = ({auth, tidyUser, tidyUserRequest, logoutRequest}) => {
-  const dispatch = useDispatch();
   let navigate = useNavigate(); 
-  const [formValues, setFormValues] = useState({email: undefined, password: undefined, home_name: undefined});
-  const handleInputChange = (e) => {
-    setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
   };

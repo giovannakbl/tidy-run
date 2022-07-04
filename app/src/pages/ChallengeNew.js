@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Navigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createChallengeRequest } from "../store/Challenge/actions";
 
-const ChallengeNew = ({ auth, challenge, createChallengeRequest }) => {
+const ChallengeNew = ({ auth, createChallengeRequest }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
@@ -18,14 +18,10 @@ const ChallengeNew = ({ auth, challenge, createChallengeRequest }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const result = await createChallengeRequest(auth.data.token, formValues);
-    let newChallenge = result.challenge;
-    console.log(newChallenge);
-    console.log("Vou redirecionar para" + newChallenge.id);
-    navigate("/challenge/" + newChallenge.id);
-    } catch (e) {
-      console.log("Chegou no erro");
-    }
+      const result = await createChallengeRequest(auth.data.token, formValues);
+      let newChallenge = result.challenge;
+      navigate("/challenge/" + newChallenge.id);
+    } catch (e) {}
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -35,8 +31,6 @@ const ChallengeNew = ({ auth, challenge, createChallengeRequest }) => {
       <button onClick={() => navigate("/challenge-list")}>
         Go back to Challenge List
       </button>
-      <button onClick={() => console.log(challenge)}>Log Challenge</button>
-
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
@@ -78,7 +72,6 @@ const ChallengeNew = ({ auth, challenge, createChallengeRequest }) => {
 
 const mapStateToProps = (state) => {
   return {
-    challenge: state.challenge,
     auth: state.auth,
   };
 };

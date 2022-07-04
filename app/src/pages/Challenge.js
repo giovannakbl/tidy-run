@@ -3,7 +3,11 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
-import { fetchChallengeRequest, terminateChallengeRequest, reopenChallengeRequest } from "../store/Challenge/actions";
+import {
+  fetchChallengeRequest,
+  terminateChallengeRequest,
+  reopenChallengeRequest,
+} from "../store/Challenge/actions";
 import {
   fetchTasksInChallengeRequest,
   removeCompletionTaskRequest,
@@ -22,7 +26,7 @@ const Challenge = ({
   removeCompletionTaskRequest,
   allHomeMembersRequest,
   fetchChallengeRequest,
-  terminateChallengeRequest, 
+  terminateChallengeRequest,
   reopenChallengeRequest,
   fetchScoreBoardsRequest,
   logoutRequest,
@@ -34,9 +38,7 @@ const Challenge = ({
     getTasksInChallenge();
     getHomeMembers();
     getScoreBoards();
-    
   }, []);
-
   const getChallenge = async () => {
     await fetchChallengeRequest(auth.data.token, challengeId);
   };
@@ -49,7 +51,7 @@ const Challenge = ({
   const getScoreBoards = async () => {
     const res = await fetchChallengeRequest(auth.data.token, challengeId);
     const challengeStatus = res.challenge.status;
-    if (challengeStatus == "completed" || challengeStatus == "terminated" ) {
+    if (challengeStatus == "completed" || challengeStatus == "terminated") {
       await fetchScoreBoardsRequest(auth.data.token, challengeId);
     }
   };
@@ -64,7 +66,6 @@ const Challenge = ({
   const reopenChallenge = async () => {
     await reopenChallengeRequest(auth.data.token, challengeId);
   };
-
   const handleLogout = async () => {
     await logoutRequest();
   };
@@ -100,11 +101,12 @@ const Challenge = ({
               Edit Challenge Info
             </button>
           ) : challenge.data.challenge.status == "started" ? (
-            <button onClick={terminateChallenge}>Terminate this Challenge</button>
+            <button onClick={terminateChallenge}>
+              Terminate this Challenge
+            </button>
           ) : challenge.data.challenge.status == "terminated" ? (
             <button onClick={reopenChallenge}>Reopen this Challenge</button>
-          )
-          : null}
+          ) : null}
         </>
       )}
       <h1>Challenge Tasks</h1>
@@ -196,7 +198,8 @@ const Challenge = ({
                           ).name
                         }
                       </li>
-                      {challenge.data.challenge.status == "terminated" ? null : (
+                      {challenge.data.challenge.status ==
+                      "terminated" ? null : (
                         <li>
                           <button onClick={() => removeCompletionTask(item.id)}>
                             Remove completion of task
@@ -207,7 +210,8 @@ const Challenge = ({
                   ) : (
                     <>
                       <li>Status: incomplete</li>
-                      {challenge.data.challenge.status == "terminated" ? null : (
+                      {challenge.data.challenge.status ==
+                      "terminated" ? null : (
                         <li>
                           <button
                             onClick={() =>
@@ -227,14 +231,16 @@ const Challenge = ({
         </>
       )}
 
-      {challenge.loading ? null : challenge.error ? null : challenge.data.challenge.status != "completed" &&
-        challenge.data.challenge.status != "terminated" ? null : scoreBoards.loading ? (
+      {challenge.loading ? null : challenge.error ? null : challenge.data
+          .challenge.status != "completed" &&
+        challenge.data.challenge.status !=
+          "terminated" ? null : scoreBoards.loading ? (
         <p>Loading...</p>
       ) : scoreBoards.error ? (
         <p>Error</p>
-      ) : ( 
+      ) : (
         <>
-        <h3>Ranking:</h3>
+          <h3>Ranking:</h3>
           {scoreBoards.data.scoreBoards.map((item) => (
             <ul>
               <li>Position: {item.rank_in_challenge}</li>
@@ -251,8 +257,7 @@ const Challenge = ({
             </ul>
           ))}
         </>
-      )
-      }
+      )}
     </>
   );
 };
@@ -270,7 +275,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       fetchChallengeRequest,
-      terminateChallengeRequest, 
+      terminateChallengeRequest,
       reopenChallengeRequest,
       logoutRequest,
       fetchTasksInChallengeRequest,

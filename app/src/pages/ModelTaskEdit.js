@@ -59,36 +59,42 @@ const ModelTaskEdit = ({
               value={formValues.name}
             />
             <label htmlFor="task_icon">Task Icon</label>
-            <select id="task_icon"
+            <select
+              id="task_icon"
               name="task_icon"
               type="text"
               onChange={handleInputChange}
               defaultValue={modelTasks.data.modelTask.task_icon}
-              value={formValues.task_icon}>
+              value={formValues.task_icon}
+            >
               <option value="Mop">Mop</option>
               <option value="Brush">Brush</option>
               <option value="Cloth">Cloth</option>
               <option value="Spray">Spray</option>
             </select>
             <label htmlFor="icon_color">Icon Color</label>
-            <select id="icon_color"
+            <select
+              id="icon_color"
               name="icon_color"
               type="text"
               onChange={handleInputChange}
               defaultValue={modelTasks.data.modelTask.icon_color}
-              value={formValues.icon_color}>
+              value={formValues.icon_color}
+            >
               <option value="Red">Red</option>
               <option value="Green">Green</option>
               <option value="Blue">Blue</option>
               <option value="Yellow">Yellow</option>
             </select>
             <label htmlFor="difficulty">Difficulty</label>
-            <select id="difficulty"
+            <select
+              id="difficulty"
               name="difficulty"
               type="text"
               onChange={handleInputChange}
               defaultValue={modelTasks.data.modelTask.difficulty}
-              value={formValues.difficulty}>
+              value={formValues.difficulty}
+            >
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>

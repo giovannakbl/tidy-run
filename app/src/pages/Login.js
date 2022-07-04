@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import {useNavigate, Navigate } from "react-router-dom";
-import { connect } from 'react-redux';
+import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 import { loginRequest } from "../store/Auth/actions";
-import { useDispatch } from 'react-redux'
-import { bindActionCreators } from 'redux';
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
 
-
-const Login = ({auth, loginRequest}) => {
+const Login = ({ auth, loginRequest }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
@@ -19,7 +18,7 @@ const Login = ({auth, loginRequest}) => {
     e.preventDefault();
     await loginRequest(formValues);
   };
-  
+
   if (auth.data.token) return <Navigate to="/" replace />;
 
   return (
@@ -53,14 +52,17 @@ const Login = ({auth, loginRequest}) => {
 
 const mapStateToProps = (state) => {
   return {
-    tidyUser:state.tidyUser,
-    auth:state.auth
-  }
-}
+    tidyUser: state.tidyUser,
+    auth: state.auth,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    loginRequest
-  }, dispatch)
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+  return bindActionCreators(
+    {
+      loginRequest,
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

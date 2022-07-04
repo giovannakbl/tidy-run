@@ -1,8 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
-import './App.css';
 import ChallengeList from './pages/ChallengeList';
 import Challenge from './pages/Challenge';
 import ChallengeEdit from './pages/ChallengeEdit';
@@ -15,7 +14,6 @@ import HomeMembersList from './pages/HomeMembersList';
 import HomeMemberNew from './pages/HomeMembersNew';
 import HomeMember from './pages/HomeMember';
 import HomeMemberEdit from './pages/HomeMemberEdit';
-import ChallengeTasks from './pages/ChallengeTasks';
 import TaskNew from './pages/TaskNew';
 import TaskEdit from './pages/TaskEdit';
 import TaskComplete from './pages/TaskComplete';
@@ -25,12 +23,8 @@ import TidyUserEditHomeName from './pages/TidyUserEditHomeName';
 import TidyUserEditPassword from './pages/TidyUserEditPassword';
 import Register from './pages/Register';
 
-
-
-
 function App() {
   return (
-
   <BrowserRouter>
     <Routes>
       <Route index element={<Dashboard />} />
@@ -54,8 +48,7 @@ function App() {
       <Route path="/account" element={<TidyUser />} />
       <Route path="/account/email" element={<TidyUserEditEmail />} />
       <Route path="/account/home-name" element={<TidyUserEditHomeName />} />
-      <Route path="/account/password" element={<TidyUserEditPassword />} />
-      
+      <Route path="/account/password" element={<TidyUserEditPassword />} />   
     </Routes>
   </BrowserRouter>
   );

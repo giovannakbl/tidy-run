@@ -3,13 +3,17 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
-import { fetchModelTaskRequest } from "../store/ModelTasks/actions"; 
-import { bindActionCreators } from 'redux';
+import { fetchModelTaskRequest } from "../store/ModelTasks/actions";
+import { bindActionCreators } from "redux";
 
-const ModelTask = ({ auth, modelTasks, fetchModelTaskRequest, logoutRequest }) => {
+const ModelTask = ({
+  auth,
+  modelTasks,
+  fetchModelTaskRequest,
+  logoutRequest,
+}) => {
   let navigate = useNavigate();
   let { modelTaskId } = useParams();
-  const dispatch = useDispatch();
   useEffect(() => {
     getModelTask();
   }, []);
@@ -57,14 +61,17 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     challenge: state.challenge,
-    modelTasks: state.modelTasks
+    modelTasks: state.modelTasks,
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    fetchModelTaskRequest,
-    logoutRequest, 
-  }, dispatch)
-}
+  return bindActionCreators(
+    {
+      fetchModelTaskRequest,
+      logoutRequest,
+    },
+    dispatch
+  );
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModelTask);

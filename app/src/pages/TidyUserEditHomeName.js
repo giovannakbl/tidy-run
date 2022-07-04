@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux'
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
 
-const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest}) => {
-  const dispatch = useDispatch();
-  let navigate = useNavigate(); 
-  const [formValues, setFormValues] = useState({password: undefined});
+const Dashboard = ({
+  auth,
+  tidyUser,
+  tidyUserEdit,
+  tidyUserRequest,
+  logoutRequest,
+}) => {
+  let navigate = useNavigate();
+  const [formValues, setFormValues] = useState({ password: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -24,25 +28,27 @@ const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest
   const handleLogout = async () => {
     await logoutRequest();
   };
-
   useEffect(() => {
     getTidyUser();
   }, []);
-
 
   if (auth.data.token == null) return <Navigate to="/login" replace />;
 
   return (
     <>
-      <button onClick={handleLogout} >Logout</button>
-      <button onClick={() => {
-           navigate("/account");
-          }} >Go back to user details</button>
+      <button onClick={handleLogout}>Logout</button>
+      <button
+        onClick={() => {
+          navigate("/account");
+        }}
+      >
+        Go back to user details
+      </button>
       <h1>Change your Home Name</h1>
-      
+
       <p>Current family name: {tidyUser.data.home_name}</p>
       <form onSubmit={handleSubmit}>
-      <label htmlFor="home_name">Home Name</label>
+        <label htmlFor="home_name">Home Name</label>
         <input
           id="home_name"
           name="home_name"
@@ -58,16 +64,19 @@ const Dashboard = ({auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest
 
 const mapStateToProps = (state) => {
   return {
-    tidyUser:state.tidyUser,
-    auth:state.auth
-  }
-}
+    tidyUser: state.tidyUser,
+    auth: state.auth,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    tidyUserEdit,
-    tidyUserRequest, 
-    logoutRequest,
-  }, dispatch)
-}
+  return bindActionCreators(
+    {
+      tidyUserEdit,
+      tidyUserRequest,
+      logoutRequest,
+    },
+    dispatch
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

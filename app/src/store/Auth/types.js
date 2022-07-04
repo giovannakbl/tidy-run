@@ -1,4 +1,3 @@
-
 export const AuthActionTypes = {
     LOGIN_REQUEST: "LOGIN_REQUEST",
     LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -7,4 +6,3 @@ export const AuthActionTypes = {
     LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
     LOGOUT_FAILURE: "LOGOUT_FAILURE"
 }
-

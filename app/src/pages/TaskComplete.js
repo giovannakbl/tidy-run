@@ -26,7 +26,6 @@ const TaskComplete = ({
     getTask();
     getHomeMembers();
   }, []);
-
   const getTask = async () => {
     await fetchTaskRequest(auth.data.token, taskId);
   };
@@ -38,9 +37,7 @@ const TaskComplete = ({
     try {
       await completeTaskRequest(auth.data.token, taskId, formValues);
       navigate("/challenge/" + tasks.data.task.challenge_id);
-    } catch (e) {
-      console.log("Chegou no erro");
-    }
+    } catch (e) {}
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -52,46 +49,47 @@ const TaskComplete = ({
       >
         Go back to Challenge
       </button>
-    {tasks.loading || homeMembers.loading ? <p>Loading...</p> : tasks.error || homeMembers.error ? <p>Error</p> : 
-    <>
-    <ul>
-        <li>Task name: {tasks.data.task.name}</li>
-        <li>Task Icon: {tasks.data.task.task_icon}</li>
-        <li>Icon Color: {tasks.data.task.icon_color}</li>
-        <li>Difficulty: {tasks.data.task.difficulty}</li>
-      </ul>
-
-      <form onSubmit={handleSubmit}>
-        {homeMembers.data.homeMembersList.map((item) => (
-          <>
+      {tasks.loading || homeMembers.loading ? (
+        <p>Loading...</p>
+      ) : tasks.error || homeMembers.error ? (
+        <p>Error</p>
+      ) : (
+        <>
+          <ul>
+            <li>Task name: {tasks.data.task.name}</li>
+            <li>Task Icon: {tasks.data.task.task_icon}</li>
+            <li>Icon Color: {tasks.data.task.icon_color}</li>
+            <li>Difficulty: {tasks.data.task.difficulty}</li>
+          </ul>
+          <form onSubmit={handleSubmit}>
+            {homeMembers.data.homeMembersList.map((item) => (
+              <>
+                <input
+                  type="radio"
+                  id={item.id}
+                  name="home_member_id"
+                  value={item.id}
+                  onChange={handleInputChange}
+                />
+                <label for={item.id}>
+                  {item.name} / id: {item.id} / avatar icon: {item.avatar_icon}
+                </label>
+                <br />
+              </>
+            ))}
+            <label htmlFor="completed_at">Completed at</label>
             <input
-              type="radio"
-              id={item.id}
-              name="home_member_id"
-              value={item.id}
+              id="completed_at"
+              name="completed_at"
+              type="date"
               onChange={handleInputChange}
+              value={formValues.completed_at}
             />
-            <label for={item.id}>
-              {item.name} / id: {item.id} / avatar icon: {item.avatar_icon}
-            </label>
-            <br />
-          </>
-        ))}
 
-        <label htmlFor="completed_at">Completed at</label>
-        <input
-          id="completed_at"
-          name="completed_at"
-          type="date"
-          onChange={handleInputChange}
-          value={formValues.completed_at}
-        />
-
-        <button type="submit">Complete Task</button>
-      </form>
-    </>
-    }
-      
+            <button type="submit">Complete Task</button>
+          </form>
+        </>
+      )}
     </>
   );
 };
@@ -100,16 +98,16 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     tasks: state.tasks,
-    homeMembers: state.homeMembers
+    homeMembers: state.homeMembers,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-        fetchTaskRequest,
-        completeTaskRequest,
-        allHomeMembersRequest,
+      fetchTaskRequest,
+      completeTaskRequest,
+      allHomeMembersRequest,
     },
     dispatch
   );
