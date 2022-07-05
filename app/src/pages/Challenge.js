@@ -15,6 +15,8 @@ import {
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { fetchScoreBoardsRequest } from "../store/ScoreBoards/actions";
 import { bindActionCreators } from "redux";
+import { standardOptions } from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Challenge = ({
   auth,
@@ -124,115 +126,98 @@ const Challenge = ({
         <>
           {challenge.data.challenge.status == "created" ||
           challenge.data.challenge.status == "active" ? (
-            <>
-              <button onClick={() => navigate("/task-new/" + challengeId)}>
-                Create new task in Challenge
-              </button>
-              {tasks.data.tasksList.map((item) => (
-                <ul>
-                  <li>Task name: {item.name}</li>
-                  <li>Task Icon: {item.task_icon}</li>
-                  <li>Icon Color: {item.icon_color}</li>
-                  <li>Difficulty: {item.difficulty}</li>
-                  {item.completed_at ? (
-                    <>
-                      <li>Status: completed</li>
-                      <li>Points Earned: {item.points_earned}</li>
-                      <li>Completed At: {item.completed_at}</li>
-                      <li>
-                        Id of the Home Member that completed the task:{" "}
-                        {item.home_member_id}
-                      </li>
-                      <li>
-                        Name of the Home Member that completed the task:
-                        {
-                          homeMembers.data.homeMembersList.find(
-                            (homeMember) =>
-                              homeMember.id === item.home_member_id
-                          ).name
-                        }
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li>Status: incomplete</li>
-                      {challenge.status == "terminated" ? null : (
-                        <li>
-                          <button
-                            onClick={() =>
-                              navigate("/task-complete/" + item.id)
-                            }
-                          >
-                            Complete task
-                          </button>
-                        </li>
-                      )}
-                    </>
-                  )}
-                  <li>
-                    <button onClick={() => navigate("/task-edit/" + item.id)}>
-                      Edit task
-                    </button>
-                  </li>
-                </ul>
-              ))}
-            </>
-          ) : (
-            <>
-              {tasks.data.tasksList.map((item) => (
-                <ul>
-                  <li>Task name: {item.name}</li>
-                  <li>Task Icon: {item.task_icon}</li>
-                  <li>Icon Color: {item.icon_color}</li>
-                  <li>Difficulty: {item.difficulty}</li>
-                  {item.completed_at ? (
-                    <>
-                      <li>Status: completed</li>
-                      <li>Points Earned: {item.points_earned}</li>
-                      <li>Completed At: {item.completed_at}</li>
-                      <li>
-                        Id of the Home Member that completed the task:{" "}
-                        {item.home_member_id}
-                      </li>
-                      <li>
-                        Name of the Home Member that completed the task:
-                        {
-                          homeMembers.data.homeMembersList.find(
-                            (homeMember) =>
-                              homeMember.id === item.home_member_id
-                          ).name
-                        }
-                      </li>
-                      {challenge.data.challenge.status ==
-                      "terminated" ? null : (
-                        <li>
-                          <button onClick={() => removeCompletionTask(item.id)}>
-                            Remove completion of task
-                          </button>
-                        </li>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <li>Status: incomplete</li>
-                      {challenge.data.challenge.status ==
-                      "terminated" ? null : (
-                        <li>
-                          <button
-                            onClick={() =>
-                              navigate("/task-complete/" + item.id)
-                            }
-                          >
-                            Complete task
-                          </button>
-                        </li>
-                      )}
-                    </>
-                  )}
-                </ul>
-              ))}
-            </>
-          )}
+            <button onClick={() => navigate("/task-new/" + challengeId)}>
+              Create new task in Challenge
+            </button>
+          ) : null}
+
+          {tasks.data.tasksList.map((item) => (
+            <div className="task-info">
+              <div className="flex-row-start">
+                <div
+                  className="fa-icons"
+                  style={{
+                    backgroundColor: standardOptions.iconColor.find(
+                      (element) => element.name === item.icon_color
+                    ).color,
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={
+                      standardOptions.taskIcon.find(
+                        (element) => element.name === item.task_icon
+                      ).icon
+                    }
+                  />
+                </div>
+                <div>
+                  <p
+                    style={{
+                      color: standardOptions.iconColor.find(
+                        (element) => element.name === item.icon_color
+                      ).color,
+                    }}
+                  >
+                    {item.name}
+                  </p>
+                </div>
+              </div>
+              <p
+                style={{
+                  color: standardOptions.iconColor.find(
+                    (element) => element.name === item.icon_color
+                  ).color,
+                }}
+              >
+                Difficulty: {item.difficulty}
+              </p>
+
+              {item.completed_at ? (
+                <>
+                  <p>Status: completed</p>
+                  <p>Points Earned: {item.points_earned}</p>
+                  <p>Completed At: {item.completed_at}</p>
+                  <p>
+                    Id of the Home Member that completed the task:{" "}
+                    {item.home_member_id}
+                  </p>
+                  <p>
+                    Name of the Home Member that completed the task:
+                    {
+                      homeMembers.data.homeMembersList.find(
+                        (homeMember) => homeMember.id === item.home_member_id
+                      ).name
+                    }
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>Status: incomplete</p>
+                </>
+              )}
+              {challenge.data.challenge.status == "created" ||
+              challenge.data.challenge.status == "active" ? (
+                <button onClick={() => navigate("/task-edit/" + item.id)}>
+                  Edit task
+                </button>
+              ) : null}
+
+              {challenge.data.challenge.status != "completed" &&
+              challenge.data.challenge.status != "terminated" &&
+              item.completed_at ? (
+                <button onClick={() => removeCompletionTask(item.id)}>
+                  Remove completion of task
+                </button>
+              ) : null}
+
+              {challenge.data.challenge.status != "terminated" &&
+              !item.completed_at ? (
+                <button onClick={() => navigate("/task-complete/" + item.id)}>
+                  Complete task
+                </button>
+              ) : null}
+            </div>
+          ))}
         </>
       )}
 

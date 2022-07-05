@@ -49,7 +49,11 @@ export const standardOptions = {
     {
       name: "Yellow",
       color: 'yellow'
-    }
+    },
+    {
+      name: "Pink",
+      color: 'pink'
+    },
   ],
   difficulty: [
     {
@@ -60,22 +64,34 @@ export const standardOptions = {
     },
     {
       name: "Hard"
-    }
+    },
   ],
   avatarIcon: [
     {
-      name: "Dog"
+      name: "Dog",
+      icon: "coffee"
     },
     {
-      name: "Cat"
+      name: "Cat",
+      icon: "fa-apple-whole"
     },
     {
-      name: "Rabbit"
+      name: "Rabbit",
+      icon: "fa-bell"
     },
     {
-      name: "Wale"
-    }
-  ]
+      name: "Wale",
+      icon: "fa-bicycle"
+    },
+    {
+      name: "Lizzard",
+      icon: "fa-bicycle"
+    },
+    {
+      name: "Banana",
+      icon: "fa-bicycle"
+    },
+  ],
 };
 
 // export const loadState = () => {

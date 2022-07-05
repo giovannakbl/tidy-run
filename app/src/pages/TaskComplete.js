@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchTaskRequest, completeTaskRequest } from "../store/Tasks/actions";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
+import { standardOptions } from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TaskComplete = ({
   auth,
@@ -58,28 +60,95 @@ const TaskComplete = ({
         <p>Error</p>
       ) : (
         <>
-          <ul>
-            <li>Task name: {tasks.data.task.name}</li>
-            <li>Task Icon: {tasks.data.task.task_icon}</li>
-            <li>Icon Color: {tasks.data.task.icon_color}</li>
-            <li>Difficulty: {tasks.data.task.difficulty}</li>
-          </ul>
-          <form onSubmit={handleSubmit}>
-            {homeMembers.data.homeMembersList.map((item) => (
-              <>
-                <input
-                  type="radio"
-                  id={item.id}
-                  name="home_member_id"
-                  value={item.id}
-                  onChange={handleInputChange}
+          <div className="task-info">
+            <div className="flex-row-start">
+              <div
+                className="fa-icons"
+                style={{
+                  backgroundColor: standardOptions.iconColor.find(
+                    (element) => element.name === tasks.data.task.icon_color
+                  ).color
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={
+                    standardOptions.taskIcon.find(
+                      (element) => element.name === tasks.data.task.task_icon
+                    ).icon
+                  }
                 />
-                <label for={item.id}>
-                  {item.name} / id: {item.id} / avatar icon: {item.avatar_icon}
-                </label>
-                <br />
-              </>
-            ))}
+
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: standardOptions.iconColor.find(
+                      (element) => element.name === tasks.data.task.icon_color
+                    ).color
+                  }}
+                >
+                  {tasks.data.task.name}
+                </p>
+              </div>
+            </div>
+            <p
+              style={{
+                color: standardOptions.iconColor.find(
+                  (element) => element.name === tasks.data.task.icon_color
+                ).color
+              }}
+            >
+              Difficulty: {tasks.data.task.difficulty}
+            </p>
+            <p>Status: incomplete</p>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="radio-list">
+              {homeMembers.data.homeMembersList.map((item) => (
+                <>
+                  <input
+                    type="radio"
+                    id={item.id}
+                    name="home_member_id"
+                    value={item.id}
+                    onChange={handleInputChange}
+                  />
+                  {/* <label for={item.id}>
+                    <div className="text-list">
+                      {item.name} / id: {item.id} / avatar icon:{" "}
+                      {item.avatar_icon}
+                    </div>
+                  </label> */}
+                  <label
+                    for={item.id}
+                    style={{
+                      color: standardOptions.iconColor.find(
+                        (element) => element.name === item.icon_color
+                      ).color,
+                    }}
+                  >
+                    <div
+                      className="fa-icons"
+                      style={{
+                        backgroundColor: standardOptions.iconColor.find(
+                          (element) => element.name === item.icon_color
+                        ).color,
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={
+                          standardOptions.avatarIcon.find(
+                            (element) => element.name === item.avatar_icon
+                          ).icon
+                        }
+                      />
+                    </div>
+                    {item.name}
+                  </label>
+                </>
+              ))}
+            </div>
             <label htmlFor="completed_at">Completed at</label>
             <input
               id="completed_at"
