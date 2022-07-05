@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  api:
+    depends_on:
+      - db
+    ports:
+      - ${API_PORT:-8000}:8000
+    build:
+      context: ./api
+    command: /var/www/symfony/run.sh
+    volumes:
+      - ./api/:/var/www/symfony/
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: mysql://user:password@db:3306/tidy-run?serverVersion=5.7&charset=utf8mb4
+    networks:
+      - backend
+  app:
+    ports:
+      - ${APP_PORT:-3000}:3000
+    build:
+      context: ./app
+    command: /app/run.sh
+    volumes:
+      - ./app/:/app
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'tidy-run'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - ${DB_PORT:-3306}:3306
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - backend
+networks:
+  backend:

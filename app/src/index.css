@@ -1,0 +1,123 @@
+:root {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.785rem;
+  font-family: "Open Sans", sans-serif;
+}
+button {
+  background-color: rgb(176, 94, 154);
+  border-radius: 5px;
+  margin: 5px;
+  padding: 8px 16px;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+input, label {
+  display:block;
+  text-align: left;
+}
+label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(176, 94, 154);
+}
+input {
+  width: 80%;
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+form {
+  margin: 15px 30px;
+  padding: 15px 30px;
+  border: 1px rgb(107, 105, 105) solid;
+  border-radius: 5px;
+  box-shadow: 0 .2rem .6rem 0 rgba(0, 0, 0, .1); 
+}
+h1 {
+  font-size: 2.75rem;
+  margin: 15px;
+}
+h2 {
+  font-size: 2.25rem;
+  margin: 15px;
+}
+h3 {
+  font-size: 1.75rem;
+  margin: 15px;
+}
+p {
+  font-size: 1.25rem;
+  margin: 15px;
+}
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+li {
+  list-style: none;
+}
+ul li button {
+  background-color: rgb(67, 102, 228);
+}
+.go-back-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.go-back-button {
+  background-color: transparent;
+  color: blue;
+  border: 0;
+}
+ul.radio-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+} 
+.radio-list li {
+  display: inline-block;
+}
+.radio-list input {
+  visibility:hidden;
+  
+}
+.radio-list label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.radio-list input + label {
+  padding: 5px 10px;
+}
+.radio-list input:checked + label {
+  border: 2px solid red;
+  border-radius: 5px;
+}
+.fa-icons {
+  background-color: rgb(48, 47, 46);
+  color: white;
+  font-size: 1.5em;
+  border-radius: 50%;
+  height: 2em;
+  width: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
