@@ -45,9 +45,14 @@ const ModelTaskEdit = ({
         <p>Error</p>
       ) : (
         <>
-          <button onClick={() => navigate("/model-task/" + modelTaskId)}>
-            Go back to Model Task
-          </button>
+          <div className="go-back-area">
+            <button
+              className="go-back-button"
+              onClick={() => navigate("/model-task/" + modelTaskId)}
+            >
+              &#60;&#60; Go back to Model Task
+            </button>
+          </div>
           <button onClick={handleDeleteModelTask}>Delete Model Task</button>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
@@ -68,11 +73,9 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.task_icon}
               value={formValues.task_icon}
             >
-              {
-            standardOptions.taskIcon.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.taskIcon.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <label htmlFor="icon_color">Icon Color</label>
             <select
@@ -83,11 +86,9 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.icon_color}
               value={formValues.icon_color}
             >
-              {
-            standardOptions.iconColor.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.iconColor.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <label htmlFor="difficulty">Difficulty</label>
             <select
@@ -98,11 +99,9 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.difficulty}
               value={formValues.difficulty}
             >
-              {
-            standardOptions.difficulty.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.difficulty.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
 
             <button type="submit">Save Changes</button>

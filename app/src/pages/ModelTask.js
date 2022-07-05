@@ -30,9 +30,14 @@ const ModelTask = ({
   return (
     <>
       <button onClick={handleLogout}>Cerrar sesión</button>
-      <button onClick={() => navigate("/model-tasks")}>
-        Go back to Model Tasks List
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/model-tasks")}
+        >
+          &#60;&#60; Go back to Model Tasks List
+        </button>
+      </div>
       {modelTasks.loading ? null : (
         <button onClick={() => navigate("/model-task-edit/" + modelTaskId)}>
           Edit Model Task

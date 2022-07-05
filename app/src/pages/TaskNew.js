@@ -14,16 +14,20 @@ const TaskNew = ({
   const navigate = useNavigate();
   let { challengeId } = useParams();
   const [formValues, setFormValues] = useState({
-    model_task_id: undefined,
+    model_task_id: modelTasks.data.modelTasksList[0].id,
   });
   useEffect(() => {
+    console.log("Executou renderizacao");
     getAllModelTasks();
+    console.log(formValues);
   }, []);
   const getAllModelTasks = async () => {
     await allModelTasksRequest(auth.data.token);
   };
   const handleInputChange = (e) => {
+    console.log("Executou handle input change");
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +41,14 @@ const TaskNew = ({
 
   return (
     <>
-      <button onClick={() => navigate("/challenge/" + challengeId)}>
-        Go back to Challenge
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge/" + challengeId)}
+        >
+          &#60;&#60; Go back to Challenge
+        </button>
+      </div>
       {modelTasks.loading ? (
         <p>Loading...</p>
       ) : modelTasks.data.modelTasksList.length == 0 ? (
@@ -50,23 +59,28 @@ const TaskNew = ({
       ) : (
         <>
           <form onSubmit={handleSubmit}>
+            <ul className="radio-list">
             {modelTasks.data.modelTasksList.map((item) => (
               <>
+              <li>
                 <input
                   type="radio"
                   id={item.id}
                   name="model_task_id"
+                  checked = {formValues.model_task_id == item.id}
                   value={item.id}
                   onChange={handleInputChange}
                 />
                 <label for={item.id}>
                   {item.name} / id: {item.id}
                 </label>
-                <br />
+                </li>
               </>
             ))}
+            </ul>
             <button type="submit">Create Task</button>
           </form>
+
         </>
       )}
     </>

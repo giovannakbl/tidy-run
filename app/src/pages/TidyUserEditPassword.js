@@ -31,13 +31,17 @@ const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
   return (
     <>
       <button onClick={handleLogout}>Logout</button>
-      <button
-        onClick={() => {
-          navigate("/account");
-        }}
-      >
-        Go back to user details
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => {
+            navigate("/account");
+          }}
+          Ï
+        >
+          &#60;&#60; Go back to user details
+        </button>
+      </div>
       <h1>Change your password</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="password">New Password</label>

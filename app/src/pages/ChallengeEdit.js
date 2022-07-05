@@ -48,9 +48,14 @@ const ChallengeEdit = ({
         <h1>You cannot edit this Challenge because it has already started</h1>
       ) : (
         <>
-          <button onClick={() => navigate("/challenge/" + challengeId)}>
-            Go back to Challenge
-          </button>
+          <div className="go-back-area">
+            <button
+              className="go-back-button"
+              onClick={() => navigate("/challenge/" + challengeId)}
+            >
+              &#60;&#60; Go back to Challenge
+            </button>
+          </div>
           <button onClick={handleDeleteChallenge}>Delete Challenge</button>
           <h1>{challenge.data.challenge.status}</h1>
           <form onSubmit={handleSubmit}>

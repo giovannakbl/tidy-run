@@ -28,9 +28,14 @@ const HomeMember = ({
   return (
     <>
       <button onClick={handleLogout}>Cerrar sesión</button>
-      <button onClick={() => navigate("/home-members")}>
-        Go back to Home Members List
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/home-members")}
+        >
+          &#60;&#60; Go back to Home Members List
+        </button>
+      </div>
       {homeMembers.loading ? null : (
         <button onClick={() => navigate("/home-member-edit/" + homeMemberId)}>
           Edit Home Member

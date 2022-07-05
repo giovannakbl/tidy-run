@@ -12,7 +12,6 @@
   font-size: 0.785rem;
   font-family: "Open Sans", sans-serif;
 }
-
 button {
   background-color: rgb(176, 94, 154);
   border-radius: 5px;
@@ -70,4 +69,39 @@ li {
 }
 ul li button {
   background-color: rgb(67, 102, 228);
+}
+.go-back-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.go-back-button {
+  background-color: transparent;
+  color: blue;
+  border: 0;
+}
+ul.radio-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+} 
+.radio-list li {
+  display: inline-block;
+}
+.radio-list input {
+  visibility:hidden;
+  
+}
+.radio-list label {
+  cursor: pointer;
+}
+.radio-list input + label {
+  padding: 5px 10px;
+}
+.radio-list input:checked + label {
+  border: 2px solid red;
+  border-radius: 5px;
 }

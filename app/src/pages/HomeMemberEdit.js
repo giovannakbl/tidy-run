@@ -43,9 +43,14 @@ const HomeMemberEdit = ({
       ) : homeMembers.error ? (
         <p>Error</p>
       ) : (
-        <button onClick={() => navigate("/home-member/" + homeMemberId)}>
-          Go back to Home Member
-        </button>
+        <div className="go-back-area">
+          <button
+            className="go-back-button"
+            onClick={() => navigate("/home-member/" + homeMemberId)}
+          >
+            &#60;&#60; Go back to Home Member
+          </button>
+        </div>
       )}
       {homeMembers.data.homeMember.deleted_at ? (
         <p>It is not possible to edit this home member</p>
@@ -71,11 +76,9 @@ const HomeMemberEdit = ({
               defaultValue={homeMembers.data.homeMember.avatar_icon}
               value={formValues.avatar_icon}
             >
-              {
-            standardOptions.avatarIcon.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.avatarIcon.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <label htmlFor="icon_color">Icon Color</label>
             <select
@@ -86,11 +89,9 @@ const HomeMemberEdit = ({
               defaultValue={homeMembers.data.homeMember.icon_color}
               value={formValues.icon_color}
             >
-              {
-            standardOptions.iconColor.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.iconColor.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <button type="submit">Save Changes</button>
           </form>

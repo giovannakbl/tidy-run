@@ -34,9 +34,14 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
 
   return (
     <>
-      <button onClick={() => navigate("/model-tasks")}>
-        Go back to Model Tasks List
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/model-tasks")}
+        >
+          &#60;&#60; Go back to Model Tasks List
+        </button>
+      </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
@@ -55,11 +60,9 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
           defaultValue={standardOptions.taskIcon[0].name}
           value={formValues.task_icon}
         >
-          {
-            standardOptions.taskIcon.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+          {standardOptions.taskIcon.map((item) => (
+            <option value={item.name}>{item.name}</option>
+          ))}
         </select>
         <label htmlFor="icon_color">Icon Color</label>
         <select
@@ -70,11 +73,9 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
           onChange={handleInputChange}
           value={standardOptions.iconColor[0].name}
         >
-          {
-            standardOptions.iconColor.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+          {standardOptions.iconColor.map((item) => (
+            <option value={item.name}>{item.name}</option>
+          ))}
         </select>
         <label htmlFor="difficulty">Difficulty</label>
         <select
@@ -85,11 +86,9 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
           onChange={handleInputChange}
           value={formValues.difficulty}
         >
-          {
-            standardOptions.difficulty.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+          {standardOptions.difficulty.map((item) => (
+            <option value={item.name}>{item.name}</option>
+          ))}
         </select>
         <button type="submit">Create Model Task</button>
       </form>

@@ -35,13 +35,15 @@ const Dashboard = ({
   return (
     <>
       <button onClick={handleLogout}>Logout</button>
-      <button
+      <div className="go-back-area">
+      <button className="go-back-button"
         onClick={() => {
           navigate("/");
         }}
       >
-        Go back to Dashboard
+        &#60;&#60; Go back to Dashboard
       </button>
+      </div>
       <h1>User info</h1>
       <h2>Email: {tidyUser.data.email}</h2>
       <button

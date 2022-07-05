@@ -75,9 +75,14 @@ const Challenge = ({
   return (
     <>
       <button onClick={handleLogout}>Cerrar sesión</button>
-      <button onClick={() => navigate("/challenge-list")}>
-        Go back to Challenge List
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge-list")}
+        >
+          &#60;&#60; Go back to Challenge List
+        </button>
+      </div>
       <h1>Challenge</h1>
       <h2>Check out your Challenge</h2>
       {challenge.loading ? (

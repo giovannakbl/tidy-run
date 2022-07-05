@@ -44,11 +44,14 @@ const TaskComplete = ({
 
   return (
     <>
-      <button
-        onClick={() => navigate("/challenge/" + tasks.data.task.challenge_id)}
-      >
-        Go back to Challenge
-      </button>
+      <div className="go-back-area">
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge/" + tasks.data.task.challenge_id)}
+        >
+          &#60;&#60; Go back to Challenge
+        </button>
+      </div>
       {tasks.loading || homeMembers.loading ? (
         <p>Loading...</p>
       ) : tasks.error || homeMembers.error ? (

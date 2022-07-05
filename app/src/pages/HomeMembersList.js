@@ -41,13 +41,6 @@ const HomeMemberList = ({
       >
         Create new Home Member
       </button>
-      <button
-        onClick={() => {
-          navigate("/home-member/5");
-        }}
-      >
-        Deleted Home Member
-      </button>
       <h1>Home Members</h1>
       <h2>Check out your Home Members</h2>
       {homeMembers.loading ? (

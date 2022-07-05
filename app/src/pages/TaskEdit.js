@@ -53,13 +53,16 @@ const TaskEdit = ({
         <p>Error</p>
       ) : (
         <>
-          <button
-            onClick={() =>
-              navigate("/challenge/" + tasks.data.task.challenge_id)
-            }
-          >
-            Go back to Challenge
-          </button>
+          <div className="go-back-area">
+            <button
+              className="go-back-button"
+              onClick={() =>
+                navigate("/challenge/" + tasks.data.task.challenge_id)
+              }
+            >
+              &#60;&#60; Go back to Challenge
+            </button>
+          </div>
           <button onClick={handleDeleteTask}>Delete Task</button>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
@@ -80,11 +83,9 @@ const TaskEdit = ({
               defaultValue={tasks.data.task.task_icon}
               value={formValues.task_icon}
             >
-             {
-            standardOptions.taskIcon.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.taskIcon.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <label htmlFor="icon_color">Icon Color</label>
             <select
@@ -95,11 +96,9 @@ const TaskEdit = ({
               defaultValue={tasks.data.task.icon_color}
               value={formValues.icon_color}
             >
-              {
-            standardOptions.iconColor.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.iconColor.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <label htmlFor="difficulty">Difficulty</label>
             <select
@@ -110,11 +109,9 @@ const TaskEdit = ({
               defaultValue={tasks.data.task.difficulty}
               value={formValues.difficulty}
             >
-              {
-            standardOptions.difficulty.map((item) => (
-              <option value={item.name}>{item.name}</option>
-            ))
-          }
+              {standardOptions.difficulty.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
             </select>
             <button type="submit">Save Changes</button>
           </form>

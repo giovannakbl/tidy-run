@@ -32,9 +32,11 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
 
   return (
     <>
-      <button onClick={() => navigate("/home-members")}>
-        Go back to Home Members List
+    <div className="go-back-area">
+      <button className="go-back-button" onClick={() => navigate("/home-members")}>
+      &#60;&#60; Go back to Home Members List
       </button>
+      </div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
