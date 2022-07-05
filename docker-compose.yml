@@ -8,10 +8,9 @@ services:
       - ${API_PORT:-8000}:8000
     build:
       context: ./api
+    command: /var/www/symfony/run.sh
     volumes:
       - ./api/:/var/www/symfony/
-      - /var/www/symfony/vendor
-      - /var/www/symfony/public/bundles
     environment:
       APP_ENV: dev
       DATABASE_URL: mysql://user:password@db:3306/tidy-run?serverVersion=5.7&charset=utf8mb4
@@ -22,9 +21,9 @@ services:
       - ${APP_PORT:-3000}:3000
     build:
       context: ./app
+    command: /app/run.sh
     volumes:
       - ./app/:/app
-      - /app/node_modules
   db:
     image: mysql:5.7
     environment:
@@ -33,7 +32,7 @@ services:
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
-      - '3306:3306'
+      - ${DB_PORT:-3306}:3306
     volumes:
       - ./data/mysql:/var/lib/mysql
     networks:
