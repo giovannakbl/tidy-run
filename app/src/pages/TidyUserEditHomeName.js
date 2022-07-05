@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const Dashboard = ({
   auth,
@@ -36,7 +37,8 @@ const Dashboard = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Logout</button>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -62,6 +64,7 @@ const Dashboard = ({
         />
         <button type="submit">Save Changes</button>
       </form>
+      </main>
     </>
   );
 };

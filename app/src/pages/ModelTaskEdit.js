@@ -7,6 +7,7 @@ import {
   editModelTaskRequest,
 } from "../store/ModelTasks/actions";
 import { standardOptions } from "../store";
+import Header from '../components/Header';
 
 const ModelTaskEdit = ({
   auth,
@@ -39,6 +40,8 @@ const ModelTaskEdit = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       {modelTasks.loading ? (
         <p>Loading...</p>
       ) : modelTasks.error ? (
@@ -108,6 +111,7 @@ const ModelTaskEdit = ({
           </form>
         </>
       )}
+      </main>
     </>
   );
 };

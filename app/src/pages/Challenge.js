@@ -17,6 +17,7 @@ import { fetchScoreBoardsRequest } from "../store/ScoreBoards/actions";
 import { bindActionCreators } from "redux";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from '../components/Header';
 
 const Challenge = ({
   auth,
@@ -76,7 +77,8 @@ const Challenge = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -198,7 +200,7 @@ const Challenge = ({
                 </button>
               ) : null}
 
-              {challenge.data.challenge.status != "completed" &&
+              {
               challenge.data.challenge.status != "terminated" &&
               item.completed_at ? (
                 <button onClick={() => removeCompletionTask(item.id)}>
@@ -274,6 +276,7 @@ const Challenge = ({
           ))}
         </>
       )}
+      </main>
     </>
   );
 };

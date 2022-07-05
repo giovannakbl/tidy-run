@@ -7,6 +7,7 @@ import {
 } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const Dashboard = ({
   auth,
@@ -34,15 +35,9 @@ const Dashboard = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Logout</button>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
-      <button className="go-back-button"
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        &#60;&#60; Go back to Dashboard
-      </button>
       </div>
       <h1>User info</h1>
       <h2>Email: {tidyUser.data.email}</h2>
@@ -72,6 +67,7 @@ const Dashboard = ({
         Change your password
       </button>
       <button onClick={deleteTidyUser}>Delete my account</button>
+      </main>
     </>
   );
 };

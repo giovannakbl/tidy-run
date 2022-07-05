@@ -6,6 +6,7 @@ import {
   deleteChallengeRequest,
   editChallengeRequest,
 } from "../store/Challenge/actions";
+import Header from '../components/Header';
 
 const ChallengeEdit = ({
   auth,
@@ -39,6 +40,8 @@ const ChallengeEdit = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       {challenge.loading ? (
         <p>Loading...</p>
       ) : challenge.error ? (
@@ -99,6 +102,7 @@ const ChallengeEdit = ({
           </form>
         </>
       )}
+      </main>
     </>
   );
 };

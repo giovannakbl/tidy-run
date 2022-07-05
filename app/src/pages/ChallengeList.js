@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { allChallengesRequest } from "../store/Challenge/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const ChallengeList = ({
   auth,
@@ -27,27 +28,14 @@ const ChallengeList = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Dashboard
-      </button>
+    <Header></Header>
+    <main>
       <button
         onClick={() => {
           navigate("/challenge-new");
         }}
       >
         Create new Challenge
-      </button>
-      <button
-        onClick={() => {
-          navigate("/model-tasks");
-        }}
-      >
-        Go to Model Tasks
       </button>
 
       <h1>Challenges</h1>
@@ -61,11 +49,11 @@ const ChallengeList = ({
           {challenge.data.challengeList.map((item) => (
 
           <div className="challenge-info">
-          <h2>{challenge.data.challenge.name}</h2>
-          <h3>Status: {challenge.data.challenge.status}</h3>
-          <h3>Start date: {challenge.data.challenge.start_date}</h3>
-          <h3>End date: {challenge.data.challenge.end_date}</h3>
-          <h3>Prize: {challenge.data.challenge.prize}</h3>
+          <h2>{item.name}</h2>
+          <h3>Status: {item.status}</h3>
+          <h3>Start date: {item.start_date}</h3>
+          <h3>End date: {item.end_date}</h3>
+          <h3>Prize: {item.prize}</h3>
           <button onClick={() => navigate("/challenge/" + item.id)}>
               See more details
              </button>
@@ -74,6 +62,7 @@ const ChallengeList = ({
 
           </>
       )}
+      </main>
     </>
   );
 };

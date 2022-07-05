@@ -7,6 +7,7 @@ import { createTaskRequest } from "../store/Tasks/actions";
 import { allModelTasksRequest } from "../store/ModelTasks/actions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { standardOptions } from "../store";
+import Header from '../components/Header';
 
 const TaskNew = ({
   auth,
@@ -47,6 +48,8 @@ const TaskNew = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -104,6 +107,7 @@ const TaskNew = ({
 
         </>
       )}
+      </main>
     </>
   );
 };

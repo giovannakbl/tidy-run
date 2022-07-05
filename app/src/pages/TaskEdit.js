@@ -9,6 +9,7 @@ import {
 } from "../store/Tasks/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from '../components/Header';
 
 const TaskEdit = ({
   auth,
@@ -55,6 +56,8 @@ const TaskEdit = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       {tasks.loading ? (
         <p>Loading...</p>
       ) : tasks.error ? (
@@ -168,6 +171,7 @@ const TaskEdit = ({
           </form>
         </>
       )}
+      </main>
     </>
   );
 };

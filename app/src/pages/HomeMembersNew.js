@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createHomeMemberRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
+import Header from '../components/Header';
 
 const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
   const initialForm = {
@@ -32,6 +33,8 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
 
   return (
     <>
+    <Header></Header>
+    <main>
     <div className="go-back-area">
       <button className="go-back-button" onClick={() => navigate("/home-members")}>
       &#60;&#60; Go back to Home Members List
@@ -79,6 +82,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
 
         <button type="submit">Create Home Member</button>
       </form>
+      </main>
     </>
   );
 };

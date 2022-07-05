@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
 import { fetchHomeMemberRequest } from "../store/HomeMembers/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const HomeMember = ({
   auth,
@@ -27,7 +28,8 @@ const HomeMember = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -61,6 +63,7 @@ const HomeMember = ({
       ) : (
         <p>This home member is active</p>
       )}
+      </main>
     </>
   );
 };

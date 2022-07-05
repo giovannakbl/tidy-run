@@ -7,6 +7,7 @@ import {
   editHomeMemberRequest,
 } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
+import Header from '../components/Header';
 
 const HomeMemberEdit = ({
   auth,
@@ -38,6 +39,8 @@ const HomeMemberEdit = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       {homeMembers.loading ? (
         <p>Loading...</p>
       ) : homeMembers.error ? (
@@ -95,8 +98,10 @@ const HomeMemberEdit = ({
             </select>
             <button type="submit">Save Changes</button>
           </form>
+          
         </>
       )}
+      </main>
     </>
   );
 };

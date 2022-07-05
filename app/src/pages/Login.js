@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { loginRequest } from "../store/Auth/actions";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Login = ({ auth, loginRequest }) => {
   const dispatch = useDispatch();
@@ -24,8 +24,8 @@ const Login = ({ auth, loginRequest }) => {
 
   return (
     <>
-      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
+        <h1>Login</h1>
         <label htmlFor="username">Email</label>
         <input
           id="username"
@@ -44,7 +44,10 @@ const Login = ({ auth, loginRequest }) => {
         />
         <button type="submit">Iniciar sesión</button>
       </form>
-      <button onClick={() => navigate("/register")}>
+      <button
+        className="register-login-button"
+        onClick={() => navigate("/register")}
+      >
         You don't have an account? Go to Register
       </button>
     </>

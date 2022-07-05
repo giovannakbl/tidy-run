@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createModelTaskRequest } from "../store/ModelTasks/actions";
 import { standardOptions } from "../store";
+import Header from '../components/Header';
 
 const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
   const initialForm = {
@@ -34,6 +35,8 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
 
   return (
     <>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -92,6 +95,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
         </select>
         <button type="submit">Create Model Task</button>
       </form>
+      </main>
     </>
   );
 };

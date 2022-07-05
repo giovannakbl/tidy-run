@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { allModelTasksRequest } from "../store/ModelTasks/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const ModelTasksList = ({
   auth,
@@ -26,14 +27,8 @@ const ModelTasksList = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Dashboard
-      </button>
+    <Header></Header>
+    <main>
       <button
         onClick={() => {
           navigate("/model-task-new");
@@ -58,6 +53,7 @@ const ModelTasksList = ({
           ))}
         </ul>
       )}
+      </main>
     </>
   );
 };

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
 import { fetchModelTaskRequest } from "../store/ModelTasks/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const ModelTask = ({
   auth,
@@ -29,7 +30,8 @@ const ModelTask = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -58,6 +60,7 @@ const ModelTask = ({
           <li>Difficulty: {modelTasks.data.modelTask.difficulty}</li>
         </ul>
       )}
+      </main>
     </>
   );
 };

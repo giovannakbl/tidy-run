@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
 
 const HomeMemberList = ({
   auth,
@@ -26,14 +27,8 @@ const HomeMemberList = ({
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Dashboard
-      </button>
+    <Header></Header>
+    <main>
       <button
         onClick={() => {
           navigate("/home-member-new");
@@ -58,6 +53,7 @@ const HomeMemberList = ({
           ))}
         </ul>
       )}
+      </main>
     </>
   );
 };

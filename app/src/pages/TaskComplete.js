@@ -6,6 +6,7 @@ import { fetchTaskRequest, completeTaskRequest } from "../store/Tasks/actions";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from '../components/Header';
 
 const TaskComplete = ({
   auth,
@@ -46,6 +47,8 @@ const TaskComplete = ({
 
   return (
     <>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -162,8 +165,10 @@ const TaskComplete = ({
 
             <button type="submit">Complete Task</button>
           </form>
+          
         </>
       )}
+      </main>
     </>
   );
 };

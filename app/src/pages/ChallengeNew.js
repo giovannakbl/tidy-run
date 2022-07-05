@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createChallengeRequest } from "../store/Challenge/actions";
+import Header from '../components/Header';
 
 const ChallengeNew = ({ auth, createChallengeRequest }) => {
   const navigate = useNavigate();
@@ -27,7 +28,10 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
   return (
+    
     <>
+    <Header></Header>
+    <main>
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -71,6 +75,7 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
         />
         <button type="submit">Create challenge</button>
       </form>
+      </main>
     </>
   );
 };
