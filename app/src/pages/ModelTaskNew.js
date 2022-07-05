@@ -52,13 +52,14 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
           name="task_icon"
           type="text"
           onChange={handleInputChange}
-          defaultValue={initialForm.taskIcon}
+          defaultValue={standardOptions.taskIcon[0].name}
           value={formValues.task_icon}
         >
-          <option value={initialForm.taskIcon}>{initialForm.taskIcon}</option>
-          <option value="Brush">{standardOptions.taskIcon[1].name}</option>
-          <option value="Cloth">Cloth</option>
-          <option value="Spray">Spray</option>
+          {
+            standardOptions.taskIcon.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
         </select>
         <label htmlFor="icon_color">Icon Color</label>
         <select
@@ -67,27 +68,28 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
           type="text"
           defaultValue={initialForm.iconColor}
           onChange={handleInputChange}
-          value={formValues.icon_color}
+          value={standardOptions.iconColor[0].name}
         >
-          <option value={initialForm.iconColor}>{initialForm.iconColor}</option>
-          <option value="Green">Green</option>
-          <option value="Blue">Blue</option>
-          <option value="Yellow">Yellow</option>
+          {
+            standardOptions.iconColor.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
         </select>
         <label htmlFor="difficulty">Difficulty</label>
         <select
           id="difficulty"
           name="difficulty"
           type="text"
-          defaultValue={initialForm.difficulty}
+          defaultValue={standardOptions.difficulty[0].name}
           onChange={handleInputChange}
           value={formValues.difficulty}
         >
-          <option value={initialForm.difficulty}>
-            {initialForm.difficulty}
-          </option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
+          {
+            standardOptions.difficulty.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
         </select>
         <button type="submit">Create Model Task</button>
       </form>

@@ -6,6 +6,7 @@ import {
   deleteModelTaskRequest,
   editModelTaskRequest,
 } from "../store/ModelTasks/actions";
+import { standardOptions } from "../store";
 
 const ModelTaskEdit = ({
   auth,
@@ -67,10 +68,11 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.task_icon}
               value={formValues.task_icon}
             >
-              <option value="Mop">Mop</option>
-              <option value="Brush">Brush</option>
-              <option value="Cloth">Cloth</option>
-              <option value="Spray">Spray</option>
+              {
+            standardOptions.taskIcon.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
             </select>
             <label htmlFor="icon_color">Icon Color</label>
             <select
@@ -81,10 +83,11 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.icon_color}
               value={formValues.icon_color}
             >
-              <option value="Red">Red</option>
-              <option value="Green">Green</option>
-              <option value="Blue">Blue</option>
-              <option value="Yellow">Yellow</option>
+              {
+            standardOptions.iconColor.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
             </select>
             <label htmlFor="difficulty">Difficulty</label>
             <select
@@ -95,9 +98,11 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.difficulty}
               value={formValues.difficulty}
             >
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
+              {
+            standardOptions.difficulty.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
             </select>
 
             <button type="submit">Save Changes</button>

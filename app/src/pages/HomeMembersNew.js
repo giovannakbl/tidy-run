@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createHomeMemberRequest } from "../store/HomeMembers/actions";
+import { standardOptions } from "../store";
 
 const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
   const initialForm = {
@@ -49,29 +50,29 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
           name="avatar_icon"
           type="text"
           onChange={handleInputChange}
-          defaultValue={initialForm.avatarIcon}
+          defaultValue={standardOptions.avatarIcon[0].name}
           value={formValues.avatar_icon}
         >
-          <option value={initialForm.avatarIcon}>
-            {initialForm.avatarIcon}
-          </option>
-          <option value="Cat">Cat</option>
-          <option value="Rabbit">Rabbit</option>
-          <option value="Wale">Wale</option>
+          {
+            standardOptions.avatarIcon.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
         </select>
         <label htmlFor="icon_color">Icon Color</label>
         <select
           id="icon_color"
           name="icon_color"
           type="text"
-          defaultValue={initialForm.iconColor}
+          defaultValue={standardOptions.iconColor[0].name}
           onChange={handleInputChange}
           value={formValues.icon_color}
         >
-          <option value={initialForm.iconColor}>{initialForm.iconColor}</option>
-          <option value="Green">Green</option>
-          <option value="Blue">Blue</option>
-          <option value="Yellow">Yellow</option>
+          {
+            standardOptions.iconColor.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
         </select>
 
         <button type="submit">Create Home Member</button>

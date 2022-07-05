@@ -6,6 +6,7 @@ import {
   deleteHomeMemberRequest,
   editHomeMemberRequest,
 } from "../store/HomeMembers/actions";
+import { standardOptions } from "../store";
 
 const HomeMemberEdit = ({
   auth,
@@ -70,10 +71,11 @@ const HomeMemberEdit = ({
               defaultValue={homeMembers.data.homeMember.avatar_icon}
               value={formValues.avatar_icon}
             >
-              <option value="Dog">Dog</option>
-              <option value="Cat">Cat</option>
-              <option value="Rabbit">Rabbit</option>
-              <option value="Wale">Wale</option>
+              {
+            standardOptions.avatarIcon.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
             </select>
             <label htmlFor="icon_color">Icon Color</label>
             <select
@@ -84,10 +86,11 @@ const HomeMemberEdit = ({
               defaultValue={homeMembers.data.homeMember.icon_color}
               value={formValues.icon_color}
             >
-              <option value="Red">Red</option>
-              <option value="Green">Green</option>
-              <option value="Blue">Blue</option>
-              <option value="Yellow">Yellow</option>
+              {
+            standardOptions.iconColor.map((item) => (
+              <option value={item.name}>{item.name}</option>
+            ))
+          }
             </select>
             <button type="submit">Save Changes</button>
           </form>

@@ -16,12 +16,30 @@ export const standardOptions = {
       name: "Mop"
     },
     {
-      name: "Brush hehe"
+      name: "Brush"
+    },
+    {
+      name: "Cloth"
+    },
+    {
+      name: "Spray"
+    },
+    {
+      name: "Broom"
     }
   ],
   iconColor: [
     {
       name: "Red"
+    },
+    {
+      name: "Green"
+    },
+    {
+      name: "Blue"
+    },
+    {
+      name: "Yellow"
     }
   ],
   difficulty: [
@@ -33,6 +51,20 @@ export const standardOptions = {
     },
     {
       name: "Hard"
+    }
+  ],
+  avatarIcon: [
+    {
+      name: "Dog"
+    },
+    {
+      name: "Cat"
+    },
+    {
+      name: "Rabbit"
+    },
+    {
+      name: "Wale"
     }
   ]
 };
