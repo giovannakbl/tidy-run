@@ -63,7 +63,7 @@ h3 {
 }
 p {
   font-size: 1.25rem;
-  /* margin: 15px; */
+  margin: 5px;
 }
 ul {
   display: flex;
@@ -100,6 +100,7 @@ ul.radio-list {
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0;
+
 } 
 .radio-list li {
   display: inline-block;
@@ -170,7 +171,7 @@ div.task-info {
 }
 .task-info p {
   color: blueviolet;
-  margin: 5px;
+  
 }
 .flex-row-start {
   display: flex;
@@ -178,4 +179,28 @@ div.task-info {
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
+}
+/* .radio-list p {
+  margin: 5px;
+} */
+.max-width {
+  width: 100%;
+}
+.challenge-info {
+  background-color: rgb(191, 248, 248);
+  border-radius: 5px;
+  padding: 10px 20px;
+  width: 100%;
+  margin: 15px 0;
+}
+.challenge-info h2 {
+  color: brown;
+  text-align: center;
+}
+.ranking-info {
+  background-color: rgb(191, 248, 248);
+  border-radius: 5px;
+  padding: 10px 20px;
+  width: 100%;
+  margin: 15px 0;
 }

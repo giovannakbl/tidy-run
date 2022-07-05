@@ -57,15 +57,22 @@ const ChallengeList = ({
       ) : challenge.error ? (
         <p>Error</p>
       ) : (
-        <ul>
+        <>
           {challenge.data.challengeList.map((item) => (
-            <li key={item.id}>
-              <button onClick={() => navigate("/challenge/" + item.id)}>
-                {item.name}
-              </button>
-            </li>
+
+          <div className="challenge-info">
+          <h2>{challenge.data.challenge.name}</h2>
+          <h3>Status: {challenge.data.challenge.status}</h3>
+          <h3>Start date: {challenge.data.challenge.start_date}</h3>
+          <h3>End date: {challenge.data.challenge.end_date}</h3>
+          <h3>Prize: {challenge.data.challenge.prize}</h3>
+          <button onClick={() => navigate("/challenge/" + item.id)}>
+              See more details
+             </button>
+          </div>
           ))}
-        </ul>
+
+          </>
       )}
     </>
   );

@@ -48,7 +48,7 @@ export const standardOptions = {
     },
     {
       name: "Yellow",
-      color: 'yellow'
+      color: '#9a7600'
     },
     {
       name: "Pink",

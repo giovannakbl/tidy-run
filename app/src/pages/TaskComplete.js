@@ -77,7 +77,6 @@ const TaskComplete = ({
                     ).icon
                   }
                 />
-
               </div>
               <div>
                 <p
@@ -104,9 +103,13 @@ const TaskComplete = ({
           </div>
 
           <form onSubmit={handleSubmit}>
+          <p className="label-text">Who completed the task</p>
             <div className="radio-list">
+            
               {homeMembers.data.homeMembersList.map((item) => (
                 <>
+                
+                <div className="flex-row-start">
                   <input
                     type="radio"
                     id={item.id}
@@ -114,12 +117,6 @@ const TaskComplete = ({
                     value={item.id}
                     onChange={handleInputChange}
                   />
-                  {/* <label for={item.id}>
-                    <div className="text-list">
-                      {item.name} / id: {item.id} / avatar icon:{" "}
-                      {item.avatar_icon}
-                    </div>
-                  </label> */}
                   <label
                     for={item.id}
                     style={{
@@ -127,6 +124,7 @@ const TaskComplete = ({
                         (element) => element.name === item.icon_color
                       ).color,
                     }}
+                    className="max-width"
                   >
                     <div
                       className="fa-icons"
@@ -144,8 +142,12 @@ const TaskComplete = ({
                         }
                       />
                     </div>
-                    {item.name}
+                    <div>
+                      <p>{item.name}</p>
+                    
+                    </div>
                   </label>
+                  </div>
                 </>
               ))}
             </div>

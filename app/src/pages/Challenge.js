@@ -85,23 +85,19 @@ const Challenge = ({
           &#60;&#60; Go back to Challenge List
         </button>
       </div>
-      <h1>Challenge</h1>
-      <h2>Check out your Challenge</h2>
       {challenge.loading ? (
         <p>Loading...</p>
       ) : challenge.error ? (
         <p>Error</p>
       ) : (
         <>
-          <ul>
-            <li>id: {challenge.data.challenge.id}</li>
-            <li>Created at: {challenge.data.challenge.created_at}</li>
-            <li>name: {challenge.data.challenge.name}</li>
-            <li>status: {challenge.data.challenge.status}</li>
-            <li>Start date: {challenge.data.challenge.start_date}</li>
-            <li>End date: {challenge.data.challenge.end_date}</li>
-            <li>Prize: {challenge.data.challenge.prize}</li>
-          </ul>
+          <div className="challenge-info">
+            <h2>{challenge.data.challenge.name}</h2>
+            <h3>Status: {challenge.data.challenge.status}</h3>
+            <h3>Start date: {challenge.data.challenge.start_date}</h3>
+            <h3>End date: {challenge.data.challenge.end_date}</h3>
+            <h3>Prize: {challenge.data.challenge.prize}</h3>
+          
           {challenge.data.challenge.status == "created" ||
           challenge.data.challenge.status == "active" ? (
             <button onClick={() => navigate("/challenge-edit/" + challengeId)}>
@@ -114,10 +110,10 @@ const Challenge = ({
           ) : challenge.data.challenge.status == "terminated" ? (
             <button onClick={reopenChallenge}>Reopen this Challenge</button>
           ) : null}
+          </div>
         </>
       )}
-      <h1>Challenge Tasks</h1>
-      <h2>Check out your Challenge Tasks</h2>
+      <h2>Challenge Tasks</h2>
       {challenge.loading || tasks.loading || homeMembers.loading ? (
         <p>Loading...</p>
       ) : challenge.error || tasks.error || homeMembers.error ? (
@@ -230,21 +226,51 @@ const Challenge = ({
         <p>Error</p>
       ) : (
         <>
-          <h3>Ranking:</h3>
+          <h2>Ranking:</h2>
           {scoreBoards.data.scoreBoards.map((item) => (
-            <ul>
-              <li>Position: {item.rank_in_challenge}</li>
-              <li>Home member id: {item.home_member_id}</li>
-              <li>Total points: {item.total_points}</li>
-              <li>
-                Name of the Home Member:
-                {
-                  homeMembers.data.homeMembersList.find(
+            <>
+            <div className="ranking-info">
+            <h3>Position: {item.rank_in_challenge}</h3>
+            <div className="flex-row-start">
+              <div
+                className="fa-icons"
+                style={{
+                  backgroundColor: standardOptions.iconColor.find(
+                    (element) => element.name === homeMembers.data.homeMembersList.find(
+                      (homeMember) => homeMember.id === item.home_member_id
+                    ).icon_color
+                  ).color
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={
+                    standardOptions.avatarIcon.find(
+                      (element) => element.name === homeMembers.data.homeMembersList.find(
+                        (homeMember) => homeMember.id === item.home_member_id
+                      ).avatar_icon
+                    ).icon
+                  }
+                />
+              </div>
+              <div>
+                <p
+                  style={{
+                    color: standardOptions.iconColor.find(
+                      (element) => element.name === homeMembers.data.homeMembersList.find(
+                        (homeMember) => homeMember.id === item.home_member_id
+                      ).icon_color
+                    ).color
+                  }}
+                >
+                  {homeMembers.data.homeMembersList.find(
                     (homeMember) => homeMember.id === item.home_member_id
-                  ).name
-                }
-              </li>
-            </ul>
+                  ).name}
+                </p>
+              </div>
+            </div>
+            <h4>Total points: {item.total_points}</h4>
+            </div>
+            </>
           ))}
         </>
       )}
