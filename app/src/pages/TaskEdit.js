@@ -8,6 +8,7 @@ import {
   fetchTaskRequest,
 } from "../store/Tasks/actions";
 import { standardOptions } from "../store";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const TaskEdit = ({
   auth,
@@ -28,7 +29,12 @@ const TaskEdit = ({
     getTask();
   }, []);
   const getTask = async () => {
-    await fetchTaskRequest(auth.data.token, taskId);
+    const fetchedTask = await fetchTaskRequest(auth.data.token, taskId);
+    console.log(fetchedTask);
+    setFormValues({name: fetchedTask.task.name,
+      task_icon: fetchedTask.task.task_icon,
+      icon_color: fetchedTask.task.icon_color,
+      difficulty: fetchedTask.task.difficulty,});
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -74,20 +80,62 @@ const TaskEdit = ({
               defaultValue={tasks.data.task.name}
               value={formValues.name}
             />
-            <label htmlFor="task_icon">Task Icon</label>
-            <select
-              id="task_icon"
-              name="task_icon"
-              type="text"
-              onChange={handleInputChange}
-              defaultValue={tasks.data.task.task_icon}
-              value={formValues.task_icon}
-            >
-              {standardOptions.taskIcon.map((item) => (
-                <option value={item.name}>{item.name}</option>
-              ))}
-            </select>
-            <label htmlFor="icon_color">Icon Color</label>
+            <p className="">Choose icon</p>
+            <ul className="radio-list">
+            {standardOptions.taskIcon.map((item) => (
+              <>
+              <li>
+                <input
+                  type="radio"
+                  id={item.name}
+                  name="task_icon"
+                  checked = {formValues.task_icon == item.name}
+                  value={item.name}
+                  onChange={handleInputChange}
+                />
+                <label for={item.name} >
+                <div className="fa-icons" >
+                    <FontAwesomeIcon  icon={
+                          standardOptions.taskIcon.find(
+                            (element) =>
+                              element.name === item.name
+                          ).icon 
+                        }  />
+                </div>
+                </label>
+                </li>
+              </>
+            ))}
+            </ul>
+<p>Choose color</p>
+            <ul className="radio-list">
+            {standardOptions.iconColor.map((item) => (
+              <>
+              <li>
+                <input
+                  type="radio"
+                  id={item.name}
+                  name="icon_color"
+                  checked = {formValues.icon_color == item.name}
+                  value={item.name}
+                  onChange={handleInputChange}
+                />
+                <label for={item.name} >
+                <div className="fa-icons" style={{ backgroundColor: standardOptions.iconColor.find(
+                            (element) =>
+                              element.name === item.name
+                          ).color }}>
+                </div>
+                </label>
+                </li>
+              </>
+            ))}
+            </ul>
+
+
+
+
+            {/* <label htmlFor="icon_color">Icon Color</label>
             <select
               id="icon_color"
               name="icon_color"
@@ -99,7 +147,12 @@ const TaskEdit = ({
               {standardOptions.iconColor.map((item) => (
                 <option value={item.name}>{item.name}</option>
               ))}
-            </select>
+            </select> */}
+
+
+
+
+
             <label htmlFor="difficulty">Difficulty</label>
             <select
               id="difficulty"

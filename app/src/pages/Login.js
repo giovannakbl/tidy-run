@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { loginRequest } from "../store/Auth/actions";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = ({ auth, loginRequest }) => {
   const dispatch = useDispatch();

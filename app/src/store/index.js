@@ -13,33 +13,42 @@ export const baseURL = "http://localhost:8000";
 export const standardOptions = {
   taskIcon: [
     {
-      name: "Mop"
+      name: "Mop",
+      icon: "coffee"
     },
     {
-      name: "Brush"
+      name: "Brush",
+      icon: "fa-apple-whole"
     },
     {
-      name: "Cloth"
+      name: "Cloth",
+      icon: "fa-bell"
     },
     {
-      name: "Spray"
+      name: "Spray",
+      icon: "fa-bicycle"
     },
     {
-      name: "Broom"
+      name: "Broom",
+      icon: "fa-bolt"
     }
   ],
   iconColor: [
     {
-      name: "Red"
+      name: "Red",
+      color: 'red'
     },
     {
-      name: "Green"
+      name: "Green",
+      color: 'green'
     },
     {
-      name: "Blue"
+      name: "Blue",
+      color: 'blue'
     },
     {
-      name: "Yellow"
+      name: "Yellow",
+      color: 'yellow'
     }
   ],
   difficulty: [

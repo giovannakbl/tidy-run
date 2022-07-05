@@ -5,6 +5,9 @@ import { bindActionCreators } from "redux";
 
 import { createTaskRequest } from "../store/Tasks/actions";
 import { allModelTasksRequest } from "../store/ModelTasks/actions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { standardOptions } from "../store";
+
 const TaskNew = ({
   auth,
   modelTasks,
@@ -14,7 +17,8 @@ const TaskNew = ({
   const navigate = useNavigate();
   let { challengeId } = useParams();
   const [formValues, setFormValues] = useState({
-    model_task_id: modelTasks.data.modelTasksList[0].id,
+    // model_task_id: modelTasks.data.modelTasksList[0].id,
+    model_task_id: undefined,
   });
   useEffect(() => {
     console.log("Executou renderizacao");
@@ -22,7 +26,9 @@ const TaskNew = ({
     console.log(formValues);
   }, []);
   const getAllModelTasks = async () => {
-    await allModelTasksRequest(auth.data.token);
+    const allModelTasks = await allModelTasksRequest(auth.data.token);
+    console.log(allModelTasks);
+    setFormValues({model_task_id: allModelTasks.model_tasks[0].id});
   };
   const handleInputChange = (e) => {
     console.log("Executou handle input change");
@@ -71,8 +77,23 @@ const TaskNew = ({
                   value={item.id}
                   onChange={handleInputChange}
                 />
-                <label for={item.id}>
-                  {item.name} / id: {item.id}
+                <label for={item.id} style={{ color: standardOptions.iconColor.find(
+                            (element) =>
+                              element.name === item.icon_color
+                          ).color}}>
+                <div className="fa-icons" style={{ backgroundColor: standardOptions.iconColor.find(
+                            (element) =>
+                              element.name === item.icon_color
+                          ).color }}>
+                    <FontAwesomeIcon  icon={
+                          standardOptions.taskIcon.find(
+                            (element) =>
+                              element.name === item.task_icon
+                          ).icon 
+                        }  />
+                </div>
+                  {item.name}<br/>
+                  Difficulty: {item.difficulty}
                 </label>
                 </li>
               </>
