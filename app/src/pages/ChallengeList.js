@@ -30,11 +30,11 @@ const ChallengeList = ({
     <>
     <Header></Header>
     <main>
-      <button
+      <button className="button-new-item"
         onClick={() => {
           navigate("/challenge-new");
         }}
-      >
+      ><div className="circle-new-item">+</div>
         Create new Challenge
       </button>
 

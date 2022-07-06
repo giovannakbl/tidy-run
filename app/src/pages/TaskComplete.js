@@ -21,6 +21,9 @@ const TaskComplete = ({
     home_member_id: undefined,
     completed_at: undefined,
   });
+  const [resultRender, setResultRender] = useState([]
+    
+  );
   let { taskId } = useParams();
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,8 +35,23 @@ const TaskComplete = ({
   const getTask = async () => {
     await fetchTaskRequest(auth.data.token, taskId);
   };
+  const allHomeMembersRender = (allHomeMembers) => {
+    allHomeMembers.home_members.map((item, index) => (
+      resultRender[index] = {
+        id: item.id,
+        name: item.name,
+        color: standardOptions.iconColor.find((element) => element.name === item.icon_color).color,
+        avatarIcon: standardOptions.avatarIcon.find(
+          (element) => element.name === item.avatar_icon
+        ).icon,
+      }
+    ))
+    return resultRender;
+  }
   const getHomeMembers = async () => {
-    await allHomeMembersRequest(auth.data.token);
+    const allHomeMembers = await allHomeMembersRequest(auth.data.token);
+    const result = allHomeMembersRender(allHomeMembers);
+    setResultRender(result);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +88,7 @@ const TaskComplete = ({
                 style={{
                   backgroundColor: standardOptions.iconColor.find(
                     (element) => element.name === tasks.data.task.icon_color
-                  ).color
+                  ).color,
                 }}
               >
                 <FontAwesomeIcon
@@ -86,7 +104,7 @@ const TaskComplete = ({
                   style={{
                     color: standardOptions.iconColor.find(
                       (element) => element.name === tasks.data.task.icon_color
-                    ).color
+                    ).color,
                   }}
                 >
                   {tasks.data.task.name}
@@ -97,7 +115,7 @@ const TaskComplete = ({
               style={{
                 color: standardOptions.iconColor.find(
                   (element) => element.name === tasks.data.task.icon_color
-                ).color
+                ).color,
               }}
             >
               Difficulty: {tasks.data.task.difficulty}
@@ -108,10 +126,9 @@ const TaskComplete = ({
           <form onSubmit={handleSubmit}>
           <p className="label-text">Who completed the task</p>
             <div className="radio-list">
-            
-              {homeMembers.data.homeMembersList.map((item) => (
-                <>
+              {resultRender.map((item) => (
                 
+                <>
                 <div className="flex-row-start">
                   <input
                     type="radio"
@@ -123,25 +140,19 @@ const TaskComplete = ({
                   <label
                     for={item.id}
                     style={{
-                      color: standardOptions.iconColor.find(
-                        (element) => element.name === item.icon_color
-                      ).color,
+                      color: item.color
                     }}
                     className="max-width"
                   >
                     <div
                       className="fa-icons"
                       style={{
-                        backgroundColor: standardOptions.iconColor.find(
-                          (element) => element.name === item.icon_color
-                        ).color,
+                        backgroundColor: item.color
                       }}
                     >
                       <FontAwesomeIcon
                         icon={
-                          standardOptions.avatarIcon.find(
-                            (element) => element.name === item.avatar_icon
-                          ).icon
+                          item.avatarIcon
                         }
                       />
                     </div>
@@ -153,6 +164,25 @@ const TaskComplete = ({
                   </div>
                 </>
               ))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
             <label htmlFor="completed_at">Completed at</label>
             <input

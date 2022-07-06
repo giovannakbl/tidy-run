@@ -244,6 +244,41 @@ div.task-info {
 /* .header, .header button {
   height: 45px;
 } */
-body {
-  margin-top: 45px;
+main {
+  margin-top: 90px;
+}
+.circle-new-item {
+  background-color: rgb(48, 47, 46);
+  color: white;
+  font-size: 1.5em;
+  border-radius: 50%;
+  height: 1.5em;
+  width: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+.button-new-item {
+  background-color: transparent;
+  padding: 0;
+  color: blue;
+  border: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4em;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+.action-button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-left: 6px;
+}
+.action-button div {
+  margin: 0 4px;
 }

@@ -102,13 +102,27 @@ const Challenge = ({
           
           {challenge.data.challenge.status == "created" ||
           challenge.data.challenge.status == "active" ? (
-            <button onClick={() => navigate("/challenge-edit/" + challengeId)}>
-              Edit Challenge Info
-            </button>
+            <button className="action-button" onClick={() => navigate("/challenge-edit/" + challengeId)}>
+            <div>
+            <FontAwesomeIcon
+              icon="fa-pencil"
+            />
+            </div>
+            <div>
+            Edit Challenge Info
+            </div>
+          </button>
           ) : challenge.data.challenge.status == "started" ? (
-            <button onClick={terminateChallenge}>
-              Terminate this Challenge
-            </button>
+            <button className="action-button" onClick={terminateChallenge}>
+            <div>
+            <FontAwesomeIcon
+              icon="fa-list-check"
+            />
+            </div>
+            <div>
+            Terminate this Challenge
+            </div>
+          </button>
           ) : challenge.data.challenge.status == "terminated" ? (
             <button onClick={reopenChallenge}>Reopen this Challenge</button>
           ) : null}
@@ -124,7 +138,8 @@ const Challenge = ({
         <>
           {challenge.data.challenge.status == "created" ||
           challenge.data.challenge.status == "active" ? (
-            <button onClick={() => navigate("/task-new/" + challengeId)}>
+            <button className="button-new-item" onClick={() => navigate("/task-new/" + challengeId)}>
+              <div className="circle-new-item">+</div>
               Create new task in Challenge
             </button>
           ) : null}
@@ -193,10 +208,23 @@ const Challenge = ({
                   <p>Status: incomplete</p>
                 </>
               )}
+              
+
+
+
+
+              <div className="flex-row-start">
               {challenge.data.challenge.status == "created" ||
               challenge.data.challenge.status == "active" ? (
-                <button onClick={() => navigate("/task-edit/" + item.id)}>
+                <button className="action-button" onClick={() => navigate("/task-edit/" + item.id)}>
+                  <div>
+                  <FontAwesomeIcon
+                    icon="fa-pencil"
+                  />
+                  </div>
+                  <div>
                   Edit task
+                  </div>
                 </button>
               ) : null}
 
@@ -210,13 +238,31 @@ const Challenge = ({
 
               {challenge.data.challenge.status != "terminated" &&
               !item.completed_at ? (
-                <button onClick={() => navigate("/task-complete/" + item.id)}>
+                <>            
+                <button className="action-button" onClick={() => navigate("/task-complete/" + item.id)}>
+                  <div>
+                  <FontAwesomeIcon
+                    icon="fa-check"
+                  />
+                  </div>
+                  <div>
                   Complete task
+                  </div>
                 </button>
+                </>
               ) : null}
             </div>
+            </div>
           ))}
+         
+
+
+
+
+
+
         </>
+        
       )}
 
       {challenge.loading ? null : challenge.error ? null : challenge.data
