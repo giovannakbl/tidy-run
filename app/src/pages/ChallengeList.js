@@ -6,6 +6,7 @@ import { allChallengesRequest } from "../store/Challenge/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from '../components/Header';
+import format  from "..";
 
 const ChallengeList = ({
   auth,
@@ -51,8 +52,8 @@ const ChallengeList = ({
           <div className="challenge-info">
           <h2>{item.name}</h2>
           <h3>Status: {item.status}</h3>
-          <h3>Start date: {item.start_date}</h3>
-          <h3>End date: {item.end_date}</h3>
+          <h3>Start date: {format(item.start_date)}</h3>
+          <h3>End date: {format(item.end_date)}</h3>
           <h3>Prize: {item.prize}</h3>
           <button onClick={() => navigate("/challenge/" + item.id)}>
               See more details

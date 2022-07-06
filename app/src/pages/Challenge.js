@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
@@ -18,6 +18,7 @@ import { bindActionCreators } from "redux";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
+import format  from "..";
 
 const Challenge = ({
   auth,
@@ -32,24 +33,66 @@ const Challenge = ({
   terminateChallengeRequest,
   reopenChallengeRequest,
   fetchScoreBoardsRequest,
-  logoutRequest,
 }) => {
   let navigate = useNavigate();
   let { challengeId } = useParams();
-  const dispatch = useDispatch();
   useEffect(() => {
     getTasksInChallenge();
     getHomeMembers();
     getScoreBoards();
   }, []);
+
+  const [homeMembersIndex, setHomeMembersIndex] = useState({});
+  const [tasksInfo, setTasksInfo] = useState([]);
+  const getHomeMembersIndex = (allHomeMembersDetails) => {
+    let result = {};
+    allHomeMembersDetails.home_members.map(
+      (item) =>
+        (result[item.id] = {
+          id: item.id,
+          name: item.name,
+          color: standardOptions.iconColor.find(
+            (element) => element.name === item.icon_color
+          ).color,
+          icon: standardOptions.avatarIcon.find(
+            (element) => element.name === item.avatar_icon
+          ).icon,
+        })
+    );
+    return result;
+  };
+  const getTasksInfo = (allTasksDetails) => {
+    let result = [];
+    allTasksDetails.tasks.map(
+      (item, index) =>
+        (result[index] = {
+          id: item.id,
+          name: item.name,
+          color: standardOptions.iconColor.find(
+            (element) => element.name === item.icon_color
+          ).color,
+          icon: standardOptions.taskIcon.find(
+            (element) => element.name === item.task_icon
+          ).icon,
+          homeMemberId: item.home_member_id,
+          difficulty: item.difficulty,
+          pointsEarned: item.points_earned,
+          completedAt: item.completed_at,
+        })
+    );
+    return result;
+  };
   const getChallenge = async () => {
     await fetchChallengeRequest(auth.data.token, challengeId);
   };
+
   const getTasksInChallenge = async () => {
-    await fetchTasksInChallengeRequest(auth.data.token, challengeId);
+    const allTasksDetails = await fetchTasksInChallengeRequest(auth.data.token, challengeId);
+    setTasksInfo(getTasksInfo(allTasksDetails));
   };
   const getHomeMembers = async () => {
-    await allHomeMembersRequest(auth.data.token);
+    const allHomeMembersDetails = await allHomeMembersRequest(auth.data.token);
+    setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
   };
   const getScoreBoards = async () => {
     const res = await fetchChallengeRequest(auth.data.token, challengeId);
@@ -68,9 +111,6 @@ const Challenge = ({
   };
   const reopenChallenge = async () => {
     await reopenChallengeRequest(auth.data.token, challengeId);
-  };
-  const handleLogout = async () => {
-    await logoutRequest();
   };
 
   if (auth.data.token == null) return <Navigate to="/login" replace />;
@@ -96,10 +136,9 @@ const Challenge = ({
           <div className="challenge-info">
             <h2>{challenge.data.challenge.name}</h2>
             <h3>Status: {challenge.data.challenge.status}</h3>
-            <h3>Start date: {challenge.data.challenge.start_date}</h3>
-            <h3>End date: {challenge.data.challenge.end_date}</h3>
-            <h3>Prize: {challenge.data.challenge.prize}</h3>
-          
+            <h3>Start date: {format(challenge.data.challenge.start_date)}</h3>
+            <h3>End date: {format(challenge.data.challenge.end_date)}</h3>
+            <h3>Prize: {challenge.data.challenge.prize}</h3>          
           {challenge.data.challenge.status == "created" ||
           challenge.data.challenge.status == "active" ? (
             <button className="action-button" onClick={() => navigate("/challenge-edit/" + challengeId)}>
@@ -124,13 +163,23 @@ const Challenge = ({
             </div>
           </button>
           ) : challenge.data.challenge.status == "terminated" ? (
-            <button onClick={reopenChallenge}>Reopen this Challenge</button>
+            <button className="action-button" onClick={reopenChallenge}>
+              <div>
+            <FontAwesomeIcon
+              icon="fa-lock-open"
+            />
+            </div>
+            <div>
+            Reopen this Challenge
+            </div>
+              
+              </button>
           ) : null}
           </div>
         </>
       )}
       <h2>Challenge Tasks</h2>
-      {challenge.loading || tasks.loading || homeMembers.loading ? (
+      {challenge.loading || tasks.loading || homeMembers.loading || Object.keys(homeMembersIndex).length === 0 ? (
         <p>Loading...</p>
       ) : challenge.error || tasks.error || homeMembers.error ? (
         <p>Error</p>
@@ -143,74 +192,80 @@ const Challenge = ({
               Create new task in Challenge
             </button>
           ) : null}
-
-          {tasks.data.tasksList.map((item) => (
+{tasksInfo.map((item) => (
             <div className="task-info">
-              <div className="flex-row-start">
+              <div className="flex-row-between">
+                <div className="flex-row-start">
                 <div
                   className="fa-icons"
                   style={{
-                    backgroundColor: standardOptions.iconColor.find(
-                      (element) => element.name === item.icon_color
-                    ).color,
+                    backgroundColor: item.color
                   }}
                 >
                   <FontAwesomeIcon
                     icon={
-                      standardOptions.taskIcon.find(
-                        (element) => element.name === item.task_icon
-                      ).icon
+                      item.icon
                     }
                   />
                 </div>
                 <div>
                   <p
                     style={{
-                      color: standardOptions.iconColor.find(
-                        (element) => element.name === item.icon_color
-                      ).color,
+                      color: item.color,
+                      textDecoration: item.completedAt ? "line-through" : "none"
                     }}
                   >
                     {item.name}
                   </p>
+                  {item.completedAt ? (
+                  <p>Completed At: {format(item.completedAt)}</p>) : null
+                  }
                 </div>
+                </div>
+                <div>
+
+                {item.completedAt ? (
+                <>
+                  {/* <p>Status: completed</p> */}
+                  
+                  <div className="flex-row-start">
+                        <div
+                          className="fa-icons"
+                          style={{
+                            backgroundColor: homeMembersIndex[item.homeMemberId].color,
+                          }}
+                        >
+                          <FontAwesomeIcon icon={homeMembersIndex[item.homeMemberId].icon} />
+                        </div>
+                        <div>
+                          <p>{homeMembersIndex[item.homeMemberId].name}</p>
+                          <p>{item.pointsEarned} Points Earned</p>
+                        </div>
+                    </div>
+
+
+
+                </>
+              ) : (
+                // <>
+                //   <p>Status: incomplete</p>
+                // </>
+                null
+              )}
+                </div>
+
+
+
+
+
               </div>
               <p
                 style={{
-                  color: standardOptions.iconColor.find(
-                    (element) => element.name === item.icon_color
-                  ).color,
+                  color: item.color
                 }}
               >
                 Difficulty: {item.difficulty}
               </p>
-
-              {item.completed_at ? (
-                <>
-                  <p>Status: completed</p>
-                  <p>Points Earned: {item.points_earned}</p>
-                  <p>Completed At: {item.completed_at}</p>
-                  <p>
-                    Id of the Home Member that completed the task:{" "}
-                    {item.home_member_id}
-                  </p>
-                  <p>
-                    Name of the Home Member that completed the task:
-                    {
-                      homeMembers.data.homeMembersList.find(
-                        (homeMember) => homeMember.id === item.home_member_id
-                      ).name
-                    }
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p>Status: incomplete</p>
-                </>
-              )}
-              
-
-
 
 
               <div className="flex-row-start">
@@ -227,17 +282,23 @@ const Challenge = ({
                   </div>
                 </button>
               ) : null}
-
               {
               challenge.data.challenge.status != "terminated" &&
-              item.completed_at ? (
-                <button onClick={() => removeCompletionTask(item.id)}>
-                  Remove completion of task
+              item.completedAt ? (
+                <button className="action-button" onClick={() => removeCompletionTask(item.id)}>
+                <div>
+                <FontAwesomeIcon
+                  icon="fa-xmark"
+                />
+                </div>
+                <div>
+                Remove completion of task
+                </div>
                 </button>
               ) : null}
 
               {challenge.data.challenge.status != "terminated" &&
-              !item.completed_at ? (
+              !item.completedAt ? (
                 <>            
                 <button className="action-button" onClick={() => navigate("/task-complete/" + item.id)}>
                   <div>
@@ -254,21 +315,14 @@ const Challenge = ({
             </div>
             </div>
           ))}
-         
-
-
-
-
-
 
         </>
         
       )}
-
       {challenge.loading ? null : challenge.error ? null : challenge.data
           .challenge.status != "completed" &&
         challenge.data.challenge.status !=
-          "terminated" ? null : scoreBoards.loading ? (
+          "terminated" ? null : scoreBoards.loading || Object.keys(homeMembersIndex).length === 0 ? (
         <p>Loading...</p>
       ) : scoreBoards.error ? (
         <p>Error</p>
@@ -278,45 +332,39 @@ const Challenge = ({
           {scoreBoards.data.scoreBoards.map((item) => (
             <>
             <div className="ranking-info">
-            <h3>Position: {item.rank_in_challenge}</h3>
-            <div className="flex-row-start">
+            
+            <div className="flex-row-between">
+              <div>
+              <h3>Position: {item.rank_in_challenge}</h3>
+              </div>
+              <div className="flex-row-start">
               <div
                 className="fa-icons"
                 style={{
-                  backgroundColor: standardOptions.iconColor.find(
-                    (element) => element.name === homeMembers.data.homeMembersList.find(
-                      (homeMember) => homeMember.id === item.home_member_id
-                    ).icon_color
-                  ).color
+                  backgroundColor: homeMembersIndex[item.home_member_id].color
                 }}
               >
                 <FontAwesomeIcon
                   icon={
-                    standardOptions.avatarIcon.find(
-                      (element) => element.name === homeMembers.data.homeMembersList.find(
-                        (homeMember) => homeMember.id === item.home_member_id
-                      ).avatar_icon
-                    ).icon
+                    homeMembersIndex[item.home_member_id].icon
                   }
                 />
               </div>
               <div>
                 <p
                   style={{
-                    color: standardOptions.iconColor.find(
-                      (element) => element.name === homeMembers.data.homeMembersList.find(
-                        (homeMember) => homeMember.id === item.home_member_id
-                      ).icon_color
-                    ).color
+                    color: homeMembersIndex[item.home_member_id].color
                   }}
                 >
-                  {homeMembers.data.homeMembersList.find(
-                    (homeMember) => homeMember.id === item.home_member_id
-                  ).name}
+                  {
+                    homeMembersIndex[item.home_member_id].name
+                  }
                 </p>
+                <p>Total points: {item.total_points}</p>
+                </div>
               </div>
             </div>
-            <h4>Total points: {item.total_points}</h4>
+            
             </div>
             </>
           ))}

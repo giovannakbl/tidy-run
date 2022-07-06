@@ -60,7 +60,6 @@ const ChallengeEdit = ({
             </button>
           </div>
           <button onClick={handleDeleteChallenge}>Delete Challenge</button>
-          <h1>{challenge.data.challenge.status}</h1>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
             <input

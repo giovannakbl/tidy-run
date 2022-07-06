@@ -7,14 +7,29 @@ import App from './App';
 import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faCheckSquare, faCoffee, faAngry as fasfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheckSquare, faCoffee, faAngry as fasfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faAngry as farfaAngry } from '@fortawesome/free-regular-svg-icons'
 
 // library.add(fab, faCheckSquare, faCoffee);
-library.add( faCheckSquare, faCoffee, fasfaAngry, farfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck);
+library.add( faCheckSquare, faCoffee, fasfaAngry, farfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark);
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+
+export default function format(stringDate) {
+  let inputDate = new Date(stringDate);
+  let date, month, year;
+  date = inputDate.getDate();
+  month = inputDate.getMonth() + 1;
+  year = inputDate.getFullYear();
+    date = date
+        .toString()
+        .padStart(2, '0');
+    month = month
+        .toString()
+        .padStart(2, '0');
+  return `${date}/${month}/${year}`;
+}
 
 root.render(
     <Provider store={store}>

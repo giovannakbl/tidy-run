@@ -101,11 +101,7 @@ const TaskEdit = ({
                     <label for={item.name}>
                       <div className="fa-icons">
                         <FontAwesomeIcon
-                          icon={
-                            standardOptions.taskIcon.find(
-                              (element) => element.name === item.name
-                            ).icon
-                          }
+                          icon = {item.icon}
                         />
                       </div>
                     </label>
@@ -126,13 +122,11 @@ const TaskEdit = ({
                       value={item.name}
                       onChange={handleInputChange}
                     />
-                    <label for={item.name}>
+                    <label htmlFor={item.name}>
                       <div
                         className="fa-icons"
                         style={{
-                          backgroundColor: standardOptions.iconColor.find(
-                            (element) => element.name === item.name
-                          ).color,
+                          backgroundColor: item.color,
                         }}
                       ></div>
                     </label>
@@ -157,7 +151,7 @@ const TaskEdit = ({
                       value={item.name}
                       onChange={handleInputChange}
                     />
-                    <label for={item.name}>
+                    <label htmlFor={item.name}>
                       <div className="text-list"
                 
                         

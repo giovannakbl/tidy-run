@@ -7,7 +7,6 @@ import Challenge from './pages/Challenge';
 import ChallengeEdit from './pages/ChallengeEdit';
 import ChallengeNew from './pages/ChallengeNew';
 import ModelTasksList from './pages/ModelTasksList';
-import ModelTask from './pages/ModelTask';
 import ModelTaskEdit from './pages/ModelTaskEdit';
 import ModelTaskNew from './pages/ModelTaskNew';
 import HomeMembersList from './pages/HomeMembersList';
@@ -39,7 +38,6 @@ function App() {
       <Route path="/task-complete/:taskId" element={<TaskComplete/>}/>
       <Route path="/model-tasks" element={<ModelTasksList/>} />
       <Route path="/model-task-new" element={<ModelTaskNew/>} />
-      <Route path="/model-task/:modelTaskId" element={<ModelTask/>} />
       <Route path="/model-task-edit/:modelTaskId" element={<ModelTaskEdit/>} />
       <Route path="/home-members" element={<HomeMembersList/>} />
       <Route path="/home-member-new" element={<HomeMemberNew/>} />

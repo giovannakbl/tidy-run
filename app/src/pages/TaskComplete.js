@@ -6,7 +6,7 @@ import { fetchTaskRequest, completeTaskRequest } from "../store/Tasks/actions";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Header from '../components/Header';
+import Header from "../components/Header";
 
 const TaskComplete = ({
   auth,
@@ -21,9 +21,14 @@ const TaskComplete = ({
     home_member_id: undefined,
     completed_at: undefined,
   });
-  const [resultRender, setResultRender] = useState([]
-    
-  );
+  const [taskInfo, setTaskInfo] = useState({
+    name: undefined,
+    color: undefined,
+    icon: undefined,
+    difficulty: undefined,
+    updated: false,
+  });
+  const [homeMembersInfo, setHomeMembersInfo] = useState([]);
   let { taskId } = useParams();
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,26 +37,45 @@ const TaskComplete = ({
     getTask();
     getHomeMembers();
   }, []);
-  const getTask = async () => {
-    await fetchTaskRequest(auth.data.token, taskId);
+  const getHomeMembersInfo = (allHomeMembersDetails) => {
+    let result = [];
+    allHomeMembersDetails.home_members.map(
+      (item, index) =>
+        (result[index] = {
+          id: item.id,
+          name: item.name,
+          color: standardOptions.iconColor.find(
+            (element) => element.name === item.icon_color
+          ).color,
+          icon: standardOptions.avatarIcon.find(
+            (element) => element.name === item.avatar_icon
+          ).icon,
+        })
+    );
+    return result;
   };
-  const allHomeMembersRender = (allHomeMembers) => {
-    allHomeMembers.home_members.map((item, index) => (
-      resultRender[index] = {
-        id: item.id,
-        name: item.name,
-        color: standardOptions.iconColor.find((element) => element.name === item.icon_color).color,
-        avatarIcon: standardOptions.avatarIcon.find(
-          (element) => element.name === item.avatar_icon
-        ).icon,
-      }
-    ))
-    return resultRender;
-  }
+  const getTaskInfo = (taskDetails) => {
+    let item = taskDetails.task;
+    const result = {
+      name: item.name,
+      color: standardOptions.iconColor.find(
+        (element) => element.name === item.icon_color
+      ).color,
+      icon: standardOptions.taskIcon.find(
+        (element) => element.name === item.task_icon
+      ).icon,
+      difficulty: item.difficulty,
+      updated: true,
+    };
+    return result;
+  };
+  const getTask = async () => {
+    const taskDetails = await fetchTaskRequest(auth.data.token, taskId);
+    setTaskInfo(getTaskInfo(taskDetails));
+  };
   const getHomeMembers = async () => {
-    const allHomeMembers = await allHomeMembersRequest(auth.data.token);
-    const result = allHomeMembersRender(allHomeMembers);
-    setResultRender(result);
+    const allHomeMembersDetails = await allHomeMembersRequest(auth.data.token);
+    setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,139 +89,104 @@ const TaskComplete = ({
 
   return (
     <>
-    <Header></Header>
-    <main>
-      <div className="go-back-area">
-        <button
-          className="go-back-button"
-          onClick={() => navigate("/challenge/" + tasks.data.task.challenge_id)}
-        >
-          &#60;&#60; Go back to Challenge
-        </button>
-      </div>
-      {tasks.loading || homeMembers.loading ? (
-        <p>Loading...</p>
-      ) : tasks.error || homeMembers.error ? (
-        <p>Error</p>
-      ) : (
-        <>
-          <div className="task-info">
-            <div className="flex-row-start">
-              <div
-                className="fa-icons"
-                style={{
-                  backgroundColor: standardOptions.iconColor.find(
-                    (element) => element.name === tasks.data.task.icon_color
-                  ).color,
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={
-                    standardOptions.taskIcon.find(
-                      (element) => element.name === tasks.data.task.task_icon
-                    ).icon
-                  }
-                />
-              </div>
-              <div>
-                <p
+      <Header></Header>
+      <main>
+        <div className="go-back-area">
+          <button
+            className="go-back-button"
+            onClick={() =>
+              navigate("/challenge/" + tasks.data.task.challenge_id)
+            }
+          >
+            &#60;&#60; Go back to Challenge
+          </button>
+        </div>
+        {tasks.loading ||
+        homeMembers.loading ||
+        !taskInfo.updated  ? (
+          <p>Loading...</p>
+        ) : tasks.error || homeMembers.error ? (
+          <p>Error</p>
+        ) : (
+          <>
+            <div className="task-info">
+              <div className="flex-row-start">
+                <div
+                  className="fa-icons"
                   style={{
-                    color: standardOptions.iconColor.find(
-                      (element) => element.name === tasks.data.task.icon_color
-                    ).color,
+                    backgroundColor: taskInfo.color,
                   }}
                 >
-                  {tasks.data.task.name}
-                </p>
-              </div>
-            </div>
-            <p
-              style={{
-                color: standardOptions.iconColor.find(
-                  (element) => element.name === tasks.data.task.icon_color
-                ).color,
-              }}
-            >
-              Difficulty: {tasks.data.task.difficulty}
-            </p>
-            <p>Status: incomplete</p>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-          <p className="label-text">Who completed the task</p>
-            <div className="radio-list">
-              {resultRender.map((item) => (
-                
-                <>
-                <div className="flex-row-start">
-                  <input
-                    type="radio"
-                    id={item.id}
-                    name="home_member_id"
-                    value={item.id}
-                    onChange={handleInputChange}
-                  />
-                  <label
-                    for={item.id}
+                  <FontAwesomeIcon icon={taskInfo.icon} />
+                </div>
+                <div>
+                  <p
                     style={{
-                      color: item.color
+                      color: taskInfo.color,
                     }}
-                    className="max-width"
                   >
-                    <div
-                      className="fa-icons"
-                      style={{
-                        backgroundColor: item.color
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={
-                          item.avatarIcon
-                        }
-                      />
-                    </div>
-                    <div>
-                      <p>{item.name}</p>
-                    
-                    </div>
-                  </label>
-                  </div>
-                </>
-              ))}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    {taskInfo.name}
+                  </p>
+                </div>
+              </div>
+              <p
+                style={{
+                  color: taskInfo.color,
+                }}
+              >
+                Difficulty: {taskInfo.difficulty}
+              </p>
+              <p>Status: incomplete</p>
             </div>
-            <label htmlFor="completed_at">Completed at</label>
-            <input
-              id="completed_at"
-              name="completed_at"
-              type="date"
-              onChange={handleInputChange}
-              value={formValues.completed_at}
-            />
 
-            <button type="submit">Complete Task</button>
-          </form>
-          
-        </>
-      )}
+            <form onSubmit={handleSubmit}>
+              <p className="label-text">Who completed the task</p>
+              <div className="radio-list">
+                {homeMembersInfo.map((item) => (
+                  <>
+                    <div className="flex-row-start">
+                      <input
+                        type="radio"
+                        id={item.id}
+                        name="home_member_id"
+                        value={item.id}
+                        onChange={handleInputChange}
+                      />
+                      <label
+                        htmlFor={item.id}
+                        style={{
+                          color: item.color,
+                        }}
+                        className="max-width"
+                      >
+                        <div
+                          className="fa-icons"
+                          style={{
+                            backgroundColor: item.color,
+                          }}
+                        >
+                          <FontAwesomeIcon icon={item.icon} />
+                        </div>
+                        <div>
+                          <p>{item.name}</p>
+                        </div>
+                      </label>
+                    </div>
+                  </>
+                ))}
+              </div>
+              <label htmlFor="completed_at">Completed at</label>
+              <input
+                id="completed_at"
+                name="completed_at"
+                type="date"
+                onChange={handleInputChange}
+                value={formValues.completed_at}
+              />
+              <button type="submit">Complete Task</button>
+            </form>
+          </>
+        )}
       </main>
     </>
   );
