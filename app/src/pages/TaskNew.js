@@ -18,23 +18,37 @@ const TaskNew = ({
   const navigate = useNavigate();
   let { challengeId } = useParams();
   const [formValues, setFormValues] = useState({
-    // model_task_id: modelTasks.data.modelTasksList[0].id,
     model_task_id: undefined,
   });
   useEffect(() => {
-    console.log("Executou renderizacao");
     getAllModelTasks();
-    console.log(formValues);
   }, []);
-  const getAllModelTasks = async () => {
-    const allModelTasks = await allModelTasksRequest(auth.data.token);
-    console.log(allModelTasks);
-    setFormValues({model_task_id: allModelTasks.model_tasks[0].id});
+  const [modelTasksInfo, setModelTasksInfo] = useState([]);
+  const getModelTasksInfo = (allModelTasksDetails) => {
+    let result = [];
+    allModelTasksDetails.model_tasks.map(
+      (item, index) =>
+        (result[index] = {
+          id: item.id,
+          name: item.name,
+          color: standardOptions.iconColor.find(
+            (element) => element.name === item.icon_color
+          ).color,
+          icon: standardOptions.taskIcon.find(
+            (element) => element.name === item.task_icon
+          ).icon,
+          difficulty: item.difficulty,
+        })
+    );
+    return result;
   };
+  const getAllModelTasks = async () => {
+    const allModelTasksDetails = await allModelTasksRequest(auth.data.token);
+    setModelTasksInfo(getModelTasksInfo(allModelTasksDetails));
+  };
+
   const handleInputChange = (e) => {
-    console.log("Executou handle input change");
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +74,9 @@ const TaskNew = ({
       </div>
       {modelTasks.loading ? (
         <p>Loading...</p>
-      ) : modelTasks.data.modelTasksList.length == 0 ? (
+      ) : 
+      modelTasksInfo.length == 0 
+      ? (
         <p>
           You need to create Model tasks in order to insert a task in a
           challenge
@@ -69,7 +85,7 @@ const TaskNew = ({
         <>
           <form onSubmit={handleSubmit}>
             <ul className="radio-list">
-            {modelTasks.data.modelTasksList.map((item) => (
+            {modelTasksInfo.map((item) => (
               <>
               <li>
                 <input
@@ -80,19 +96,16 @@ const TaskNew = ({
                   value={item.id}
                   onChange={handleInputChange}
                 />
-                <label for={item.id} style={{ color: standardOptions.iconColor.find(
-                            (element) =>
-                              element.name === item.icon_color
-                          ).color}}>
-                <div className="fa-icons" style={{ backgroundColor: standardOptions.iconColor.find(
-                            (element) =>
-                              element.name === item.icon_color
-                          ).color }}>
+                <label for={item.id} style={{ color: 
+                          item.color
+                          
+                          }}>
+                <div className="fa-icons" style={{ backgroundColor: 
+                item.color
+                          
+                          }}>
                     <FontAwesomeIcon  icon={
-                          standardOptions.taskIcon.find(
-                            (element) =>
-                              element.name === item.task_icon
-                          ).icon 
+                          item.icon
                         }  />
                 </div>
                   {item.name}<br/>

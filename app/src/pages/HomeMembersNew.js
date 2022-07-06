@@ -4,18 +4,22 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createHomeMemberRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
 
 const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
-  const initialForm = {
-    avatarIcon: "Dog",
-    iconColor: "Red",
-  };
+  // const initialForm = {
+  //   avatarIcon: "Dog",
+  //   iconColor: "Red",
+  // };
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
-    avatar_icon: initialForm.avatarIcon,
-    icon_color: initialForm.iconColor,
+    avatar_icon: undefined,
+    icon_color: undefined,
+
+    // avatar_icon: initialForm.avatarIcon,
+    // icon_color: initialForm.iconColor,
   });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -23,9 +27,10 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await createHomeMemberRequest(auth.data.token, formValues);
-      let newHomeMember = result.home_member;
-      navigate("/home-member/" + newHomeMember.id);
+      // const result = await createHomeMemberRequest(auth.data.token, formValues);
+      // let newHomeMember = result.home_member;
+      await createHomeMemberRequest(auth.data.token, formValues);
+      navigate("/home-members");
     } catch (e) {}
   };
 
@@ -40,6 +45,74 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
       &#60;&#60; Go back to Home Members List
       </button>
       </div>
+
+
+
+
+      <form onSubmit={handleSubmit}>
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                onChange={handleInputChange}
+                value={formValues.name}
+              />
+              <p className="label-text">Choose icon</p>
+              <div className="radio-list icon-list">
+                {standardOptions.avatarIcon.map((item) => (
+                  <>
+                    <div>
+                      <input
+                        type="radio"
+                        id={item.name}
+                        name="avatar_icon"
+                        checked={formValues.avatar_icon == item.name}
+                        value={item.name}
+                        onChange={handleInputChange}
+                      />
+                      <label for={item.name}>
+                        <div className="fa-icons">
+                          <FontAwesomeIcon icon={item.icon} />
+                        </div>
+                      </label>
+                    </div>
+                  </>
+                ))}
+              </div>
+              <p className="label-text">Choose color</p>
+              <div className="radio-list icon-list">
+                {standardOptions.iconColor.map((item) => (
+                  <>
+                    <div>
+                      <input
+                        type="radio"
+                        id={item.name}
+                        name="icon_color"
+                        checked={formValues.icon_color == item.name}
+                        value={item.name}
+                        onChange={handleInputChange}
+                      />
+                      <label htmlFor={item.name}>
+                        <div
+                          className="fa-icons"
+                          style={{
+                            backgroundColor: item.color,
+                          }}
+                        ></div>
+                      </label>
+                    </div>
+                  </>
+                ))}
+              </div>
+              <button type="submit">Create Home Member</button>
+            </form>
+
+
+
+
+
+{/* 
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
@@ -81,7 +154,9 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
         </select>
 
         <button type="submit">Create Home Member</button>
-      </form>
+      </form> */}
+
+
       </main>
     </>
   );

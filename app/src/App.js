@@ -11,7 +11,6 @@ import ModelTaskEdit from './pages/ModelTaskEdit';
 import ModelTaskNew from './pages/ModelTaskNew';
 import HomeMembersList from './pages/HomeMembersList';
 import HomeMemberNew from './pages/HomeMembersNew';
-import HomeMember from './pages/HomeMember';
 import HomeMemberEdit from './pages/HomeMemberEdit';
 import TaskNew from './pages/TaskNew';
 import TaskEdit from './pages/TaskEdit';
@@ -41,7 +40,6 @@ function App() {
       <Route path="/model-task-edit/:modelTaskId" element={<ModelTaskEdit/>} />
       <Route path="/home-members" element={<HomeMembersList/>} />
       <Route path="/home-member-new" element={<HomeMemberNew/>} />
-      <Route path="/home-member/:homeMemberId" element={<HomeMember/>} />
       <Route path="/home-member-edit/:homeMemberId" element={<HomeMemberEdit/>} />
       <Route path="/account" element={<TidyUser />} />
       <Route path="/account/email" element={<TidyUserEditEmail />} />

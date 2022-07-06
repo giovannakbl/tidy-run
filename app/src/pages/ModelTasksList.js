@@ -38,7 +38,6 @@ const ModelTasksList = ({
   const getAllModelTasks = async () => {
     const allModelTasksDetails = await allModelTasksRequest(auth.data.token);
     setModelTasksInfo(getModelTasksInfo(allModelTasksDetails));
-    console.log(modelTasksInfo);
   };
 
 
