@@ -46,7 +46,7 @@ const ModelTaskEdit = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     await editModelTaskRequest(auth.data.token, modelTaskId, formValues);
-    navigate("/model-task/" + modelTaskId);
+    navigate("/model-tasks" );
   };
   const handleDeleteModelTask = async () => {
     await deleteModelTaskRequest(auth.data.token, modelTaskId);

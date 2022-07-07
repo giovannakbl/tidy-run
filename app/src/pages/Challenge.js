@@ -40,27 +40,14 @@ const Challenge = ({
     getTasksInChallenge();
     getHomeMembers();
     getScoreBoards();
-    // console.log(scoreBoardsInfo);
-    // console.log(homeMembers.data.homeMembersList);
   }, []);
   useEffect(() => {
     getScoreBoards();
     
   }, [challenge.data.challenge.status]);
-
-  
-
   const [homeMembersIndex, setHomeMembersIndex] = useState({});
   const [tasksInfo, setTasksInfo] = useState([]);
   const [scoreBoardsInfo, setScoreBoardsInfo] = useState([]);
-  // useEffect(() => {
-  //   console.log(scoreBoardsInfo);
-
-  // }, [scoreBoardsInfo]);
-  useEffect(() => {
-    console.log(homeMembersIndex);
-
-  }, [homeMembersIndex]);
   const getHomeMembersIndex = (allHomeMembersDetails) => {
     let result = {};
     if (allHomeMembersDetails.home_members_all) {
@@ -388,12 +375,14 @@ const Challenge = ({
             <h2>Ranking:</h2>
             {scoreBoardsInfo.map((item) => (
               <>
-                <div className="ranking-info">
-                  <div className="flex-row-between">
-                    <div>
-                      <h3>Position: {item.rank_in_challenge}</h3>
-                    </div>
+                <div className="ranking-info score-board-column-start">
+                  {/* <div className="flex-row-between"> */}
                     <div className="flex-row-start">
+                      <h3 className="custom-info">Position: {item.rank_in_challenge}</h3>
+                    </div>
+                    {/* <div className="flex-row-start"> */}
+                    <div className="flex-row-start">
+                    <div className="full-height">
                       <div
                         className="fa-icons"
                         style={{
@@ -405,7 +394,9 @@ const Challenge = ({
                           icon={homeMembersIndex[item.home_member_id].icon}
                         />
                       </div>
-                      <div>
+                      </div>
+                      <div className="flex-column-start full-width">
+                      <div className="home-member-name">
                         <p
                           style={{
                             color: homeMembersIndex[item.home_member_id].color,
@@ -413,10 +404,19 @@ const Challenge = ({
                         >
                           {homeMembersIndex[item.home_member_id].name}
                         </p>
+                        </div>
+                        <div 
+                      // className="home-member-name after-icon after-icon-main-text"
+                      className="middle-height task-sec-text home-member-name home-member-points"
+                      // className="flex-row-start"
+                      >
                         <p>Total points: {item.total_points}</p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                      
+                        
+                  {/* </div> */}
+                </div>
                 </div>
               </>
             ))}

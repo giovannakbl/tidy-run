@@ -89,8 +89,23 @@ const Dashboard = ({
           <div>Change your password</div>
         </button>
         </div>
-       
 
+        <div className="account-info-container">
+        <div>
+        <p className="label-text">Task Models</p>
+        </div>
+
+        <button
+          className="action-button"
+          type="button"
+          onClick={() => navigate("/model-tasks")}
+        >
+          <div>
+            <FontAwesomeIcon icon="fa-pencil" />
+          </div>
+          <div>Manage task models</div>
+        </button>
+        </div>
         
         <button
           className="delete-button"

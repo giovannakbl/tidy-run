@@ -126,7 +126,6 @@ const TaskComplete = ({
 
 
                 <div className="flex-column-start full-width">
-                {/* <div className="middle-height task-main-text"> */}
                 <div className=" task-main-text">
                   <p
                     style={{
@@ -136,9 +135,6 @@ const TaskComplete = ({
                     {taskInfo.name}
                   </p>
                 </div>
-                
-              
-                {/* <div className="middle-height task-sec-text"> */}
                 <div className=" task-sec-text">
               <p
                 style={{
@@ -148,7 +144,6 @@ const TaskComplete = ({
               >
                 Difficulty: {taskInfo.difficulty}
               </p>
-              {/* <p>Status: incomplete</p> */}
               </div>
               </div>
 
@@ -160,14 +155,10 @@ const TaskComplete = ({
               <p className="label-text">Who completed the task</p>
               <div className="radio-list">
               {  
-              // !homeMembers.data.homeMembersList 
               homeMembersInfo.length === 0
               ? (
                   <>
-                  <p className="label-text">You need to add home members before completing tasks</p>
-
-           
-                
+                  <p className="label-text">You need to add home members before completing tasks</p>             
                   </>
                   ) : (<>
                 {homeMembersInfo.map((item) => (

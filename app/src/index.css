@@ -93,6 +93,9 @@ form {
 .small-margin-bottom {
   margin-bottom: 2px;
 }
+.medium-margin-bottom {
+  margin-bottom: 10px;
+}
 .login-form button {
   margin-bottom: 10px;
   font-size: 18px;
@@ -273,6 +276,19 @@ ul.radio-list {
   align-items: center;
   /* margin: 10px; */
 }
+.home-member-name {
+  font-size: 20px; 
+  font-weight: 900;
+  display: flex;
+  /* background-color: #b6aa23; */
+}
+.home-member-points {
+  font-size: 20px; 
+  font-weight: 900;
+  display: flex;
+  color: var(--mediumpurple);
+  /* background-color: #b6aa23; */
+}
 div.radio-list {
   background-color: var(--white);
   border-radius: 5px;
@@ -345,11 +361,18 @@ div.task-info {
   flex-wrap: nowrap;
   width: 35%;
 }
+.score-board-column-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
 .flex-row-between {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: nowrap;
 }
 .full-height {

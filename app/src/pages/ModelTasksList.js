@@ -47,13 +47,6 @@ const ModelTasksList = ({
     <>
       <Header></Header>
       <main>
-        {/* <button
-          onClick={() => {
-            navigate("/model-task-new");
-          }}
-        >
-          Create new Model Task
-        </button> */}
 <h1>Model Tasks</h1>
         <button type="button" className="button-new-item"
         onClick={() => {
@@ -74,13 +67,12 @@ const ModelTasksList = ({
           <>
 
             {modelTasksInfo.map((item) => (
-
               <>
-
                 <div className="task-info">
-                  <div className="flex-row-start">
+                  <div className="flex-row-start medium-margin-bottom">
+                  {/* <div className="flex-row-start"> */}
                     <div
-                      className="fa-icons"
+                      className="fa-icons "
                       style={{
                         backgroundColor: item.color,
                       }}
@@ -88,6 +80,8 @@ const ModelTasksList = ({
                       <FontAwesomeIcon icon={item.icon} />
                     </div>
                     <div>
+                    <div className="flex-column-start full-width">
+                            <div className="model-task-main-text">
                       <p
                         style={{
                           color: item.color,
@@ -95,6 +89,8 @@ const ModelTasksList = ({
                       >
                         {item.name}
                       </p>
+                      </div>
+                      <div className="model-task-sec-text">
                       <p
                         style={{
                           color: item.color,
@@ -102,6 +98,8 @@ const ModelTasksList = ({
                       >
                         Difficulty: {item.difficulty}
                       </p>
+                      </div>
+                      </div>
                     </div>
                   </div>
 
