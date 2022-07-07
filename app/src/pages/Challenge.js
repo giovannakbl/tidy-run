@@ -40,13 +40,31 @@ const Challenge = ({
     getTasksInChallenge();
     getHomeMembers();
     getScoreBoards();
+    // console.log(scoreBoardsInfo);
+    // console.log(homeMembers.data.homeMembersList);
   }, []);
+  useEffect(() => {
+    getScoreBoards();
+    
+  }, [challenge.data.challenge.status]);
+
+  
 
   const [homeMembersIndex, setHomeMembersIndex] = useState({});
   const [tasksInfo, setTasksInfo] = useState([]);
+  const [scoreBoardsInfo, setScoreBoardsInfo] = useState([]);
+  // useEffect(() => {
+  //   console.log(scoreBoardsInfo);
+
+  // }, [scoreBoardsInfo]);
+  useEffect(() => {
+    console.log(homeMembersIndex);
+
+  }, [homeMembersIndex]);
   const getHomeMembersIndex = (allHomeMembersDetails) => {
     let result = {};
-    allHomeMembersDetails.home_members.map(
+    if (allHomeMembersDetails.home_members_all) {
+    allHomeMembersDetails.home_members_all.map(
       (item) =>
         (result[item.id] = {
           id: item.id,
@@ -59,6 +77,7 @@ const Challenge = ({
           ).icon,
         })
     );
+  }
     return result;
   };
   const getTasksInfo = (allTasksDetails) => {
@@ -101,8 +120,12 @@ const Challenge = ({
     const res = await fetchChallengeRequest(auth.data.token, challengeId);
     const challengeStatus = res.challenge.status;
     if (challengeStatus == "completed" || challengeStatus == "terminated") {
-      await fetchScoreBoardsRequest(auth.data.token, challengeId);
+      const allScoreBoardsDetails = await fetchScoreBoardsRequest(auth.data.token, challengeId);
+      setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
+    } else {
+      setScoreBoardsInfo([]);
     }
+    
   };
   const removeCompletionTask = async (taskId) => {
     await removeCompletionTaskRequest(auth.data.token, taskId);
@@ -191,18 +214,7 @@ const Challenge = ({
                 </button>
               ) : null}
             </div>
-          </>
-        )}
-        <h2>Challenge Tasks</h2>
-        {challenge.loading ||
-        tasks.loading ||
-        homeMembers.loading ||
-        Object.keys(homeMembersIndex).length === 0 ? (
-          <p>Loading...</p>
-        ) : challenge.error || tasks.error || homeMembers.error ? (
-          <p>Error</p>
-        ) : (
-          <>
+            <h2>Challenge Tasks</h2>
             {challenge.data.challenge.status == "created" ||
             challenge.data.challenge.status == "active" ? (
               <button
@@ -215,6 +227,25 @@ const Challenge = ({
                 Add task
               </button>
             ) : null}
+          </>
+
+        )}
+        
+        {challenge.loading ||
+        tasks.loading ||
+        homeMembers.loading 
+        // || ( challenge.data.challenge.status != "created" && challenge.data.challenge.status != "active" &&
+        // Object.keys(homeMembersIndex).length === 0) 
+        || (homeMembers.data.homeMembersList.length > 0 && Object.keys(homeMembersIndex).length === 0)
+        || tasksInfo.length === 0
+        ? (
+          null
+        ) : challenge.error || tasks.error || homeMembers.error ? (
+          <p>Error</p>
+        ) : (
+          <>
+          
+            
 
 
 
@@ -226,7 +257,8 @@ const Challenge = ({
 {tasksInfo.map((item) => (
               <div className="task-info">
                 <div className="task-internal">
-                <div className="flex-row-start half-width">
+                <div className="flex-row-start ">
+                {/* <div className="flex-row-start half-width"> */}
                     <div className="full-height">
                       <div
                         className="fa-icons"
@@ -251,9 +283,7 @@ const Challenge = ({
                       </p>
                     </div>
                   <div className="middle-height task-sec-text">
-                    {item.completedAt ? (
-                      <p>Completed At: {format(item.completedAt)}</p>
-                    ) : null}
+                    
                     <p
                       style={{
                         color: item.color,
@@ -261,15 +291,19 @@ const Challenge = ({
                     >
                       Difficulty: {item.difficulty}
                     </p>
+                    {item.completedAt ? (
+                      <p>Completed At: {format(item.completedAt)}</p>
+                    ) : null}
                   </div>
                   </div>
                 </div >               
                     {item.completedAt ? (
                       <>
-                <div className="flex-row-start half-width">
+                {/* <div className="flex-row-start half-width"> */}
+                <div className="after-icon">
                         <div className="full-height">
                           <div
-                            className="fa-icons"
+                            className="home-member-in-task-icon"
                             style={{
                               backgroundColor:
                                 homeMembersIndex[item.homeMemberId].color,
@@ -280,11 +314,15 @@ const Challenge = ({
                             />
                           </div>
                           </div>
-                          <div className="flex-column-start full-width">
-                            <div className="middle-height task-main-text">
-                            <p>{homeMembersIndex[item.homeMemberId].name}</p>
+                          {/* <div className="flex-column-start full-width"> */}
+                            <div>
+                            <div className="middle-height after-icon-main-text">
+                            <p style={{
+                              color:
+                                homeMembersIndex[item.homeMemberId].color,
+                            }}>{homeMembersIndex[item.homeMemberId].name}</p>
                             </div>
-                            <div className="middle-height task-sec-text">
+                            <div className="aligned-secondary task-sec-text">
                             <p>{item.pointsEarned} Points Earned</p>
                             </div>
                             </div>
@@ -341,14 +379,14 @@ const Challenge = ({
             .challenge.status != "completed" &&
           challenge.data.challenge.status !=
             "terminated" ? null : scoreBoards.loading ||
-          Object.keys(homeMembersIndex).length === 0 ? (
+          Object.keys(homeMembersIndex).length === 0 || (scoreBoardsInfo).length === 0? (
           <p>Loading...</p>
         ) : scoreBoards.error ? (
           <p>Error</p>
         ) : (
           <>
             <h2>Ranking:</h2>
-            {scoreBoards.data.scoreBoards.map((item) => (
+            {scoreBoardsInfo.map((item) => (
               <>
                 <div className="ranking-info">
                   <div className="flex-row-between">

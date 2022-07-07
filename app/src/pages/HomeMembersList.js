@@ -67,9 +67,10 @@ const HomeMemberList = ({
 {homeMembersInfo.map((item) => (
                   <>
                   <div className="task-info">
-                    <div className="flex-row-start" style={{
+                    <div className="member-main-text" style={{
                           color: item.color,
                         }}>
+                          <div className="member-main-text">
                         <div
                           className="fa-icons"
                           style={{
@@ -78,10 +79,16 @@ const HomeMemberList = ({
                         >
                           <FontAwesomeIcon icon={item.icon} />
                         </div>
-                        <div>
-                          <p style={{
+                        </div>
+                        <div className="member-main-text">
+                          <p 
+                           
+                          style={{
                           color: item.color,
-                        }}>{item.name}</p>
+                        }}
+                       
+                        >{item.name}
+                        </p>
                         </div>
                     </div>
           

@@ -76,17 +76,27 @@ const TaskNew = ({
       {modelTasks.loading ? (
         <p>Loading...</p>
       ) : 
-      modelTasksInfo.length == 0 
+      // modelTasksInfo.length == 0 
+      // ? (
+      //   <p>
+      //     You need to create Model tasks in order to insert a task in a
+      //     challenge
+      //   </p>
+      // ) : 
+      (
+        <>
+          <form onSubmit={handleSubmit}>
+          <p className="label-text">Choose a task from your task models</p>
+            <div className="radio-list">
+
+              {modelTasksInfo.length == 0 
       ? (
-        <p>
+        <p className="label-text">
           You need to create Model tasks in order to insert a task in a
           challenge
         </p>
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
-          <p className="label-text">Choose a task from your task models</p>
-            <div className="radio-list">
             {modelTasksInfo.map((item) => (
               <>
                 <input
@@ -98,7 +108,7 @@ const TaskNew = ({
                   onChange={handleInputChange}
                   className="small-margin-bottom"
                 />
-                <label for={item.id} 
+                <label htmlFor={item.id} 
                 style={{ color: 
                           item.color
                           
@@ -126,7 +136,8 @@ const TaskNew = ({
                 </label>
               </>
             ))}
-
+            </>
+)}
             
 
 
@@ -157,6 +168,7 @@ const TaskNew = ({
           </form>
 
         </>
+         
       )}
       </main>
     </>

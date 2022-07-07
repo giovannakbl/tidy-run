@@ -10,6 +10,7 @@ export const initialStateHomeMembers = {
             deleted_at: undefined,
         },
       homeMembersList: [],
+      homeMembersListAll: [],
     },   
     error: undefined,
     loading: false
@@ -25,7 +26,7 @@ const homeMembersReducer = (state = initialStateHomeMembers, action) => {
           return { ...state, loading: true, error: undefined };
         }
         case HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_SUCCESS: {
-          return { ...state, loading: false, error: undefined,  data: {...state.data, homeMembersList: action.payload.home_members }};
+          return { ...state, loading: false, error: undefined,  data: {...state.data, homeMembersList: action.payload.home_members, homeMembersListAll: action.payload.home_members_all }};
         }
         case HomeMembersActionTypes.FETCH_HOME_MEMBER_SUCCESS:
         case HomeMembersActionTypes.CREATE_HOME_MEMBER_SUCCESS:

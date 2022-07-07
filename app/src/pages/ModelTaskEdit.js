@@ -100,7 +100,7 @@ const ModelTaskEdit = ({
                       value={item.name}
                       onChange={handleInputChange}
                     />
-                    <label for={item.name}>
+                    <label htmlFor={item.name}>
                       <div className="fa-icons">
                         <FontAwesomeIcon
                           icon = {item.icon}

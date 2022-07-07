@@ -74,7 +74,6 @@ const TaskEdit = ({
               &#60;&#60; Go back to Challenge
             </button>
           </div>
-          <button onClick={handleDeleteTask}>Delete Task</button>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
             <input
@@ -84,6 +83,7 @@ const TaskEdit = ({
               onChange={handleInputChange}
               defaultValue={tasks.data.task.name}
               value={formValues.name}
+              className="input-text"
             />
             <p className="label-text">Choose icon</p>
             <div className="radio-list icon-list">
@@ -97,9 +97,9 @@ const TaskEdit = ({
                       checked={formValues.task_icon == item.name}
                       value={item.name}
                       onChange={handleInputChange}
-                      className="input-text"
+                      
                     />
-                    <label for={item.name}>
+                    <label htmlFor={item.name}>
                       <div className="fa-icons">
                         <FontAwesomeIcon
                           icon = {item.icon}
@@ -165,6 +165,15 @@ const TaskEdit = ({
             </div>
             <button type="submit">Save Changes</button>
           </form>
+          <button
+                  className="delete-button"
+                  onClick={handleDeleteTask}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-trash-can" />
+                  </div>
+                  <div>Delete Task</div>
+                </button>
         </>
       )}
       </main>

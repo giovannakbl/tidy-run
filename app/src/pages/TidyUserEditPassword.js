@@ -39,12 +39,12 @@ const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
           onClick={() => {
             navigate("/account");
           }}
-          Ï
+          
         >
           &#60;&#60; Go back to user details
         </button>
       </div>
-      <h1>Change your password</h1>
+      <h2>Change your password</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="password">New Password</label>
         <input
@@ -53,6 +53,7 @@ const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
           type="password"
           onChange={handleInputChange}
           value={formValues.password}
+          className="input-text"
         />
         <button type="submit">Save Changes</button>
       </form>

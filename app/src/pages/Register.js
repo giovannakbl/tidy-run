@@ -32,6 +32,7 @@ const Register = ({ createTidyUserRequest }) => {
           type="email"
           onChange={handleInputChange}
           value={formValues.email}
+          className="input-text"
         />
         <label htmlFor="password">Password</label>
         <input
@@ -40,6 +41,7 @@ const Register = ({ createTidyUserRequest }) => {
           type="password"
           onChange={handleInputChange}
           value={formValues.password}
+          className="input-text"
         />
         <button type="submit">Create account</button>
       </form>

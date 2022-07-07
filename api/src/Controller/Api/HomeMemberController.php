@@ -39,10 +39,10 @@ class HomeMemberController extends AbstractController
                 'home_members' => []
             ]);
         }
-        $result = [];
+        $resultActive = [];
         foreach ($homeMembers as $homeMember) {
             if ($homeMember->getDeletedAt() == null) {
-                $result[] = [
+                $resultActive[] = [
                     'id' => $homeMember->getId(),
                     'name' => $homeMember->getName(),
                     'avatar_icon' => $homeMember->getAvatarIcon(),
@@ -51,8 +51,21 @@ class HomeMemberController extends AbstractController
                 ];
             }
         }
+        $resultAll = [];
+        foreach ($homeMembers as $homeMember) {
+            
+                $resultAll[] = [
+                    'id' => $homeMember->getId(),
+                    'name' => $homeMember->getName(),
+                    'avatar_icon' => $homeMember->getAvatarIcon(),
+                    'icon_color' => $homeMember->getIconColor(),
+                    'deleted_at' => $homeMember->getDeletedAt()
+                ];
+            
+        }
         return $this->json([
-            'home_members' => $result
+            'home_members' => $resultActive,
+            'home_members_all' => $resultAll,
         ]);
     }
 

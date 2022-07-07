@@ -45,13 +45,13 @@ const Dashboard = ({
           onClick={() => {
             navigate("/account");
           }}
-          Ï
+          
         >
           &#60;&#60; Go back to user details
         </button>
       </div>
-      <h1>Change your email</h1>
-      <p>Current email: {tidyUser.data.email}</p>
+      <h2>Change your email</h2>
+      <p className="label-text">Current email: {tidyUser.data.email}</p>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">New Email</label>
@@ -61,6 +61,7 @@ const Dashboard = ({
           type="email"
           onChange={handleInputChange}
           value={formValues.email}
+          className="input-text"
         />
         <button type="submit">Save Changes</button>
       </form>

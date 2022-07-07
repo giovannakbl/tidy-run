@@ -45,14 +45,14 @@ const Dashboard = ({
           onClick={() => {
             navigate("/account");
           }}
-          Ï
+          
         >
           &#60;&#60; Go back to user details
         </button>
       </div>
-      <h1>Change your Home Name</h1>
+      <h2>Change your Home Name</h2>
 
-      <p>Current family name: {tidyUser.data.home_name}</p>
+      <p className="label-text">Current family name: {tidyUser.data.home_name}</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="home_name">Home Name</label>
         <input
@@ -61,6 +61,7 @@ const Dashboard = ({
           type="home_name"
           onChange={handleInputChange}
           value={formValues.home_name}
+          className="input-text"
         />
         <button type="submit">Save Changes</button>
       </form>

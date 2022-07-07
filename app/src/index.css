@@ -136,7 +136,7 @@ ul li button {
 .task-info, form, .challenge-info, .ranking-info {
   box-sizing: border-box;
   width: 100%;
-  max-width: 500px;
+  /* max-width: 500px; */
 }
 .go-back-area {
   display: flex;
@@ -258,6 +258,21 @@ ul.radio-list {
   align-items: center;
   /* margin: 10px; */
 }
+.home-member-in-task-icon {
+  background-color: var(--darkgray);
+  color: var(--white);
+  /* font-size: 1.5em; */
+  font-size: 15px;
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
+  /* height: 2em;
+  width: 2em; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin: 10px; */
+}
 div.radio-list {
   background-color: var(--white);
   border-radius: 5px;
@@ -296,6 +311,31 @@ div.task-info {
   align-items: flex-start;
   flex-wrap: nowrap;
 }
+.after-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  /* align-items: center; */
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  /* background-color: #6c757d; */
+  width: 100%;
+  margin: 15px 0 0 45px;
+}
+.after-icon-main-text p{
+  font-size: 15px;
+  margin: 5px 0 0 5px;
+  /* margin: 0; */
+  /* background-color: #6d23b6; */
+}
+.after-icon-main-text {
+  display: flex ;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  margin: 0;
+}
+
 .flex-column-start {
   display: flex;
   flex-direction: column;
@@ -325,6 +365,11 @@ div.task-info {
   width: 100%;
 
 }
+.aligned-secondary {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .half-width {
   width: 50%;
   /* background-color: red; */
@@ -332,12 +377,24 @@ div.task-info {
 .full-width {
   width: 100%;
 }
+.member-main-text {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+}
+.member-main-text p {
+  font-size: 20px;
+  margin: 0;
+}
+
 .task-main-text {
-  font-size: 25px;
+  font-size: 35px;
   justify-content: center;
 }
 .task-sec-text {
-  font-size: 15px;
+  font-size: 25px;
   justify-content: flex-start;
 }
 .model-task-main-text p {
@@ -362,8 +419,8 @@ div.task-info {
 }
 .task-internal {
   display: flex;
-  /* flex-direction: column; */
-  flex-direction: row;
+  flex-direction: column;
+  /* flex-direction: row; */
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
@@ -375,10 +432,8 @@ div.task-info {
 /* .radio-list p {
   margin: 5px;
 } */
-.aligned-after-icon {
-  margin-left: 4em;
 
-}
+
 .max-width {
   width: 100%;
 }
@@ -455,6 +510,7 @@ div.task-info {
 } */
 main {
   width: 90vw;
+  max-width: 500px;
   margin-top: 50px;
   /* background-color: blueviolet; */
   display: flex;
@@ -522,7 +578,7 @@ button.model-task-button {
   flex-direction: row;
   flex-wrap: nowrap;
   background-color: transparent;
-  font-size: 16px; 
+  font-size: 14px; 
   align-items: center;
   /* padding-left: 6px;
   margin-right: 20px; */
@@ -571,16 +627,16 @@ align-self: flex-end;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  max-width: 400px;
+  /* max-width: 400px; */
   box-sizing: border-box;
   width: 100%;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   margin: 0 0 20px 0;
 }
 
 .account-info-container p {
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
 }
 .logout-button {
   align-self: flex-end;

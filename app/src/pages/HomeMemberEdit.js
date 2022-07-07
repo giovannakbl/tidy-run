@@ -65,83 +65,79 @@ const HomeMemberEdit = ({
           <p>Error</p>
         ) : (
           <>
-          <div className="go-back-area">
-            <button
-              className="go-back-button"
-              onClick={() => navigate("/home-members")}
-            >
-              &#60;&#60; Go back to Home Members List
-            </button>
-          </div>
+            <div className="go-back-area">
+              <button
+                className="go-back-button"
+                onClick={() => navigate("/home-members")}
+              >
+                &#60;&#60; Go back to Home Members List
+              </button>
+            </div>
 
-        {/* // )} */}
-
-        {homeMembers.data.homeMember.deleted_at ? (
-          <p>It is not possible to edit this home member</p>
-        ) : (
-          <>
-            
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name</label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                onChange={handleInputChange}
-                // defaultValue={formValues.name}
-                value={formValues.name}
-                className="input-text"
-              />
-              <p className="label-text">Choose icon</p>
-              <div className="radio-list icon-list">
-                {standardOptions.avatarIcon.map((item) => (
-                  <>
-                    <div>
-                      <input
-                        type="radio"
-                        id={item.name}
-                        name="avatar_icon"
-                        checked={formValues.avatar_icon == item.name}
-                        value={item.name}
-                        onChange={handleInputChange}
-                      />
-                      <label for={item.name}>
-                        <div className="fa-icons">
-                          <FontAwesomeIcon icon={item.icon} />
+            {homeMembers.data.homeMember.deleted_at ? (
+              <p>It is not possible to edit this home member</p>
+            ) : (
+              <>
+                <form onSubmit={handleSubmit}>
+                  <label htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    onChange={handleInputChange}
+                    value={formValues.name}
+                    className="input-text"
+                  />
+                  <p className="label-text">Choose icon</p>
+                  <div className="radio-list icon-list">
+                    {standardOptions.avatarIcon.map((item) => (
+                      <>
+                        <div>
+                          <input
+                            type="radio"
+                            id={item.name}
+                            name="avatar_icon"
+                            checked={formValues.avatar_icon == item.name}
+                            value={item.name}
+                            onChange={handleInputChange}
+                          />
+                          <label htmlFor={item.name}>
+                            <div className="fa-icons">
+                              <FontAwesomeIcon icon={item.icon} />
+                            </div>
+                          </label>
                         </div>
-                      </label>
-                    </div>
-                  </>
-                ))}
-              </div>
-              <p className="label-text">Choose color</p>
-              <div className="radio-list icon-list">
-                {standardOptions.iconColor.map((item) => (
-                  <>
-                    <div>
-                      <input
-                        type="radio"
-                        id={item.name}
-                        name="icon_color"
-                        checked={formValues.icon_color == item.name}
-                        value={item.name}
-                        onChange={handleInputChange}
-                      />
-                      <label htmlFor={item.name}>
-                        <div
-                          className="fa-icons"
-                          style={{
-                            backgroundColor: item.color,
-                          }}
-                        ></div>
-                      </label>
-                    </div>
-                  </>
-                ))}
-              </div>
-              <button type="submit">Save Changes</button>
-            </form>
-            <button
+                      </>
+                    ))}
+                  </div>
+                  <p className="label-text">Choose color</p>
+                  <div className="radio-list icon-list">
+                    {standardOptions.iconColor.map((item) => (
+                      <>
+                        <div>
+                          <input
+                            type="radio"
+                            id={item.name}
+                            name="icon_color"
+                            checked={formValues.icon_color == item.name}
+                            value={item.name}
+                            onChange={handleInputChange}
+                          />
+                          <label htmlFor={item.name}>
+                            <div
+                              className="fa-icons"
+                              style={{
+                                backgroundColor: item.color,
+                              }}
+                            ></div>
+                          </label>
+                        </div>
+                      </>
+                    ))}
+                  </div>
+                  <button type="submit">Save Changes</button>
+                </form>
+                <button
                   className="delete-button"
                   type="button"
                   onClick={handleDeleteHomeMember}
@@ -149,11 +145,12 @@ const HomeMemberEdit = ({
                   <div>
                     <FontAwesomeIcon icon="fa-trash-can" />
                   </div>
-                  <div>Delete Challenge</div>
+                  <div>Delete Home Member</div>
                 </button>
+              </>
+            )}
           </>
         )}
-        </>)}
       </main>
     </>
   );

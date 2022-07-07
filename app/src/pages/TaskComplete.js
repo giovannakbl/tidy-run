@@ -36,7 +36,8 @@ const TaskComplete = ({
   useEffect(() => {
     getTask();
     getHomeMembers();
-  }, []);
+    console.log(homeMembers.data.homeMembersList);
+  }, [homeMembers.status]);
   const getHomeMembersInfo = (allHomeMembersDetails) => {
     let result = [];
     allHomeMembersDetails.home_members.map(
@@ -154,10 +155,21 @@ const TaskComplete = ({
               </div>
 
             </div>
-
+           
             <form onSubmit={handleSubmit}>
               <p className="label-text">Who completed the task</p>
               <div className="radio-list">
+              {  
+              // !homeMembers.data.homeMembersList 
+              homeMembersInfo.length === 0
+              ? (
+                  <>
+                  <p className="label-text">You need to add home members before completing tasks</p>
+
+           
+                
+                  </>
+                  ) : (<>
                 {homeMembersInfo.map((item) => (
                   <>
                     <div className="flex-row-start">
@@ -192,6 +204,29 @@ const TaskComplete = ({
                     </div>
                   </>
                 ))}
+</>)}
+              
+<button
+            type="button"
+                className="model-task-button"
+                onClick={() => navigate("/home-member-new")}
+              >
+                <div className="model-task-circle">
+                  <div className="white">+</div>
+                </div>
+                New Home Member
+              </button>
+
+              <button
+              type="button"
+                  className="model-task-button"
+                  onClick={() => navigate("/home-members")}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-pencil" />
+                  </div>
+                  <div>Manage Home Members</div>
+                </button>
               </div>
               <label htmlFor="completed_at">Completed at</label>
               <input
@@ -206,6 +241,7 @@ const TaskComplete = ({
             </form>
           </>
         )}
+        
       </main>
     </>
   );
