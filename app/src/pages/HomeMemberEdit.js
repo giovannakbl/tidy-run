@@ -80,7 +80,7 @@ const HomeMemberEdit = ({
           <p>It is not possible to edit this home member</p>
         ) : (
           <>
-            <button onClick={handleDeleteHomeMember}>Delete Home Member</button>
+            
             <form onSubmit={handleSubmit}>
               <label htmlFor="name">Name</label>
               <input
@@ -90,6 +90,7 @@ const HomeMemberEdit = ({
                 onChange={handleInputChange}
                 // defaultValue={formValues.name}
                 value={formValues.name}
+                className="input-text"
               />
               <p className="label-text">Choose icon</p>
               <div className="radio-list icon-list">
@@ -140,6 +141,16 @@ const HomeMemberEdit = ({
               </div>
               <button type="submit">Save Changes</button>
             </form>
+            <button
+                  className="delete-button"
+                  type="button"
+                  onClick={handleDeleteHomeMember}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-trash-can" />
+                  </div>
+                  <div>Delete Challenge</div>
+                </button>
           </>
         )}
         </>)}

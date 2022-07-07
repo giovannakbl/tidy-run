@@ -48,6 +48,7 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
           type="text"
           onChange={handleInputChange}
           value={formValues.name}
+          className="input-text"
         />
         <label htmlFor="start_date">Start Date</label>
         <input
@@ -56,6 +57,7 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
           type="date"
           onChange={handleInputChange}
           value={formValues.start_date}
+          className="input-text"
         />
         <label htmlFor="end_date">End Date</label>
         <input
@@ -64,6 +66,7 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
           type="date"
           onChange={handleInputChange}
           value={formValues.end_date}
+          className="input-text"
         />
         <label htmlFor="prize">Prize</label>
         <input
@@ -72,6 +75,7 @@ const ChallengeNew = ({ auth, createChallengeRequest }) => {
           type="text"
           onChange={handleInputChange}
           value={formValues.prize}
+          className="input-text"
         />
         <button type="submit">Create challenge</button>
       </form>

@@ -24,7 +24,8 @@ const Login = ({ auth, loginRequest }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+    <main>
+      <form className="login-form" onSubmit={handleSubmit}>
         <h1>Login</h1>
         <label htmlFor="username">Email</label>
         <input
@@ -33,6 +34,7 @@ const Login = ({ auth, loginRequest }) => {
           type="email"
           onChange={handleInputChange}
           value={formValues.username}
+          className="input-text"
         />
         <label htmlFor="password">Password</label>
         <input
@@ -41,15 +43,18 @@ const Login = ({ auth, loginRequest }) => {
           type="password"
           onChange={handleInputChange}
           value={formValues.password}
+          className="input-text"
         />
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit">Login</button>
       </form>
       <button
         className="register-login-button"
         onClick={() => navigate("/register")}
-      >
-        You don't have an account? Go to Register
+      ><p className="standard-info">You don't have an account?</p>
+      <p className="custom-info">Go to Register</p>
+         
       </button>
+      </main>
     </>
   );
 };

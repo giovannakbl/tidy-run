@@ -22,8 +22,9 @@ const Register = ({ createTidyUserRequest }) => {
   return (
     <>
     <main>
+      
+      <form className="login-form" onSubmit={handleSubmit}>
       <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -42,8 +43,9 @@ const Register = ({ createTidyUserRequest }) => {
         />
         <button type="submit">Create account</button>
       </form>
-      <button onClick={() => navigate("/login")}>
-        Allready have an account? Go to Login
+      <button className="register-login-button" onClick={() => navigate("/login")}>
+      <p className="standard-info">Allready have an account?</p>
+      <p className="custom-info">Go to Login</p>
       </button>
       </main>
     </>

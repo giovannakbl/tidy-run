@@ -97,6 +97,7 @@ const TaskEdit = ({
                       checked={formValues.task_icon == item.name}
                       value={item.name}
                       onChange={handleInputChange}
+                      className="input-text"
                     />
                     <label for={item.name}>
                       <div className="fa-icons">
@@ -111,9 +112,10 @@ const TaskEdit = ({
             </div>
             <p className="label-text">Choose color</p>
             <div className="radio-list icon-list">
+              
               {standardOptions.iconColor.map((item) => (
                 <>
-                  <div>
+                  <div >
                     <input
                       type="radio"
                       id={item.name}

@@ -7,7 +7,8 @@ import {
 } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
-import Header from '../components/Header';
+import Header from "../components/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Dashboard = ({
   auth,
@@ -35,38 +36,72 @@ const Dashboard = ({
 
   return (
     <>
-    <Header></Header>
-    <main>
-      <div className="go-back-area">
-      </div>
-      <h1>User info</h1>
-      <h2>Email: {tidyUser.data.email}</h2>
-      <button
-        onClick={() => {
-          navigate("/account/email");
-        }}
-      >
-        Change your email
-      </button>
+      <Header></Header>
+      <main>
+        <div className="go-back-area"></div>
+        <h1>User info</h1>
+        <button type="button" className="logout-button" onClick={handleLogout}>Logout</button>
+        <div className="account-info-container">
+          <div>
+            <p className="label-text">Email: {tidyUser.data.email}</p>
+          </div>
+          <button
+            className="action-button"
+            type="button"
+            onClick={() => navigate("/account/email")}
+          >
+            <div>
+              <FontAwesomeIcon icon="fa-pencil" />
+            </div>
+            <div>Change your email</div>
+          </button>
+        </div>
 
-      <p>id: {tidyUser.data.id}</p>
-      <p>family: {tidyUser.data.home_name}</p>
-      <button
-        onClick={() => {
-          navigate("/account/home-name");
-        }}
-      >
-        Change your family name
-      </button>
-      <p>Password</p>
-      <button
-        onClick={() => {
-          navigate("/account/password");
-        }}
-      >
-        Change your password
-      </button>
-      <button onClick={deleteTidyUser}>Delete my account</button>
+        <div className="account-info-container">
+          <div>
+        <p className="label-text">Family Name: {tidyUser.data.home_name}</p>
+        </div>
+        <button
+          className="action-button"
+          type="button"
+          onClick={() => navigate("/account/home-name")}
+        >
+          <div>
+            <FontAwesomeIcon icon="fa-pencil" />
+          </div>
+          <div>Change your family name</div>
+        </button>
+        </div>
+        
+        <div className="account-info-container">
+        <div>
+        <p className="label-text">Password</p>
+        </div>
+
+        <button
+          className="action-button"
+          type="button"
+          onClick={() => navigate("/account/password")}
+        >
+          <div>
+            <FontAwesomeIcon icon="fa-pencil" />
+          </div>
+          <div>Change your password</div>
+        </button>
+        </div>
+       
+
+        
+        <button
+          className="delete-button"
+          type="button"
+          onClick={deleteTidyUser}
+        >
+          <div>
+            <FontAwesomeIcon icon="fa-trash-can" />
+          </div>
+          <div>Delete my account</div>
+        </button>
       </main>
     </>
   );

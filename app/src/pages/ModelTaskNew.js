@@ -35,6 +35,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
     <main>
       <div className="go-back-area">
         <button
+        type="button"
           className="go-back-button"
           onClick={() => navigate("/model-tasks")}
         >
@@ -49,6 +50,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
               type="text"
               onChange={handleInputChange}
               value={formValues.name}
+              className="input-text"
             />
             <p className="label-text">Choose icon</p>
             <div className="radio-list icon-list">
@@ -63,7 +65,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
                       value={item.name}
                       onChange={handleInputChange}
                     />
-                    <label for={item.name}>
+                    <label htmlFor={item.name}>
                       <div className="fa-icons">
                         <FontAwesomeIcon
                           icon = {item.icon}

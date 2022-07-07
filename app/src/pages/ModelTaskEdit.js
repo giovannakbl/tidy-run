@@ -73,7 +73,7 @@ const ModelTaskEdit = ({
               &#60;&#60; Go back to Model Task List
             </button>
           </div>
-          <button onClick={handleDeleteModelTask}>Delete Model Task</button>
+          
 
 
           <form onSubmit={handleSubmit}>
@@ -85,6 +85,7 @@ const ModelTaskEdit = ({
               onChange={handleInputChange}
               defaultValue={modelTasks.data.modelTask.name}
               value={formValues.name}
+              className="input-text"
             />
             <p className="label-text">Choose icon</p>
             <div className="radio-list icon-list">
@@ -158,6 +159,17 @@ const ModelTaskEdit = ({
             </div>
             <button type="submit">Save Changes</button>
           </form>
+          
+
+          <button
+                  className="delete-button"
+                  onClick={handleDeleteModelTask}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-trash-can" />
+                  </div>
+                  <div>Delete Model Task</div>
+                </button>
         </>
       )}
       </main>

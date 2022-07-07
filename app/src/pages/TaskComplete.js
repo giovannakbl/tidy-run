@@ -111,6 +111,8 @@ const TaskComplete = ({
           <>
             <div className="task-info">
               <div className="flex-row-start">
+              <div >
+              {/* <div className="full-height"> */}
                 <div
                   className="fa-icons"
                   style={{
@@ -119,7 +121,12 @@ const TaskComplete = ({
                 >
                   <FontAwesomeIcon icon={taskInfo.icon} />
                 </div>
-                <div>
+                </div>
+
+
+                <div className="flex-column-start full-width">
+                {/* <div className="middle-height task-main-text"> */}
+                <div className=" task-main-text">
                   <p
                     style={{
                       color: taskInfo.color,
@@ -128,15 +135,24 @@ const TaskComplete = ({
                     {taskInfo.name}
                   </p>
                 </div>
-              </div>
+                
+              
+                {/* <div className="middle-height task-sec-text"> */}
+                <div className=" task-sec-text">
               <p
                 style={{
                   color: taskInfo.color,
+                  
                 }}
               >
                 Difficulty: {taskInfo.difficulty}
               </p>
-              <p>Status: incomplete</p>
+              {/* <p>Status: incomplete</p> */}
+              </div>
+              </div>
+
+              </div>
+
             </div>
 
             <form onSubmit={handleSubmit}>
@@ -159,6 +175,7 @@ const TaskComplete = ({
                         }}
                         className="max-width"
                       >
+                        <div>
                         <div
                           className="fa-icons"
                           style={{
@@ -166,6 +183,7 @@ const TaskComplete = ({
                           }}
                         >
                           <FontAwesomeIcon icon={item.icon} />
+                        </div>
                         </div>
                         <div>
                           <p>{item.name}</p>
@@ -182,6 +200,7 @@ const TaskComplete = ({
                 type="date"
                 onChange={handleInputChange}
                 value={formValues.completed_at}
+                className="input-text"
               />
               <button type="submit">Complete Task</button>
             </form>

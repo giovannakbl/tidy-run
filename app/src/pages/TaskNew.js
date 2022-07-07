@@ -66,6 +66,7 @@ const TaskNew = ({
     <main>
       <div className="go-back-area">
         <button
+        type="button"
           className="go-back-button"
           onClick={() => navigate("/challenge/" + challengeId)}
         >
@@ -84,10 +85,10 @@ const TaskNew = ({
       ) : (
         <>
           <form onSubmit={handleSubmit}>
-            <ul className="radio-list">
+          <p className="label-text">Choose a task from your task models</p>
+            <div className="radio-list">
             {modelTasksInfo.map((item) => (
               <>
-              <li>
                 <input
                   type="radio"
                   id={item.id}
@@ -95,12 +96,15 @@ const TaskNew = ({
                   checked = {formValues.model_task_id == item.id}
                   value={item.id}
                   onChange={handleInputChange}
+                  className="small-margin-bottom"
                 />
-                <label for={item.id} style={{ color: 
+                <label for={item.id} 
+                style={{ color: 
                           item.color
                           
                           }}>
-                <div className="fa-icons" style={{ backgroundColor: 
+                            <div>
+                <div className="fa-icons " style={{ backgroundColor: 
                 item.color
                           
                           }}>
@@ -108,14 +112,48 @@ const TaskNew = ({
                           item.icon
                         }  />
                 </div>
-                  {item.name}<br/>
-                  Difficulty: {item.difficulty}
+                </div>
+                  {/* {item.name}<br/>
+                  Difficulty: {item.difficulty} */}
+                <div className="flex-column-start full-width">
+                  <div className="model-task-main-text">
+                  <p >{item.name}</p>
+                  </div>
+                  <div className="model-task-sec-text">
+                  <p >Difficulty: {item.difficulty}</p>
+                  </div>
+                  </div>
                 </label>
-                </li>
               </>
             ))}
-            </ul>
-            <button type="submit">Create Task</button>
+
+            
+
+
+            <button
+            type="button"
+                className="model-task-button"
+                onClick={() => navigate("/model-task-new")}
+              >
+                <div className="model-task-circle">
+                  <div className="white">+</div>
+                </div>
+                New task model
+              </button>
+
+              <button
+              type="button"
+                  className="model-task-button"
+                  onClick={() => navigate("/model-tasks")}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-pencil" />
+                  </div>
+                  <div>Manage task models</div>
+                </button>
+                </div>
+
+            <button type="submit">Add Task</button>
           </form>
 
         </>

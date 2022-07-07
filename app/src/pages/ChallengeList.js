@@ -31,16 +31,14 @@ const ChallengeList = ({
     <>
     <Header></Header>
     <main>
+      <h1>Challenges</h1>
       <button className="button-new-item"
         onClick={() => {
           navigate("/challenge-new");
         }}
-      ><div className="circle-new-item">+</div>
-        Create new Challenge
+      ><div className="circle-new-item"><p>+</p></div>
+        New Challenge
       </button>
-
-      <h1>Challenges</h1>
-      <h2>Check out your Challenges</h2>
       {challenge.loading ? (
         <p>Loading...</p>
       ) : challenge.error ? (
@@ -51,10 +49,10 @@ const ChallengeList = ({
 
           <div className="challenge-info">
           <h2>{item.name}</h2>
-          <h3>Status: {item.status}</h3>
-          <h3>Start date: {format(item.start_date)}</h3>
-          <h3>End date: {format(item.end_date)}</h3>
-          <h3>Prize: {item.prize}</h3>
+          <div className="flex-row-start"><h3 className="standard-info">Status: </h3><h3 className="custom-info">{item.status}</h3></div>
+          <div className="flex-row-start"><h3 className="standard-info">Start date: </h3><h3 className="custom-info">{format(item.start_date)}</h3></div>
+          <div className="flex-row-start"><h3 className="standard-info">End date: </h3><h3 className="custom-info">{format(item.end_date)}</h3></div>
+          <div className="flex-row-start"><h3 className="standard-info">Prize: </h3><h3 className="custom-info">{item.prize}</h3></div>
           <button onClick={() => navigate("/challenge/" + item.id)}>
               See more details
              </button>

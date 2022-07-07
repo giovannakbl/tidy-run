@@ -46,15 +46,18 @@ const HomeMemberList = ({
     <>
     <Header></Header>
     <main>
-      <button
+ 
+<h1>Home Members</h1>
+      <button className="button-new-item"
+      type="button"
         onClick={() => {
           navigate("/home-member-new");
         }}
-      >
-        Create new Home Member
+      ><div className="circle-new-item"><p>+</p></div>
+        New Home Member
       </button>
-      <h1>Home Members</h1>
-      <h2>Check out your Home Members</h2>
+      
+ 
       {homeMembers.loading ? (
         <p>Loading...</p>
       ) : homeMembers.error ? (
@@ -81,9 +84,17 @@ const HomeMemberList = ({
                         }}>{item.name}</p>
                         </div>
                     </div>
-              <button onClick={() => navigate("/home-member-edit/" + item.id)}>
-          Edit Home Member
-        </button>
+          
+        <button
+                  className="action-button"
+                  type="button"
+                  onClick={() => navigate("/home-member-edit/" + item.id)}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-pencil" />
+                  </div>
+                  <div>Edit Home Member</div>
+                </button>
                     </div>
                   </>
                 ))}

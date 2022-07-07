@@ -7,6 +7,7 @@ import {
   editChallengeRequest,
 } from "../store/Challenge/actions";
 import Header from '../components/Header';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ChallengeEdit = ({
   auth,
@@ -53,13 +54,14 @@ const ChallengeEdit = ({
         <>
           <div className="go-back-area">
             <button
+            type="button"
               className="go-back-button"
               onClick={() => navigate("/challenge/" + challengeId)}
             >
               &#60;&#60; Go back to Challenge
             </button>
           </div>
-          <button onClick={handleDeleteChallenge}>Delete Challenge</button>
+
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
             <input
@@ -69,6 +71,7 @@ const ChallengeEdit = ({
               onChange={handleInputChange}
               defaultValue={challenge.data.challenge.name}
               value={formValues.name}
+              className="input-text"
             />
             <label htmlFor="start_date">Start Date</label>
             <input
@@ -78,6 +81,7 @@ const ChallengeEdit = ({
               onChange={handleInputChange}
               defaultValue={challenge.data.challenge.start_date.split("T")[0]}
               value={formValues.start_date}
+              className="input-text"
             />
             <label htmlFor="end_date">End Date</label>
             <input
@@ -87,6 +91,7 @@ const ChallengeEdit = ({
               onChange={handleInputChange}
               defaultValue={challenge.data.challenge.end_date.split("T")[0]}
               value={formValues.end_date}
+              className="input-text"
             />
             <label htmlFor="prize">Prize</label>
             <input
@@ -96,9 +101,21 @@ const ChallengeEdit = ({
               onChange={handleInputChange}
               defaultValue={challenge.data.challenge.prize}
               value={formValues.prize}
+              className="input-text"
             />
             <button type="submit">Save Changes</button>
           </form>
+
+          <button
+                  className="delete-button"
+                  type="button"
+                  onClick={handleDeleteChallenge}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-trash-can" />
+                  </div>
+                  <div>Delete Challenge</div>
+                </button>
         </>
       )}
       </main>

@@ -47,15 +47,25 @@ const ModelTasksList = ({
     <>
       <Header></Header>
       <main>
-        <button
+        {/* <button
           onClick={() => {
             navigate("/model-task-new");
           }}
         >
           Create new Model Task
-        </button>
-        <h1>Model Tasks</h1>
-        <h2>Check out your Model Tasks</h2>
+        </button> */}
+<h1>Model Tasks</h1>
+        <button type="button" className="button-new-item"
+        onClick={() => {
+          navigate("/model-task-new");
+        }}
+      ><div className="circle-new-item"><p>+</p></div>
+        Create new Model Task
+      </button>
+
+
+
+        
         {modelTasks.loading || modelTasksInfo.length === 0 ? (
           <p>Loading...</p>
         ) : modelTasks.error ? (
@@ -95,11 +105,17 @@ const ModelTasksList = ({
                     </div>
                   </div>
 
+                 
                   <button
-                    onClick={() => navigate("/model-task-edit/" + item.id)}
-                  >
-                    Edit Model Task
-                  </button>
+                  className="action-button"
+                  type="button"
+                  onClick={() => navigate("/model-task-edit/" + item.id)}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-pencil" />
+                  </div>
+                  <div>Edit Model Task</div>
+                </button>
                 </div>
               </>
             ))}

@@ -57,6 +57,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
                 type="text"
                 onChange={handleInputChange}
                 value={formValues.name}
+                className="input-text"
               />
               <p className="label-text">Choose icon</p>
               <div className="radio-list icon-list">

@@ -13,7 +13,7 @@ const Header = ({auth, logoutRequest}) => {
   return (
     <>
     <header className="header">
-      <button onClick={handleLogout} >Logout</button>
+      {/* <button onClick={handleLogout} >Logout</button> */}
       <button onClick={() => {
            navigate("/");
           }} >Home</button>
@@ -22,13 +22,13 @@ const Header = ({auth, logoutRequest}) => {
           }} >Challenges</button>
           <button onClick={() => {
            navigate("/home-members");
-          }} >Home Members</button>
-          <button onClick={() => {
+          }} >Members</button>
+          {/* <button onClick={() => {
            navigate("/model-tasks");
-          }} >Model Tasks</button>
+          }} >Model Tasks</button> */}
            <button onClick={() => {
            navigate("/account");
-          }} >Account Settings</button>
+          }} >Account</button>
           </header>
     </>
   );
