@@ -43,7 +43,6 @@ const Challenge = ({
   }, []);
   useEffect(() => {
     getScoreBoards();
-    
   }, [challenge.data.challenge.status]);
   const [homeMembersIndex, setHomeMembersIndex] = useState({});
   const [tasksInfo, setTasksInfo] = useState([]);

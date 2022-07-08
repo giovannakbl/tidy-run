@@ -1,5 +1,6 @@
 import { ChallengeActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
 
 export const allChallengesRequest = (token) => async (dispatch) => {
   try {
@@ -13,6 +14,7 @@ export const allChallengesRequest = (token) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -27,7 +29,9 @@ async function getAllChallengesApi(token) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -45,6 +49,7 @@ export const fetchChallengeRequest =
     } catch (e) {
       dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -59,7 +64,9 @@ async function fetchChallengeApi(token, challengeId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -77,6 +84,7 @@ export const editChallengeRequest =
     } catch (e) {
       dispatch({
         type: ChallengeActionTypes.EDIT_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -92,7 +100,10 @@ async function editChallengeApi(token, challengeId, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    console.log(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -110,6 +121,7 @@ export const deleteChallengeRequest =
     } catch (e) {
       dispatch({
         type: ChallengeActionTypes.DELETE_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -124,7 +136,9 @@ async function deleteChallengeApi(token, challengeId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -140,7 +154,8 @@ export const createChallengeRequest =
       });
       return asyncResp;
     } catch (e) {
-      dispatch({ type: ChallengeActionTypes.CREATE_CHALLENGE_ERROR });
+      dispatch({ type: ChallengeActionTypes.CREATE_CHALLENGE_ERROR,
+        payload: e, });
       throw e;
     }
   };
@@ -155,7 +170,9 @@ async function createChallengeApi(token, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return await res.json();
 }
@@ -173,6 +190,7 @@ export const terminateChallengeRequest =
     } catch (e) {
       dispatch({
         type: ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -190,7 +208,9 @@ async function terminateChallengeApi(token, challengeId) {
     }
   );
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -208,6 +228,7 @@ export const reopenChallengeRequest =
     } catch (e) {
       dispatch({
         type: ChallengeActionTypes.REOPEN_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -225,7 +246,9 @@ async function reopenChallengeApi(token, challengeId) {
     }
   );
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }

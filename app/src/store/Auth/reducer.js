@@ -5,22 +5,23 @@ export const initialState = {
     token: null,
     refresh_token: null,
   },
-  errors: undefined,
+  error: undefined,
   loading: false,
+  status: 'idle',
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AuthActionTypes.LOGOUT_REQUEST:
     case AuthActionTypes.LOGIN_REQUEST: {
-      return { ...state, errors: undefined, loading: true };
+      return { ...state, loading: true, status: 'loading', error: undefined  };
     }
     case AuthActionTypes.LOGIN_SUCCESS: {
-      return { ...state, errors: undefined, loading: false, data: action.payload };
+      return { ...state, loading: false, data: action.payload, status: 'succeeded', error: undefined };
     }
     case AuthActionTypes.LOGIN_FAILURE:
       case AuthActionTypes.LOGOUT_FAILURE: {
-      return { ...state, loading: false, errors: action.payload };
+      return { ...state, loading: false, status: 'rejected', error: action.payload };
     }
     case AuthActionTypes.LOGOUT_SUCCESS: {
       return {
@@ -28,8 +29,8 @@ const authReducer = (state = initialState, action) => {
           token: null,
           refresh_token: null,
         },
-        errors: undefined,
         loading: false,
+        status: 'succeeded', error: undefined
       };
     }
     default: {

@@ -10,6 +10,7 @@ import {
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
+import Alert from "../components/alert/Alert";
 
 const HomeMemberEdit = ({
   auth,
@@ -25,10 +26,13 @@ const HomeMemberEdit = ({
     avatar_icon: undefined,
     icon_color: undefined,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
 
   useEffect(() => {
     getHomeMember();
   }, []);
+ 
   const getHomeMember = async () => {
     const fetchedHomeMember = await fetchHomeMemberRequest(
       auth.data.token,
@@ -42,16 +46,51 @@ const HomeMemberEdit = ({
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formValues);
+    if (isFormValid()) {
+      setIsSubmitted(true);
     await editHomeMemberRequest(auth.data.token, homeMemberId, formValues);
-    navigate("/home-members");
+    console.log(isSubmitted);
+    
+    // navigate("/home-members");
+    }
   };
   const handleDeleteHomeMember = async () => {
     await deleteHomeMemberRequest(auth.data.token, homeMemberId);
     navigate("/home-members");
   };
+  useEffect(() => {
+    console.log(homeMembers.status);
+  }, [homeMembers.status]);
+
+  const isFormValid = () => {
+    
+    if (
+      formValues.name === homeMembers.data.homeMember.name &&
+      formValues.avatar_icon === homeMembers.data.homeMember.avatar_icon &&
+      formValues.icon_color === homeMembers.data.homeMember.icon_color
+    ) {
+      setFormErrorMessage("No changes were made");
+      return false;
+    }
+  
+    if (formValues.name) {
+      if (formValues.name.trim().length === 0 || formValues.name === null) {
+        setFormErrorMessage("The name must have at least a number or letter");
+        console.log("Vazio");
+        return false;
+      }
+    }
+    return true;
+  };
+
+
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
@@ -59,6 +98,22 @@ const HomeMemberEdit = ({
     <>
       <Header></Header>
       <main>
+      {isSubmitted && homeMembers.status === "rejected" ? (
+          <Alert type="error" message={homeMembers.error.error_message_api} />
+        ) : null}
+        {isSubmitted && homeMembers.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Home Member " +
+              homeMembers.data.homeMember.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
         {homeMembers.loading ? (
           <p>Loading...</p>
         ) : homeMembers.error ? (
@@ -87,6 +142,7 @@ const HomeMemberEdit = ({
                     onChange={handleInputChange}
                     value={formValues.name}
                     className="input-text"
+                    required
                   />
                   <p className="label-text">Choose icon</p>
                   <div className="radio-list icon-list">
@@ -100,6 +156,7 @@ const HomeMemberEdit = ({
                             checked={formValues.avatar_icon == item.name}
                             value={item.name}
                             onChange={handleInputChange}
+                            required
                           />
                           <label htmlFor={item.name}>
                             <div className="fa-icons">
@@ -122,6 +179,7 @@ const HomeMemberEdit = ({
                             checked={formValues.icon_color == item.name}
                             value={item.name}
                             onChange={handleInputChange}
+                            required
                           />
                           <label htmlFor={item.name}>
                             <div

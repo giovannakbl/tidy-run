@@ -1,5 +1,6 @@
 import { TidyUserActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
 
 export const tidyUserRequest = (token) => async (dispatch) => {
   try {
@@ -13,6 +14,7 @@ export const tidyUserRequest = (token) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: TidyUserActionTypes.FETCH_TIDY_USER_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -28,6 +30,7 @@ async function getTidyUserApi(token) {
   });
   if (!res.ok) {
     const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
     throw errorInfo;
   }
   return res.json();
@@ -45,6 +48,7 @@ export const tidyUserEdit = (token, formValues) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: TidyUserActionTypes.EDIT_TIDY_USER_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -61,6 +65,7 @@ async function editTidyUserApi(token, formValues) {
   });
   if (!res.ok) {
     const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
     throw errorInfo;
   }
   return res.json();
@@ -94,14 +99,8 @@ async function createTidyUserApi(formValues) {
   });
   if (!res.ok) {
     const errorInfo = await res.json();
-    switch (errorInfo.status_code) {
-      case 603:
-        errorInfo.error_message = "This email is already registered in our website"
-        break;
-      default:
-        errorInfo.error_message = "Something went wrong"
-        break;
-    }
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    console.log(errorInfo);
     throw errorInfo;
   }
   return res.json();
@@ -119,6 +118,7 @@ export const deleteTidyUserRequest = (token) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: TidyUserActionTypes.DELETE_TIDY_USER_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -134,6 +134,7 @@ async function deleteTidyUserApi(token) {
   });
   if (!res.ok) {
     const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
     throw errorInfo;
   }
   return res.json();

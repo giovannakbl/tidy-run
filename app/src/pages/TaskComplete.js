@@ -7,6 +7,7 @@ import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
+import Alert from "../components/alert/Alert";
 
 const TaskComplete = ({
   auth,
@@ -29,15 +30,20 @@ const TaskComplete = ({
     updated: false,
   });
   const [homeMembersInfo, setHomeMembersInfo] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   let { taskId } = useParams();
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    // console.log(formValues);
+    setIsSubmitted(false);
+    setFormErrorMessage(undefined);
   };
   useEffect(() => {
     getTask();
     getHomeMembers();
     console.log(homeMembers.data.homeMembersList);
-  }, [homeMembers.status]);
+  }, []);
   const getHomeMembersInfo = (allHomeMembersDetails) => {
     let result = [];
     allHomeMembersDetails.home_members.map(
@@ -80,10 +86,30 @@ const TaskComplete = ({
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     try {
       await completeTaskRequest(auth.data.token, taskId, formValues);
       navigate("/challenge/" + tasks.data.task.challenge_id);
     } catch (e) {}
+  }
+  };
+
+  const isFormValid = () => {
+    if (
+      !formValues.home_member_id 
+    ) {
+      setFormErrorMessage("You must choose a home member");
+      return false;
+    }
+    if (
+      !formValues.completed_at 
+    ) {
+      setFormErrorMessage("You must fill in the completion date");
+      return false;
+    }
+   
+    return true;
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -92,6 +118,20 @@ const TaskComplete = ({
     <>
       <Header></Header>
       <main>
+      {isSubmitted && tasks.status === "rejected" && (
+          <Alert type="error" message={tasks.error.error_message_api} />
+        )}
+        {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
+          <Alert
+            type="success"
+            message={
+              "The Task was completed!"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
         <div className="go-back-area">
           <button
             className="go-back-button"
@@ -227,6 +267,7 @@ const TaskComplete = ({
                 onChange={handleInputChange}
                 value={formValues.completed_at}
                 className="input-text"
+                required
               />
               <button type="submit">Complete Task</button>
             </form>

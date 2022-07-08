@@ -1,5 +1,6 @@
 import { AuthActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
 
 export const loginRequest = (formValues) => async (dispatch) => {
   try {
@@ -13,6 +14,7 @@ export const loginRequest = (formValues) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: AuthActionTypes.LOGIN_FAILURE,
+      payload: e,
     });
     throw e;
   }
@@ -26,6 +28,11 @@ async function exampleAPI(formValues) {
       "Content-Type": "application/json",
     },
   });
+  if (!res.ok) {
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
+  }
   return res.json();
 }
 

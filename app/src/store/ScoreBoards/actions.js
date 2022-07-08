@@ -1,5 +1,7 @@
 import { ScoreBoardsActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
+
 
 export const fetchScoreBoardsRequest =
   (token, challengeId) => async (dispatch) => {
@@ -16,6 +18,7 @@ export const fetchScoreBoardsRequest =
     } catch (e) {
       dispatch({
         type: ScoreBoardsActionTypes.FETCH_SCORE_BOARDS_OF_CHALLENGE_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -33,7 +36,9 @@ async function fetchScoreBoardsApi(token, challengeId) {
     }
   );
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }

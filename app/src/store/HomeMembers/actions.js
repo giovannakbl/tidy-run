@@ -1,5 +1,6 @@
 import { HomeMembersActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
 
 export const allHomeMembersRequest = (token) => async (dispatch) => {
   try {
@@ -13,6 +14,7 @@ export const allHomeMembersRequest = (token) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -27,7 +29,9 @@ async function getAllHomeMembersApi(token) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -45,6 +49,7 @@ export const fetchHomeMemberRequest =
     } catch (e) {
       dispatch({
         type: HomeMembersActionTypes.FETCH_HOME_MEMBER_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -59,7 +64,9 @@ async function fetchHomeMemberApi(token, homeMemberId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -81,6 +88,7 @@ export const editHomeMemberRequest =
     } catch (e) {
       dispatch({
         type: HomeMembersActionTypes.EDIT_HOME_MEMBER_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -96,7 +104,9 @@ async function editHomeMemberApi(token, homeMemberId, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -114,6 +124,7 @@ export const deleteHomeMemberRequest =
     } catch (e) {
       dispatch({
         type: HomeMembersActionTypes.DELETE_HOME_MEMBER_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -128,7 +139,9 @@ async function deleteHomeMemberApi(token, homeMemberId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -144,7 +157,8 @@ export const createHomeMemberRequest =
       });
       return asyncResp;
     } catch (e) {
-      dispatch({ type: HomeMembersActionTypes.CREATE_HOME_MEMBER_ERROR });
+      dispatch({ type: HomeMembersActionTypes.CREATE_HOME_MEMBER_ERROR,
+        payload: e, });
       throw e;
     }
   };
@@ -159,7 +173,9 @@ async function createHomeMemberApi(token, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return await res.json();
 }

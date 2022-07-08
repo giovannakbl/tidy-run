@@ -10,7 +10,7 @@ import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Dashboard = ({
+const TidyUser = ({
   auth,
   tidyUser,
   tidyUserRequest,
@@ -139,4 +139,4 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(TidyUser);

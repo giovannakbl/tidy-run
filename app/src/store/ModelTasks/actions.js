@@ -1,5 +1,7 @@
 import { ModelTasksActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
+
 
 export const allModelTasksRequest = (token) => async (dispatch) => {
   try {
@@ -13,6 +15,7 @@ export const allModelTasksRequest = (token) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -27,7 +30,9 @@ async function getAllModelTasksApi(token) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -45,6 +50,7 @@ export const fetchModelTaskRequest =
     } catch (e) {
       dispatch({
         type: ModelTasksActionTypes.FETCH_MODEL_TASK_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -59,7 +65,9 @@ async function fetchModelTaskApi(token, modelTaskId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -77,6 +85,7 @@ export const editModelTaskRequest =
     } catch (e) {
       dispatch({
         type: ModelTasksActionTypes.EDIT_MODEL_TASK_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -92,7 +101,9 @@ async function editModelTaskApi(token, modelTaskId, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -110,6 +121,7 @@ export const deleteModelTaskRequest =
     } catch (e) {
       dispatch({
         type: ModelTasksActionTypes.DELETE_MODEL_TASK_ERROR,
+        payload: e,
       });
       throw e;
     }
@@ -124,7 +136,9 @@ async function deleteModelTaskApi(token, modelTaskId) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return res.json();
 }
@@ -140,7 +154,8 @@ export const createModelTaskRequest =
       });
       return asyncResp;
     } catch (e) {
-      dispatch({ type: ModelTasksActionTypes.CREATE_MODEL_TASK_ERROR });
+      dispatch({ type: ModelTasksActionTypes.CREATE_MODEL_TASK_ERROR,
+        payload: e, });
       throw e;
     }
   };
@@ -155,7 +170,9 @@ async function createModelTaskApi(token, formValues) {
     },
   });
   if (!res.ok) {
-    throw new Error("Failed HTTTP");
+    const errorInfo = await res.json();
+    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
+    throw errorInfo;
   }
   return await res.json();
 }

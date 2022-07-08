@@ -75,7 +75,7 @@ class ChallengeController extends AbstractController
         }
         $data = $request->toArray();
         if (isset($data['name']) && isset($data['start_date']) && isset($data['end_date']) && isset($data['prize'])) {
-            if ($data['start_date'] > $data['end_date']) {
+            if ($data['start_date'] > $data['end_date'] || strlen(trim($data['name'])) === 0 || strlen(trim($data['start_date'])) === 0 || strlen(trim($data['end_date'])) === 0 || strlen(trim($data['prize'])) === 0) {
                 return $this->json([
                     'status_message' => 'Bad Request'
                 ], 400);
@@ -183,20 +183,40 @@ class ChallengeController extends AbstractController
         if (isset($data['name']) || isset($data['start_date']) || isset($data['end_date']) || isset($data['prize'])) {
             try {
                 if (isset($data['name'])) {
+                    if (strlen(trim($data['name'])) === 0) {
+                        return $this->json([
+                            'status_message' => 'Bad Request'
+                        ], 400);
+                    }
                     $challenge->setName($data['name']);
                 }
                 if (isset($data['start_date'])) {
+                    if (strlen(trim($data['start_date'])) === 0) {
+                        return $this->json([
+                            'status_message' => 'Bad Request'
+                        ], 400);
+                    }
                     $startDate = new DateTime($data['start_date']);
                     $challenge->setStartDate($startDate);
                 }
                 if (isset($data['end_date'])) {
+                    if (strlen(trim($data['end_date'])) === 0) {
+                        return $this->json([
+                            'status_message' => 'Bad Request'
+                        ], 400);
+                    }
                     $endDate = new DateTime($data['end_date']);
                     $challenge->setEndDate($endDate);
                 }
                 if (isset($data['prize'])) {
+                    if (strlen(trim($data['prize'])) === 0) {
+                        return $this->json([
+                            'status_message' => 'Bad Request'
+                        ], 400);
+                    }
                     $challenge->setPrize($data['prize']);
                 }
-                if ($challenge->getStartDate() > $challenge->getEndDate()) {
+                if ($challenge->getStartDate() > $challenge->getStartDate()) {
                     return $this->json([
                         'status_message' => 'Bad Request'
                     ], 400);

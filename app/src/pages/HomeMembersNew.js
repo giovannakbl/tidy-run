@@ -6,32 +6,61 @@ import { createHomeMemberRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
+import Alert from "../components/alert/Alert";
 
-const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
-  // const initialForm = {
-  //   avatarIcon: "Dog",
-  //   iconColor: "Red",
-  // };
+const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
     avatar_icon: undefined,
     icon_color: undefined,
-
-    // avatar_icon: initialForm.avatarIcon,
-    // icon_color: initialForm.iconColor,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setIsSubmitted(false);
+    setFormErrorMessage(undefined);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     try {
-      // const result = await createHomeMemberRequest(auth.data.token, formValues);
-      // let newHomeMember = result.home_member;
       await createHomeMemberRequest(auth.data.token, formValues);
       navigate("/home-members");
     } catch (e) {}
+  }
+  };
+
+  const isFormValid = () => {
+    if (
+      !formValues.name 
+    ) {
+      setFormErrorMessage("You must fill in the field Name");
+      return false;
+    }
+ 
+      if (formValues.name.trim().length === 0 || formValues.name === null) {
+        setFormErrorMessage("The name must have at least a number or letter");
+        return false;
+      }
+    
+    if (
+      !formValues.avatar_icon 
+    ) {
+      setFormErrorMessage("You must choose an icon");
+      return false;
+    }
+    if (
+      !formValues.icon_color
+    ) {
+      setFormErrorMessage("You must choose a color");
+      return false;
+    }
+   
+    return true;
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -40,8 +69,22 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
     <>
     <Header></Header>
     <main>
+    {isSubmitted && homeMembers.status === "rejected" && (
+          <Alert type="error" message={homeMembers.error.error_message_api} />
+        )}
+        {!homeMembers.loading && isSubmitted && homeMembers.status === "succeeded" && (
+          <Alert
+            type="success"
+            message={
+              "The Home member was created!"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
     <div className="go-back-area">
-      <button className="go-back-button" onClick={() => navigate("/home-members")}>
+      <button className="go-back-button" type="button" onClick={() => navigate("/home-members")}>
       &#60;&#60; Go back to Home Members List
       </button>
       </div>
@@ -58,6 +101,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
                 onChange={handleInputChange}
                 value={formValues.name}
                 className="input-text"
+                required
               />
               <p className="label-text">Choose icon</p>
               <div className="radio-list icon-list">
@@ -68,7 +112,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
                         type="radio"
                         id={item.name}
                         name="avatar_icon"
-                        checked={formValues.avatar_icon == item.name}
+                        // checked={formValues.avatar_icon == item.name}
                         value={item.name}
                         onChange={handleInputChange}
                       />
@@ -90,7 +134,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
                         type="radio"
                         id={item.name}
                         name="icon_color"
-                        checked={formValues.icon_color == item.name}
+                        // checked={formValues.icon_color == item.name}
                         value={item.name}
                         onChange={handleInputChange}
                       />
@@ -166,6 +210,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    homeMembers: state.auth
   };
 };
 

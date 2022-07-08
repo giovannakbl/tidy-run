@@ -6,7 +6,7 @@ export const initialState = {
     email: null,
     home_name: null,
   },
-  errors: undefined,
+  error: undefined,
   loading: false,
   status: 'idle',
 };
@@ -17,20 +17,20 @@ const tidyUserReducer = (state = initialState, action) => {
     case TidyUserActionTypes.FETCH_TIDY_USER_REQUEST:
     case TidyUserActionTypes.DELETE_TIDY_USER_REQUEST:
     case TidyUserActionTypes.CREATE_TIDY_USER_REQUEST: {
-      return { ...state, errors: undefined, loading: true, status: 'loading' };
+      return { ...state, loading: true, status: 'loading', error: undefined };
     }
     case TidyUserActionTypes.EDIT_TIDY_USER_SUCCESS:
     case TidyUserActionTypes.FETCH_TIDY_USER_SUCCESS:
     case TidyUserActionTypes.DELETE_TIDY_USER_SUCCESS:
     case TidyUserActionTypes.CREATE_TIDY_USER_SUCCESS: {
-      return { ...state, loading: false, data: action.payload.tidy_user, status: 'succeeded' };
+      return { ...state, loading: false, data: action.payload.tidy_user, status: 'succeeded', error: undefined };
     }
     case TidyUserActionTypes.EDIT_TIDY_USER_ERROR:
     case TidyUserActionTypes.FETCH_TIDY_USER_ERROR:
     case TidyUserActionTypes.EDIT_TIDY_USER_ERROR:
     case TidyUserActionTypes.FETCH_TIDY_USER_ERROR:
     case TidyUserActionTypes.CREATE_TIDY_USER_ERROR: {
-      return { ...state, loading: false, errors: action.payload, status: 'rejected' };
+      return { ...state, loading: false, status: 'rejected', error: action.payload };
     }
     default: {
       return state;

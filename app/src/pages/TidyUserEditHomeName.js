@@ -5,8 +5,9 @@ import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from '../components/Header';
+import Alert from "../components/alert/Alert";
 
-const Dashboard = ({
+const TidyUserEditHomeName = ({
   auth,
   tidyUser,
   tidyUserEdit,
@@ -17,11 +18,19 @@ const Dashboard = ({
   const [formValues, setFormValues] = useState({ password: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     await tidyUserEdit(auth.data.token, formValues);
-    navigate("/account");
+    // navigate("/account");
+    }
   };
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
@@ -33,12 +42,41 @@ const Dashboard = ({
     getTidyUser();
   }, []);
 
+  const isFormValid = () => {
+    if (
+      !formValues.home_name 
+    ) {
+      setFormErrorMessage("You must inform a home name");
+      return false;
+    }
+    if (formValues.home_name.trim().length === 0 || formValues.home_name === null) {
+      setFormErrorMessage("The name must have at least a number or letter");
+      return false;
+    }
+    return true;
+  };
+
+
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
   return (
     <>
     <Header></Header>
     <main>
+    {isSubmitted && tidyUser.status === "rejected" ? (
+          <Alert type="error" message={tidyUser.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tidyUser.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "Your home name was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -87,4 +125,4 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(TidyUserEditHomeName);

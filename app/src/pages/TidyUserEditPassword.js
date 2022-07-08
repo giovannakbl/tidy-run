@@ -5,27 +5,53 @@ import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from '../components/Header';
+import Alert from "../components/alert/Alert";
 
-const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
+const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
   let navigate = useNavigate();
   const [formValues, setFormValues] = useState({ password: undefined });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     await tidyUserEdit(auth.data.token, formValues);
-    handleLogout();
+    handleLogout(); }
   };
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
   };
   const handleLogout = async () => {
-    await logoutRequest();
+    // await logoutRequest();
   };
   useEffect(() => {
     getTidyUser();
   }, []);
+
+  const isFormValid = () => {
+    if (
+      !formValues.password 
+    ) {
+      setFormErrorMessage("You must inform a valid password");
+      return false;
+    }
+    if (/\s/g.test(formValues.password)) {
+      setFormErrorMessage("The password cannot contain blank spaces");
+      return false;
+    }
+    if ((formValues.password).length < 6) {
+      setFormErrorMessage("The password must contain at least 6 characters");
+      return false;
+    }
+    return true;
+  };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
@@ -33,6 +59,20 @@ const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
     <>
     <Header></Header>
     <main>
+    {isSubmitted && tidyUser.status === "rejected" && (
+          <Alert type="error" message={tidyUser.error.error_message_api} />
+        )}
+        {isSubmitted && tidyUser.status === "succeeded" && (
+          <Alert
+            type="success"
+            message={
+              "Your password was updated"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       <div className="go-back-area">
         <button
           className="go-back-button"
@@ -65,6 +105,7 @@ const Dashboard = ({ auth, tidyUserEdit, tidyUserRequest, logoutRequest }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    tidyUser: state.tidyUser,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -78,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(TidyUserEditPassword);

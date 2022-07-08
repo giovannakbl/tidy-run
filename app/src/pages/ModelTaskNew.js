@@ -6,8 +6,10 @@ import { createModelTaskRequest } from "../store/ModelTasks/actions";
 import { standardOptions } from "../store";
 import Header from '../components/Header';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Alert from "../components/alert/Alert";
 
-const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
+
+const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
@@ -15,16 +17,59 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
     icon_color: undefined,
     difficulty: undefined,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setIsSubmitted(false);
+    setFormErrorMessage(undefined);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     try {
       const result = await createModelTaskRequest(auth.data.token, formValues);
       let newModelTask = result.model_task;
-      navigate("/model-tasks");
+      // navigate("/model-tasks");
     } catch (e) {}
+  }
+  };
+
+  const isFormValid = () => {
+    if (
+      !formValues.name 
+    ) {
+      setFormErrorMessage("You must fill in the field Name");
+      return false;
+    }
+    if (formValues.name) {
+      if (formValues.name.trim().length === 0 || formValues.name === null) {
+        setFormErrorMessage("The name must have at least a number or letter");
+        return false;
+      }
+    }
+    if (
+      !formValues.task_icon 
+    ) {
+      setFormErrorMessage("You must choose an icon");
+      return false;
+    }
+    if (
+      !formValues.icon_color
+    ) {
+      setFormErrorMessage("You must choose a color");
+      return false;
+    }
+    if (
+      !formValues.difficulty
+    ) {
+      setFormErrorMessage("You must choose a difficulty level");
+      return false;
+    }
+
+    return true;
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -33,6 +78,20 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
     <>
     <Header></Header>
     <main>
+    {isSubmitted && modelTasks.status === "rejected" && (
+          <Alert type="error" message={modelTasks.error.error_message_api} />
+        )}
+        {!modelTasks.loading && isSubmitted && modelTasks.status === "succeeded" && (
+          <Alert
+            type="success"
+            message={
+              "The Model Task was created!"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       <div className="go-back-area">
         <button
         type="button"
@@ -51,6 +110,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
               onChange={handleInputChange}
               value={formValues.name}
               className="input-text"
+              required
             />
             <p className="label-text">Choose icon</p>
             <div className="radio-list icon-list">
@@ -132,6 +192,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    modelTasks: state.modelTasks,
   };
 };
 

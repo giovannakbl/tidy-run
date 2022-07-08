@@ -8,10 +8,12 @@ import { allModelTasksRequest } from "../store/ModelTasks/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { standardOptions } from "../store";
 import Header from "../components/Header";
+import Alert from "../components/alert/Alert";
 
 const TaskNew = ({
   auth,
   modelTasks,
+  tasks,
   createTaskRequest,
   allModelTasksRequest,
 }) => {
@@ -20,6 +22,8 @@ const TaskNew = ({
   const [formValues, setFormValues] = useState({
     model_task_id: undefined,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   useEffect(() => {
     getAllModelTasks();
   }, []);
@@ -49,13 +53,29 @@ const TaskNew = ({
 
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setIsSubmitted(false);
+    setFormErrorMessage(undefined);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isFormValid()) {
+      setIsSubmitted(true);
     try {
       await createTaskRequest(auth.data.token, formValues, challengeId);
       navigate("/challenge/" + challengeId);
     } catch (e) {}
+  }
+  };
+
+  const isFormValid = () => {
+    if (
+      !formValues.model_task_id 
+    ) {
+      setFormErrorMessage("You must choose a task model");
+      return false;
+    }
+    return true;
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -64,6 +84,20 @@ const TaskNew = ({
     <>
       <Header></Header>
       <main>
+      {isSubmitted && tasks.status === "rejected" ? (
+          <Alert type="error" message={tasks.error.error_message_api} />
+        ) : null}
+        {!tasks.loading && isSubmitted && tasks.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Task was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
         <div className="go-back-area">
           <button
             type="button"
@@ -157,6 +191,7 @@ const mapStateToProps = (state) => {
   return {
     modelTasks: state.modelTasks,
     auth: state.auth,
+    tasks: state.modelTasks
   };
 };
 

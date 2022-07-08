@@ -10,6 +10,8 @@ import { standardOptions } from "../store";
 import Header from '../components/Header';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fetchModelTaskRequest } from "../store/ModelTasks/actions";
+import Alert from "../components/alert/Alert";
+
 
 const ModelTaskEdit = ({
   auth,
@@ -26,6 +28,9 @@ const ModelTaskEdit = ({
     icon_color: undefined,
     difficulty: undefined,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+
 
   useEffect(() => {
     getModelTask();
@@ -42,15 +47,44 @@ const ModelTaskEdit = ({
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formValues);
+    if (isFormValid()) {
+      setIsSubmitted(true);
     await editModelTaskRequest(auth.data.token, modelTaskId, formValues);
-    navigate("/model-tasks" );
+    // navigate("/model-tasks" );
+    }
   };
   const handleDeleteModelTask = async () => {
     await deleteModelTaskRequest(auth.data.token, modelTaskId);
     navigate("/model-tasks");
+  };
+
+  const isFormValid = () => {
+    if (modelTasks) {
+    if (
+      formValues.name === modelTasks.data.modelTask.name &&
+      formValues.task_icon === modelTasks.data.modelTask.task_icon &&
+      formValues.icon_color === modelTasks.data.modelTask.icon_color &&
+      formValues.difficulty === modelTasks.data.modelTask.difficulty
+    ) {
+      setFormErrorMessage("No changes were made");
+      return false;
+    }
+  }
+    if (formValues.name) {
+      if (formValues.name.trim().length === 0 || formValues.name === null) {
+        setFormErrorMessage("The name must have at least a number or letter");
+        console.log("Vazio");
+        return false;
+      }
+    }
+    return true;
   };
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
@@ -59,6 +93,22 @@ const ModelTaskEdit = ({
     <>
     <Header></Header>
     <main>
+    {isSubmitted && modelTasks.status === "rejected" ? (
+          <Alert type="error" message={modelTasks.error.error_message_api} />
+        ) : null}
+        {isSubmitted && modelTasks.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Task Model " +
+              modelTasks.data.modelTask.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       {modelTasks.loading ? (
         <p>Loading...</p>
       ) : modelTasks.error ? (
@@ -86,6 +136,7 @@ const ModelTaskEdit = ({
               defaultValue={modelTasks.data.modelTask.name}
               value={formValues.name}
               className="input-text"
+              required
             />
             <p className="label-text">Choose icon</p>
             <div className="radio-list icon-list">
