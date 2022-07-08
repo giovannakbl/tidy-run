@@ -40,7 +40,7 @@ const HomeMemberList = ({
     setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
 
-  if (auth.data.token == null) return <Navigate to="/login" replace />;
+  if (!auth.data.token) return <Navigate to="/login" replace />;
 
   return (
     <>

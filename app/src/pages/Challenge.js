@@ -126,7 +126,7 @@ const Challenge = ({
     await reopenChallengeRequest(auth.data.token, challengeId);
   };
 
-  if (auth.data.token == null) return <Navigate to="/login" replace />;
+  if (!auth.data.token) return <Navigate to="/login" replace />;
 
   return (
     <>

@@ -25,7 +25,7 @@ const ChallengeList = ({
     await logoutRequest();
   };
 
-  if (auth.data.token == null) return <Navigate to="/login" replace />;
+  if (!auth.data.token) return <Navigate to="/login" replace />;
 
   return (
     <>

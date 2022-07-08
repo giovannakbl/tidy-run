@@ -11,17 +11,16 @@ export const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    case AuthActionTypes.LOGOUT_REQUEST:
     case AuthActionTypes.LOGIN_REQUEST: {
-      return { ...state, loading: true };
+      return { ...state, errors: undefined, loading: true };
     }
     case AuthActionTypes.LOGIN_SUCCESS: {
-      return { ...state, loading: false, data: action.payload };
+      return { ...state, errors: undefined, loading: false, data: action.payload };
     }
-    case AuthActionTypes.LOGIN_FAILURE: {
+    case AuthActionTypes.LOGIN_FAILURE:
+      case AuthActionTypes.LOGOUT_FAILURE: {
       return { ...state, loading: false, errors: action.payload };
-    }
-    case AuthActionTypes.LOGOUT_REQUEST: {
-      return { ...state, loading: true };
     }
     case AuthActionTypes.LOGOUT_SUCCESS: {
       return {
@@ -32,9 +31,6 @@ const authReducer = (state = initialState, action) => {
         errors: undefined,
         loading: false,
       };
-    }
-    case AuthActionTypes.LOGOUT_FAILURE: {
-      return { ...state, loading: false, errors: action.payload };
     }
     default: {
       return state;

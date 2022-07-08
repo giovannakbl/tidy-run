@@ -26,6 +26,10 @@ async function getTidyUserApi(token) {
       Authorization: "Bearer " + token,
     },
   });
+  if (!res.ok) {
+    const errorInfo = await res.json();
+    throw errorInfo;
+  }
   return res.json();
 }
 
@@ -55,6 +59,10 @@ async function editTidyUserApi(token, formValues) {
       Authorization: "Bearer " + token,
     },
   });
+  if (!res.ok) {
+    const errorInfo = await res.json();
+    throw errorInfo;
+  }
   return res.json();
 }
 
@@ -70,6 +78,7 @@ export const createTidyUserRequest = (formValues) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: TidyUserActionTypes.CREATE_TIDY_USER_ERROR,
+      payload: e,
     });
     throw e;
   }
@@ -83,6 +92,18 @@ async function createTidyUserApi(formValues) {
       "Content-Type": "application/json",
     },
   });
+  if (!res.ok) {
+    const errorInfo = await res.json();
+    switch (errorInfo.status_code) {
+      case 603:
+        errorInfo.error_message = "This email is already registered in our website"
+        break;
+      default:
+        errorInfo.error_message = "Something went wrong"
+        break;
+    }
+    throw errorInfo;
+  }
   return res.json();
 }
 
@@ -111,5 +132,9 @@ async function deleteTidyUserApi(token) {
       Authorization: "Bearer " + token,
     },
   });
+  if (!res.ok) {
+    const errorInfo = await res.json();
+    throw errorInfo;
+  }
   return res.json();
 }
