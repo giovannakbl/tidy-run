@@ -6,6 +6,7 @@ import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const TidyUserEditHomeName = ({
   auth,

@@ -87,6 +87,25 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
           <p className="standard-info">Allready have an account?</p>
           <p className="custom-info">Go to Login</p>
         </button>
+        <div className="game-explanation-container">
+          <h2 className="game-explanation-title">Tidy Run</h2>
+          <p className="game-explanation-text">
+          If you share your house with family, your significant other or even with friends, I imagine you may struggle to organize and get done all the house chores. 
+          </p>
+          <p className="game-explanation-text">
+Tidy Run provides a fun way to complete the household chores in a collaborative way!
+</p>
+
+
+<h3 className="game-explanation-title">Account creation:</h3>
+
+<p className="game-explanation-text">Only one person of the house needs to create an account! The login is unified and all of the people who live with you can get access the platform with these credentials. 
+</p>
+
+<p className="game-explanation-text">
+Go ahead and create your account!
+</p>
+        </div>
       </main>
     </>
   );

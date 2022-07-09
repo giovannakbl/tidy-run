@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const Login = ({ auth, loginRequest }) => {
   const dispatch = useDispatch();

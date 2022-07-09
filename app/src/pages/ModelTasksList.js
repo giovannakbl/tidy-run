@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Spinner from "../components/spinner/Spinner";
 
 const ModelTasksList = ({
   auth,
@@ -60,7 +61,7 @@ const ModelTasksList = ({
 
         
         {modelTasks.loading || modelTasksInfo.length === 0 ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : modelTasks.error ? (
           <p>Error</p>
         ) : (

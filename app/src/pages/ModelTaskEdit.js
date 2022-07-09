@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fetchModelTaskRequest } from "../store/ModelTasks/actions";
 import Alert from "../components/alert/Alert";
 import DeleButtton from "../components/delete-button/DeleteButton";
-
+import Spinner from "../components/spinner/Spinner";
 
 const ModelTaskEdit = ({
   auth,
@@ -111,7 +111,7 @@ const ModelTaskEdit = ({
           <Alert type="error" message={formErrorMessage} />
         ) : null}
       {modelTasks.loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : modelTasks.error ? (
         <p>Error</p>
       ) : (

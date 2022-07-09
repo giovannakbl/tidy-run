@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
 import DeleButtton from "../components/delete-button/DeleteButton";
+import Spinner from "../components/spinner/Spinner";
 
 const TaskEdit = ({
   auth,
@@ -105,7 +106,7 @@ const TaskEdit = ({
           <Alert type="error" message={formErrorMessage} />
         ) : null}
       {tasks.loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : tasks.error ? (
         <p>Error</p>
       ) : (

@@ -20,9 +20,9 @@ const Header = ({auth, logoutRequest}) => {
       <button onClick={() => {
            navigate("/challenge-list");
           }} >Challenges</button>
-          <button onClick={() => {
+          {/* <button onClick={() => {
            navigate("/home-members");
-          }} >Members</button>
+          }} >Members</button> */}
           {/* <button onClick={() => {
            navigate("/model-tasks");
           }} >Model Tasks</button> */}

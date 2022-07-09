@@ -7,6 +7,7 @@ import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from '../components/Header';
 import format  from "..";
+import Spinner from "../components/spinner/Spinner";
 
 const ChallengeList = ({
   auth,
@@ -40,7 +41,8 @@ const ChallengeList = ({
         New Challenge
       </button>
       {challenge.loading ? (
-        <p>Loading...</p>
+        // <Spinner/>
+        <Spinner/>
       ) : challenge.error ? (
         <p>Error</p>
       ) : (

@@ -8,6 +8,7 @@ import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const TaskComplete = ({
   auth,
@@ -145,7 +146,7 @@ const TaskComplete = ({
         {tasks.loading ||
         homeMembers.loading ||
         !taskInfo.updated  ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : tasks.error || homeMembers.error ? (
           <p>Error</p>
         ) : (

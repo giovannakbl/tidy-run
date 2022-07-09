@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "../components/alert/Alert";
 import DeleButtton from "../components/delete-button/DeleteButton";
+import Spinner from "../components/spinner/Spinner";
 
 const ChallengeEdit = ({
   auth,
@@ -124,7 +125,7 @@ const ChallengeEdit = ({
         {challenge.loading ||
         challenge.data.challenge.start_date === undefined ||
         challenge.data.challenge.end_date === undefined ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : challenge.error && !isSubmitted ? (
           <p>Error</p>
         ) : challenge.data.challenge.status == "started" ||

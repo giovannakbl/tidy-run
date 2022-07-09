@@ -637,7 +637,79 @@ button.model-task-button {
   align-self: flex-end;
   margin-bottom: 40px;
 }
-
+.game-explanation-container {
+  background-color: var(--lightgray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 5px;
+  padding: 20px;
+  /* margin: 0 0 20px 0; */
+}
+.game-explanation-container ol {
+  align-self: flex-start;
+}
+.game-title {
+  font-size: 20px;
+  color: var(--darkpurple);
+}
+.game-explanation-title {
+  font-size: 16px;
+  color: var(--darkpurple);
+  line-height: 22px;
+  text-align: justify;
+}
+.game-explanation-title-left {
+  font-size: 16px;
+  color: var(--darkpurple);
+  line-height: 22px;
+  text-align: left;
+  align-self: flex-start;
+}
+.game-explanation-text {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: justify;
+  color: var(--darkgray);
+}
+.spinner-icon {
+  margin-top: 50px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  /* justify-content: flex-start;
+  align-content: flex-start; */
+  justify-content: space-between;
+  align-items: center;
+  
+  color: var(--mediumpurple);
+  position: relative;
+  /* background-color: var(--mediumgray); */
+}
+.fa-spinner-moving {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 40px;
+}
+.fa-spinner-fixed {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  font-size: 30px;
+}
 
  /* X-Small devices (portrait phones, less than 576px) */
  /* this is the default  */

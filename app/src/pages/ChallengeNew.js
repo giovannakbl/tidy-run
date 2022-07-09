@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { createChallengeRequest } from "../store/Challenge/actions";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
   const navigate = useNavigate();

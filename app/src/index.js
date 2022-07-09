@@ -7,11 +7,11 @@ import App from './App';
 import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { fab } from '@fortawesome/free-brands-svg-icons'
-import { faCheckSquare, faCoffee, faAngry as fasfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faCheckSquare, faCoffee, faAngry as fasfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark, faTrashCan, faQuestion, faInfo, faPeopleRoof, faBroom, faSoap, faSprayCanSparkles, faBath, faHouse } from '@fortawesome/free-solid-svg-icons'
 import { faAngry as farfaAngry } from '@fortawesome/free-regular-svg-icons'
 
 // library.add(fab, faCheckSquare, faCoffee);
-library.add( faCheckSquare, faCoffee, fasfaAngry, farfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark, faTrashCan);
+library.add( faCheckSquare, faCoffee, fasfaAngry, farfaAngry, faAppleWhole, faBell, faBicycle, faBolt, faPencil, faListCheck, faCheck, faClipboardCheck, faSquareCheck, faLockOpen, faXmark, faTrashCan, faQuestion, faInfo, faPeopleRoof, faBroom, faSoap, faSprayCanSparkles, faBath, faHouse);
 
 const container = document.getElementById('root');
 const root = createRoot(container);

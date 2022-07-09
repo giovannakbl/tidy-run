@@ -20,6 +20,8 @@ import TidyUserEditEmail from './pages/TidyUserEditEmail';
 import TidyUserEditHomeName from './pages/TidyUserEditHomeName';
 import TidyUserEditPassword from './pages/TidyUserEditPassword';
 import Register from './pages/Register';
+import GameRules from './pages/GameRules';
+import GetStarted from './pages/GetStarted';
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
       <Route path="/account/email" element={<TidyUserEditEmail />} />
       <Route path="/account/home-name" element={<TidyUserEditHomeName />} />
       <Route path="/account/password" element={<TidyUserEditPassword />} />   
+      <Route path="/game-rules" element={<GameRules />} />   
+      <Route path="/get-started" element={<GetStarted />} />
     </Routes>
   </BrowserRouter>
   );

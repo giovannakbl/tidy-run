@@ -10,6 +10,7 @@ import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DeleButtton from "../components/delete-button/DeleteButton";
+import Spinner from "../components/spinner/Spinner";
 
 
 const TidyUser = ({
@@ -93,7 +94,7 @@ const TidyUser = ({
         </button>
         </div>
 
-        <div className="account-info-container">
+        {/* <div className="account-info-container">
         <div>
         <p className="label-text">Task Models</p>
         </div>
@@ -108,7 +109,7 @@ const TidyUser = ({
           </div>
           <div>Manage task models</div>
         </button>
-        </div>
+        </div> */}
 
         <div className="delete-account-container">
         <p className="label-text">Delete your account</p>

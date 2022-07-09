@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
+import Spinner from "../components/spinner/Spinner";
 
 const HomeMemberList = ({
   auth,
@@ -59,7 +60,7 @@ const HomeMemberList = ({
       
  
       {homeMembers.loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : homeMembers.error ? (
         <p>Error</p>
       ) : (

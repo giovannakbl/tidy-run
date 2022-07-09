@@ -19,6 +19,7 @@ import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import format from "..";
+import Spinner from "../components/spinner/Spinner";
 
 const Challenge = ({
   auth,
@@ -140,7 +141,7 @@ const Challenge = ({
           </button>
         </div>
         {challenge.loading ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : challenge.error ? (
           <p>Error</p>
         ) : (
@@ -366,7 +367,7 @@ const Challenge = ({
           challenge.data.challenge.status !=
             "terminated" ? null : scoreBoards.loading ||
           Object.keys(homeMembersIndex).length === 0 || (scoreBoardsInfo).length === 0? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : scoreBoards.error ? (
           <p>Error</p>
         ) : (

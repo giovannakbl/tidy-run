@@ -7,6 +7,7 @@ import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
   const navigate = useNavigate();

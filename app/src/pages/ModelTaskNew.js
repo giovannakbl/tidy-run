@@ -7,6 +7,7 @@ import { standardOptions } from "../store";
 import Header from '../components/Header';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 
 const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Alert from "../components/alert/Alert";
 import DeleButtton from "../components/delete-button/DeleteButton";
+import Spinner from "../components/spinner/Spinner";
 
 const HomeMemberEdit = ({
   auth,
@@ -117,7 +118,7 @@ const HomeMemberEdit = ({
           <Alert type="error" message={formErrorMessage} />
         ) : null}
         {homeMembers.loading ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : homeMembers.error ? (
           <p>Error</p>
         ) : (

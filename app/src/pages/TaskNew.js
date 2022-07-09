@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { standardOptions } from "../store";
 import Header from "../components/Header";
 import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
 const TaskNew = ({
   auth,
@@ -108,7 +109,7 @@ const TaskNew = ({
           </button>
         </div>
         {modelTasks.loading ? (
-          <p>Loading...</p>
+          <Spinner/>
         ) : (
           <>
             <form onSubmit={handleSubmit}>
