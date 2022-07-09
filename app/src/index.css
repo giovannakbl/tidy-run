@@ -255,6 +255,42 @@ div.task-info {
   align-items: flex-start;
   flex-wrap: nowrap;
 }
+.flex-row-end {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: nowrap;
+  /* background-color:aqua; */
+  width: 100%;
+}
+.flex-column-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+.flex-column-end div {
+
+  margin: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.flex-column-end .delete-button-confirm {
+  margin: 0;
+  /* margin-top: 30px; */
+}
+/* .flex-column-end .delete-button {
+  margin-top: 50px;
+} */
+.confirmation-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--red);
+}
 .after-icon {
   display: flex;
   flex-direction: row;
@@ -283,6 +319,7 @@ div.task-info {
   flex-wrap: nowrap;
   width: 35%;
 }
+
 .score-board-column-start {
   display: flex;
   flex-direction: column;
@@ -502,16 +539,45 @@ button.model-task-button {
   margin-right: 10px;
 }
 .delete-button {
+  margin-top: 60px;
+  width: 120px;
+  /* width: 160px; */
+}
+.delete-button-confirm {
+  margin-top: 20px;
+  width: 140px;
+  /* width: 200px; */
+}
+.delete-button , .delete-button-confirm {
   background-color: var(--red);
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: nowrap;
+  padding-left: 15px;
+  align-self: flex-end; 
+  height: 40px;
+}
+.delete-button div, .delete-button-confirm div, .cancel-button div {
+  margin: 0 4px;
+  /* background-color: #6d23b6; */
+}
+.cancel-button {
+  background-color: var(--mediumgray);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   flex-wrap: nowrap;
   padding-left: 6px;
+  align-self: flex-end; 
+  height: 40px;
   margin-top: 20px;
-align-self: flex-end;
-}
-.delete-button div {
-  margin: 0 4px;
+  width: 120px;
+  margin-left: 10px;
 }
 .account-info-container {
   background-color: var(--lightgray);
@@ -527,6 +593,45 @@ align-self: flex-end;
 }
 .account-info-container p {
   margin: 0 0 15px 0;
+}
+.delete-account-container {
+  background-color: var(--lightgray);
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 5px;
+  padding: 0 20px;
+  margin: 0 0 -10px 0;
+  /* margin-bottom: 0 ; */
+  /* margin: 0 0 20px 0; */
+}
+.delete-account-message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 5px;
+  padding: 0 20px;
+  margin: 0 0 -50px 0;
+  
+}
+.delete-account-container p {
+  align-self: center;
+  /* color: var(--red); */
+  /* margin: 0 0 15px 0; */
+  /* margin: 0 0 -50px 0; */
+}
+.delete-account-message p {
+  color: var(--red);
+  align-self: center;
+  /* font-size: 18px;
+  font-weight: 600; */
 }
 .logout-button {
   align-self: flex-end;

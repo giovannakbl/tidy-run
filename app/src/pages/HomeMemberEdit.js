@@ -11,6 +11,7 @@ import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../components/Header";
 import Alert from "../components/alert/Alert";
+import DeleButtton from "../components/delete-button/DeleteButton";
 
 const HomeMemberEdit = ({
   auth,
@@ -28,6 +29,7 @@ const HomeMemberEdit = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const [isDeletedRequested, setIsDeletedRequested] = useState(false);
 
   useEffect(() => {
     getHomeMember();
@@ -195,16 +197,11 @@ const HomeMemberEdit = ({
                   </div>
                   <button type="submit">Save Changes</button>
                 </form>
-                <button
-                  className="delete-button"
-                  type="button"
-                  onClick={handleDeleteHomeMember}
-                >
-                  <div>
-                    <FontAwesomeIcon icon="fa-trash-can" />
-                  </div>
-                  <div>Delete Home Member</div>
-                </button>
+                <DeleButtton
+              isDeletedRequested={isDeletedRequested}
+              deleteFunction={handleDeleteHomeMember}
+              setIsDeletedRequested={setIsDeletedRequested}
+            />
               </>
             )}
           </>

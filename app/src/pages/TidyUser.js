@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -9,6 +9,8 @@ import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleButtton from "../components/delete-button/DeleteButton";
+
 
 const TidyUser = ({
   auth,
@@ -17,6 +19,7 @@ const TidyUser = ({
   deleteTidyUserRequest,
   logoutRequest,
 }) => {
+  const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   let navigate = useNavigate();
   const getTidyUser = async () => {
     await tidyUserRequest(auth.data.token);
@@ -106,17 +109,33 @@ const TidyUser = ({
           <div>Manage task models</div>
         </button>
         </div>
+
+        <div className="delete-account-container">
+        <p className="label-text">Delete your account</p>
+
+        {/* </div> */}
         
-        <button
-          className="delete-button"
-          type="button"
-          onClick={deleteTidyUser}
-        >
-          <div>
-            <FontAwesomeIcon icon="fa-trash-can" />
-          </div>
-          <div>Delete my account</div>
-        </button>
+        {isDeletedRequested ? (null) : (
+          <div className="delete-account-message">
+        <p className="label-text">This action is permanent</p>
+        </div>
+        )}
+        </div>
+        
+
+
+        <DeleButtton
+              isDeletedRequested={isDeletedRequested}
+              deleteFunction={deleteTidyUser}
+              setIsDeletedRequested={setIsDeletedRequested}
+            />
+
+
+
+
+
+        
+        
       </main>
     </>
   );

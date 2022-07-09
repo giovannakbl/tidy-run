@@ -11,6 +11,7 @@ import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
+import DeleButtton from "../components/delete-button/DeleteButton";
 
 const TaskEdit = ({
   auth,
@@ -29,6 +30,7 @@ const TaskEdit = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const [isDeletedRequested, setIsDeletedRequested] = useState(false);
 
   useEffect(() => {
     getTask();
@@ -211,15 +213,12 @@ const TaskEdit = ({
             </div>
             <button type="submit">Save Changes</button>
           </form>
-          <button
-                  className="delete-button"
-                  onClick={handleDeleteTask}
-                >
-                  <div>
-                    <FontAwesomeIcon icon="fa-trash-can" />
-                  </div>
-                  <div>Delete Task</div>
-                </button>
+          <DeleButtton
+              isDeletedRequested={isDeletedRequested}
+              deleteFunction={handleDeleteTask}
+              setIsDeletedRequested={setIsDeletedRequested}
+            />
+          
         </>
       )}
       </main>

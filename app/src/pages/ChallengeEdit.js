@@ -9,6 +9,7 @@ import {
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "../components/alert/Alert";
+import DeleButtton from "../components/delete-button/DeleteButton";
 
 const ChallengeEdit = ({
   auth,
@@ -26,15 +27,16 @@ const ChallengeEdit = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
+    setIsDeletedRequested(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (isFormValid()) {
       setIsSubmitted(true);
       const result = await editChallengeRequest(
@@ -43,11 +45,19 @@ const ChallengeEdit = ({
         formValues
       );
     }
-    // navigate("/challenge/" + challengeId);
+    navigate("/challenge/" + challengeId);
   };
   const handleDeleteChallenge = async () => {
     await deleteChallengeRequest(auth.data.token, challengeId);
+    navigate("/challenge-list");
   };
+  // useEffect(()=>{
+  //   setIsDeletedRequested(false);
+  //   console.log(isDeletedRequested);
+  // },[])
+  //   useEffect(()=>{
+  //   console.log(challenge.data.challenge);
+  // },[])
 
   const isFormValid = () => {
     if (
@@ -59,27 +69,35 @@ const ChallengeEdit = ({
       setFormErrorMessage("No changes were made");
       return false;
     }
-      if (formValues.name.trim().length === 0 || formValues.name === null) {
-        setFormErrorMessage("The name must have at least a number or letter");
-        return false;
-      }
+    if (formValues.name.trim().length === 0 || formValues.name === null) {
+      setFormErrorMessage("The name must have at least a number or letter");
+      return false;
+    }
     if (formValues.prize) {
       if (formValues.prize.trim().length === 0 || formValues.prize === null) {
         setFormErrorMessage("The prize must have at least a number or letter");
         return false;
       }
     }
-    if ((formValues.start_date && formValues.end_date && formValues.start_date > formValues.end_date) || (formValues.start_date && formValues.start_date > challenge.data.challenge.end_date) || (formValues.end_date && challenge.data.challenge.start_date > formValues.end_date)) {
+    if (
+      (formValues.start_date &&
+        formValues.end_date &&
+        formValues.start_date > formValues.end_date) ||
+      (formValues.start_date &&
+        formValues.start_date > challenge.data.challenge.end_date) ||
+      (formValues.end_date &&
+        challenge.data.challenge.start_date > formValues.end_date)
+    ) {
       setFormErrorMessage("The End date must be greater than the Start date");
-        return false;
-    } 
+      return false;
+    }
     return true;
   };
 
-  useEffect(() => {
-    console.log(challenge);
-    console.log(isSubmitted);
-  }, [challenge.status]);
+  // useEffect(() => {
+  //   console.log(challenge);
+  //   console.log(isSubmitted);
+  // }, [challenge.status]);
 
   if (!auth.data.token) return <Navigate to="/login" replace />;
 
@@ -103,13 +121,31 @@ const ChallengeEdit = ({
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-        {challenge.loading ? (
+        {challenge.loading ||
+        challenge.data.challenge.start_date === undefined ||
+        challenge.data.challenge.end_date === undefined ? (
           <p>Loading...</p>
         ) : challenge.error && !isSubmitted ? (
           <p>Error</p>
-        ) : challenge.data.challenge.status != "created" &&
-          challenge.data.challenge.status != "active" ? (
-          <h1>You cannot edit this Challenge because it has already started</h1>
+        ) : challenge.data.challenge.status == "started" ||
+          challenge.data.challenge.status == "terminated" ? (
+          challenge.data.challenge.status ==
+          "completed"(
+            <>
+              <div className="go-back-area">
+                <button
+                  type="button"
+                  className="go-back-button"
+                  onClick={() => navigate("/challenge/" + challengeId)}
+                >
+                  &#60;&#60; Go back to Challenge
+                </button>
+              </div>
+              <h1>
+                You cannot edit this Challenge because it has already started
+              </h1>
+            </>
+          )
         ) : (
           <>
             <div className="go-back-area">
@@ -170,16 +206,11 @@ const ChallengeEdit = ({
               <button type="submit">Save Changes</button>
             </form>
 
-            <button
-              className="delete-button"
-              type="button"
-              onClick={handleDeleteChallenge}
-            >
-              <div>
-                <FontAwesomeIcon icon="fa-trash-can" />
-              </div>
-              <div>Delete Challenge</div>
-            </button>
+            <DeleButtton
+              isDeletedRequested={isDeletedRequested}
+              deleteFunction={handleDeleteChallenge}
+              setIsDeletedRequested={setIsDeletedRequested}
+            />
           </>
         )}
       </main>

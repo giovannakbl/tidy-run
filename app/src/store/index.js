@@ -8,7 +8,9 @@ import { tasksReducer } from "./Tasks/reducer";
 import { tidyUserReducer } from "./TidyUser/reducer";
 import { scoreBoardsReducer } from "./ScoreBoards/reducer";
 
-export const baseURL = "http://localhost:8000";
+// export const baseURL = "http://localhost:8000";
+export const baseURL = "http://192.168.88.110:8000";
+
 
 export const standardOptions = {
   taskIcon: [
