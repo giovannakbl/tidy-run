@@ -23,7 +23,7 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     e.preventDefault();
     if (isFormValid()) {
       setIsSubmitted(true);
-    await tidyUserEdit(auth.data.token, formValues);
+    await tidyUserEdit(formValues);
     handleLogout(); }
   };
   const getTidyUser = async () => {
