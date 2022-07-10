@@ -20,13 +20,19 @@ const ChallengeList = ({
     getAllChallenges();
   }, []);
   const getAllChallenges = async () => {
-    await allChallengesRequest(auth.data.token);
+    await allChallengesRequest();
   };
   const handleLogout = async () => {
     await logoutRequest();
   };
+  useEffect(() => {
+    console.log(auth);
+  }, [auth.status]);
+  useEffect(()=>{
+    console.log(challenge);
+  },[challenge.loading]);
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

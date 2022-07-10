@@ -36,14 +36,12 @@ const TaskComplete = ({
   let { taskId } = useParams();
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    // console.log(formValues);
     setIsSubmitted(false);
     setFormErrorMessage(undefined);
   };
   useEffect(() => {
     getTask();
     getHomeMembers();
-    console.log(homeMembers.data.homeMembersList);
   }, []);
   const getHomeMembersInfo = (allHomeMembersDetails) => {
     let result = [];
@@ -78,11 +76,11 @@ const TaskComplete = ({
     return result;
   };
   const getTask = async () => {
-    const taskDetails = await fetchTaskRequest(auth.data.token, taskId);
+    const taskDetails = await fetchTaskRequest(taskId);
     setTaskInfo(getTaskInfo(taskDetails));
   };
   const getHomeMembers = async () => {
-    const allHomeMembersDetails = await allHomeMembersRequest(auth.data.token);
+    const allHomeMembersDetails = await allHomeMembersRequest();
     setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
   const handleSubmit = async (e) => {
@@ -90,7 +88,7 @@ const TaskComplete = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     try {
-      await completeTaskRequest(auth.data.token, taskId, formValues);
+      await completeTaskRequest(taskId, formValues);
       navigate("/challenge/" + tasks.data.task.challenge_id);
     } catch (e) {}
   }
@@ -113,7 +111,7 @@ const TaskComplete = ({
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

@@ -37,7 +37,7 @@ const TaskEdit = ({
     getTask();
   }, []);
   const getTask = async () => {
-    const fetchedTask = await fetchTaskRequest(auth.data.token, taskId);
+    const fetchedTask = await fetchTaskRequest(taskId);
     console.log(fetchedTask);
     setFormValues({
       name: fetchedTask.task.name,
@@ -55,28 +55,16 @@ const TaskEdit = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isFormValid()) {
-    await editTaskRequest(auth.data.token, taskId, formValues);
-    navigate("/challenge/" + tasks.data.task.challenge_id);
+      setIsSubmitted(true);
+    await editTaskRequest(taskId, formValues);
     }
   };
   const handleDeleteTask = async () => {
-    await deleteTaskRequest(auth.data.token, taskId);
+    await deleteTaskRequest(taskId);
     navigate("/challenge/" + tasks.data.task.challenge_id);
   };
 
   const isFormValid = () => {
-    if (tasks) {
-    if (
-      formValues.name === tasks.data.task.name &&
-      formValues.task_icon === tasks.data.task.task_icon &&
-      formValues.icon_color === tasks.data.task.icon_color &&
-      formValues.difficulty === tasks.data.task.difficulty
-    ) {
-      setFormErrorMessage("No changes were made");
-      return false;
-    }
-  }
-    
       if (formValues.name.trim().length === 0 || formValues.name === null || formValues.name === undefined) {
         setFormErrorMessage("The name must have at least a number or letter");
         return false;
@@ -84,8 +72,8 @@ const TaskEdit = ({
     
     return true;
   };
-
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

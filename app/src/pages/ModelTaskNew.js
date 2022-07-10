@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -6,11 +6,12 @@ import { createModelTaskRequest } from "../store/ModelTasks/actions";
 import { standardOptions } from "../store";
 import Header from '../components/Header';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { tidyUserRequest } from "../store/TidyUser/actions";
 import Alert from "../components/alert/Alert";
 import Spinner from "../components/spinner/Spinner";
 
 
-const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
+const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidyUserRequest }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
@@ -20,6 +21,12 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const getTidyUser = async () => {
+    await tidyUserRequest();
+  };
+  useEffect(() => {
+    getTidyUser();
+  }, []);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(formValues);
@@ -31,9 +38,9 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
     if (isFormValid()) {
       setIsSubmitted(true);
     try {
-      const result = await createModelTaskRequest(auth.data.token, formValues);
+      const result = await createModelTaskRequest(formValues);
       let newModelTask = result.model_task;
-      // navigate("/model-tasks");
+      navigate("/model-tasks");
     } catch (e) {}
   }
   };
@@ -73,7 +80,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -193,6 +200,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    tidyUser: state.tidyUser,
     modelTasks: state.modelTasks,
   };
 };
@@ -201,6 +209,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       createModelTaskRequest,
+      tidyUserRequest,
     },
     dispatch
   );

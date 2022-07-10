@@ -37,7 +37,7 @@ const ModelTaskEdit = ({
     getModelTask();
   }, []);
   const getModelTask = async () => {
-    const fetchedModelTask = await fetchModelTaskRequest(auth.data.token, modelTaskId);
+    const fetchedModelTask = await fetchModelTaskRequest(modelTaskId);
     // console.log(fetchedModelTask);
     setFormValues({
       name: fetchedModelTask.model_task.name,
@@ -57,38 +57,28 @@ const ModelTaskEdit = ({
     console.log(formValues);
     if (isFormValid()) {
       setIsSubmitted(true);
-    await editModelTaskRequest(auth.data.token, modelTaskId, formValues);
+    await editModelTaskRequest(modelTaskId, formValues);
     // navigate("/model-tasks" );
     }
   };
   const handleDeleteModelTask = async () => {
-    await deleteModelTaskRequest(auth.data.token, modelTaskId);
+    await deleteModelTaskRequest(modelTaskId);
     navigate("/model-tasks");
   };
 
   const isFormValid = () => {
-    if (modelTasks) {
-    if (
-      formValues.name === modelTasks.data.modelTask.name &&
-      formValues.task_icon === modelTasks.data.modelTask.task_icon &&
-      formValues.icon_color === modelTasks.data.modelTask.icon_color &&
-      formValues.difficulty === modelTasks.data.modelTask.difficulty
-    ) {
-      setFormErrorMessage("No changes were made");
-      return false;
-    }
-  }
+    
+    
     if (formValues.name) {
       if (formValues.name.trim().length === 0 || formValues.name === null) {
         setFormErrorMessage("The name must have at least a number or letter");
-        console.log("Vazio");
         return false;
       }
     }
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -134,7 +124,6 @@ const ModelTaskEdit = ({
               name="name"
               type="text"
               onChange={handleInputChange}
-              defaultValue={modelTasks.data.modelTask.name}
               value={formValues.name}
               className="input-text"
               required

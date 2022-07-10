@@ -37,12 +37,12 @@ const ModelTasksList = ({
     return result;
   };
   const getAllModelTasks = async () => {
-    const allModelTasksDetails = await allModelTasksRequest(auth.data.token);
+    const allModelTasksDetails = await allModelTasksRequest();
     setModelTasksInfo(getModelTasksInfo(allModelTasksDetails));
   };
 
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

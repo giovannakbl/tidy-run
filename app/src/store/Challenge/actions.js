@@ -1,254 +1,137 @@
 import { ChallengeActionTypes } from "./types";
 import { baseURL } from "..";
 import { getErrorMessageApi } from "..";
+import api from "../../services/api";
 
-export const allChallengesRequest = (token) => async (dispatch) => {
+export const allChallengesRequest = () => async (dispatch) => {
   try {
     dispatch({ type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_REQUEST });
-    const asyncResp = await getAllChallengesApi(token);
+    const challengesRes = await api.get('/v1/challenges')
     dispatch({
       type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_SUCCESS,
-      payload: asyncResp,
+      payload: challengesRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return challengesRes.data;
+  } catch (err) {
     dispatch({
       type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_ERROR,
-      payload: e,
+      payload: err,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function getAllChallengesApi(token) {
-  const res = await fetch(baseURL + "/api/v1/challenges", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
-
 export const fetchChallengeRequest =
-  (token, challengeId) => async (dispatch) => {
+  (challengeId) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.FETCH_CHALLENGE_REQUEST });
-      const asyncResp = await fetchChallengeApi(token, challengeId);
+      const challengesRes = await api.get(`/v1/challenges/${challengeId}`);
       dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function fetchChallengeApi(token, challengeId) {
-  const res = await fetch(baseURL + "/api/v1/challenges/" + challengeId, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const editChallengeRequest =
-  (token, challengeId, formValues) => async (dispatch) => {
+  (challengeId, formValues) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.EDIT_CHALLENGE_REQUEST });
-      const asyncResp = await editChallengeApi(token, challengeId, formValues);
+      const challengesRes = await api.put(`/v1/challenges/${challengeId}`, formValues);
       dispatch({
         type: ChallengeActionTypes.EDIT_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({
         type: ChallengeActionTypes.EDIT_CHALLENGE_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function editChallengeApi(token, challengeId, formValues) {
-  const res = await fetch(baseURL + "/api/v1/challenges/" + challengeId, {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    console.log(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const deleteChallengeRequest =
-  (token, challengeId) => async (dispatch) => {
+  (challengeId) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.DELETE_CHALLENGE_REQUEST });
-      const asyncResp = await deleteChallengeApi(token, challengeId);
+      const challengesRes = await api.delete(`/v1/challenges/${challengeId}`);
       dispatch({
         type: ChallengeActionTypes.DELETE_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({
         type: ChallengeActionTypes.DELETE_CHALLENGE_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
 
-async function deleteChallengeApi(token, challengeId) {
-  const res = await fetch(baseURL + "/api/v1/challenges/" + challengeId, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const createChallengeRequest =
-  (token, formValues) => async (dispatch) => {
+  (formValues) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.CREATE_CHALLENGE_REQUEST });
-      const asyncResp = await createChallengeApi(token, formValues);
+      const challengesRes = await api.post(`/v1/challenges`, formValues);
       dispatch({
         type: ChallengeActionTypes.CREATE_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({ type: ChallengeActionTypes.CREATE_CHALLENGE_ERROR,
-        payload: e, });
-      throw e;
+        payload: err, });
+      throw err;
     }
   };
-
-async function createChallengeApi(token, formValues) {
-  const res = await fetch(baseURL + "/api/v1/challenges", {
-    method: "POST",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return await res.json();
-}
 
 export const terminateChallengeRequest =
-  (token, challengeId) => async (dispatch) => {
+  (challengeId) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.TERMINATE_CHALLENGE_REQUEST });
-      const asyncResp = await terminateChallengeApi(token, challengeId);
+      const challengesRes = await api.put( `/v1/challenges/terminate/${challengeId}`);
       dispatch({
         type: ChallengeActionTypes.TERMINATE_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({
         type: ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
 
-async function terminateChallengeApi(token, challengeId) {
-  const res = await fetch(
-    baseURL + "/api/v1/challenges/terminate/" + challengeId,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const reopenChallengeRequest =
-  (token, challengeId) => async (dispatch) => {
+  (challengeId) => async (dispatch) => {
     try {
       dispatch({ type: ChallengeActionTypes.REOPEN_CHALLENGE_REQUEST });
-      const asyncResp = await reopenChallengeApi(token, challengeId);
+      const challengesRes = await api.put( `/v1/challenges/reopen/${challengeId}`);
       dispatch({
         type: ChallengeActionTypes.REOPEN_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: challengesRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return challengesRes.data;
+    } catch (err) {
       dispatch({
         type: ChallengeActionTypes.REOPEN_CHALLENGE_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
 
-async function reopenChallengeApi(token, challengeId) {
-  const res = await fetch(
-    baseURL + "/api/v1/challenges/reopen/" + challengeId,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}

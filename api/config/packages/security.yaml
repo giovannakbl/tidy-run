@@ -21,12 +21,8 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-        api_token_refresh:
-            pattern: ^/api/token/refresh
-            stateless: true
-            refresh_jwt: ~
             
+
         api:
             pattern:   ^/api
             stateless: true
@@ -40,6 +36,14 @@ security:
                 check_path: /api/token/refresh # or, you may use the `api_refresh_token` route name
             logout:
                 path: api_token_invalidate
+                delete_cookies:
+                    refresh_token:
+                        path: /
+                        samesite: lax
+                        domain: localhost                 # default value
+                        # http_only: true              # default value
+                        # secure: true                 # default value
+                        # remove_token_from_body: true # default value
 
         main:
             lazy: true

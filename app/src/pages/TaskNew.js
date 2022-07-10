@@ -48,7 +48,7 @@ const TaskNew = ({
     return result;
   };
   const getAllModelTasks = async () => {
-    const allModelTasksDetails = await allModelTasksRequest(auth.data.token);
+    const allModelTasksDetails = await allModelTasksRequest();
     setModelTasksInfo(getModelTasksInfo(allModelTasksDetails));
   };
 
@@ -63,7 +63,7 @@ const TaskNew = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     try {
-      await createTaskRequest(auth.data.token, formValues, challengeId);
+      await createTaskRequest(formValues, challengeId);
       navigate("/challenge/" + challengeId);
     } catch (e) {}
   }
@@ -79,7 +79,7 @@ const TaskNew = ({
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -92,7 +92,7 @@ const TaskNew = ({
           <Alert
             type="success"
             message={
-              "The Task was updated!"
+              "The Task was created!"
             }
           />
         ) : null}

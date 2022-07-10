@@ -37,11 +37,11 @@ const HomeMemberList = ({
     return result;
   };
   const getAllHomeMembers = async () => {
-    const allHomeMembersDetails = await allHomeMembersRequest(auth.data.token);
+    const allHomeMembersDetails = await allHomeMembersRequest();
     setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

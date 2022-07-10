@@ -5,18 +5,21 @@ import { bindActionCreators } from "redux";
 import {
   deleteChallengeRequest,
   editChallengeRequest,
+  fetchChallengeRequest
 } from "../store/Challenge/actions";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Alert from "../components/alert/Alert";
 import DeleButtton from "../components/delete-button/DeleteButton";
 import Spinner from "../components/spinner/Spinner";
+import format from "..";
 
 const ChallengeEdit = ({
   auth,
   challenge,
   editChallengeRequest,
   deleteChallengeRequest,
+  fetchChallengeRequest
 }) => {
   let { challengeId } = useParams();
   const navigate = useNavigate();
@@ -26,6 +29,18 @@ const ChallengeEdit = ({
     end_date: undefined,
     prize: undefined,
   });
+  useEffect(() => {
+    getChallenge();
+  }, []);
+  const getChallenge = async () => {
+    const fetchedChallenge = await fetchChallengeRequest(challengeId);
+    setFormValues({
+      name: fetchedChallenge.challenge.name,
+      start_date: fetchedChallenge.challenge.start_date.split("T")[0],
+      end_date: fetchedChallenge.challenge.end_date.split("T")[0],
+      prize: fetchedChallenge.challenge.prize,
+    });
+  };
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const [isDeletedRequested, setIsDeletedRequested] = useState(false);
@@ -41,35 +56,18 @@ const ChallengeEdit = ({
     if (isFormValid()) {
       setIsSubmitted(true);
       const result = await editChallengeRequest(
-        auth.data.token,
         challengeId,
         formValues
       );
-    }
-    navigate("/challenge/" + challengeId);
+      navigate("/challenge/" + challengeId);
+    } 
   };
   const handleDeleteChallenge = async () => {
-    await deleteChallengeRequest(auth.data.token, challengeId);
+    await deleteChallengeRequest(challengeId);
     navigate("/challenge-list");
   };
-  // useEffect(()=>{
-  //   setIsDeletedRequested(false);
-  //   console.log(isDeletedRequested);
-  // },[])
-  //   useEffect(()=>{
-  //   console.log(challenge.data.challenge);
-  // },[])
 
   const isFormValid = () => {
-    if (
-      !formValues.name &&
-      !formValues.start_date &&
-      !formValues.end_date &&
-      !formValues.prize
-    ) {
-      setFormErrorMessage("No changes were made");
-      return false;
-    }
     if (formValues.name.trim().length === 0 || formValues.name === null) {
       setFormErrorMessage("The name must have at least a number or letter");
       return false;
@@ -81,13 +79,8 @@ const ChallengeEdit = ({
       }
     }
     if (
-      (formValues.start_date &&
-        formValues.end_date &&
-        formValues.start_date > formValues.end_date) ||
-      (formValues.start_date &&
-        formValues.start_date > challenge.data.challenge.end_date) ||
-      (formValues.end_date &&
-        challenge.data.challenge.start_date > formValues.end_date)
+      
+        formValues.start_date > formValues.end_date
     ) {
       setFormErrorMessage("The End date must be greater than the Start date");
       return false;
@@ -95,12 +88,7 @@ const ChallengeEdit = ({
     return true;
   };
 
-  // useEffect(() => {
-  //   console.log(challenge);
-  //   console.log(isSubmitted);
-  // }, [challenge.status]);
-
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -128,9 +116,9 @@ const ChallengeEdit = ({
           <Spinner/>
         ) : challenge.error && !isSubmitted ? (
           <p>Error</p>
-        ) : challenge.data.challenge.status == "started" ||
-          challenge.data.challenge.status == "terminated" ? (
-          challenge.data.challenge.status ==
+        ) : challenge.data.challenge.status === "started" ||
+          challenge.data.challenge.status === "terminated" ? (
+          challenge.data.challenge.status ===
           "completed"(
             <>
               <div className="go-back-area">
@@ -231,6 +219,7 @@ const mapDispatchToProps = (dispatch) => {
     {
       editChallengeRequest,
       deleteChallengeRequest,
+      fetchChallengeRequest
     },
     dispatch
   );

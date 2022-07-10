@@ -89,25 +89,24 @@ const Challenge = ({
     return result;
   };
   const getChallenge = async () => {
-    await fetchChallengeRequest(auth.data.token, challengeId);
+    await fetchChallengeRequest(challengeId);
   };
 
   const getTasksInChallenge = async () => {
     const allTasksDetails = await fetchTasksInChallengeRequest(
-      auth.data.token,
       challengeId
     );
     setTasksInfo(getTasksInfo(allTasksDetails));
   };
   const getHomeMembers = async () => {
-    const allHomeMembersDetails = await allHomeMembersRequest(auth.data.token);
+    const allHomeMembersDetails = await allHomeMembersRequest();
     setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
   };
   const getScoreBoards = async () => {
-    const res = await fetchChallengeRequest(auth.data.token, challengeId);
+    const res = await fetchChallengeRequest(challengeId);
     const challengeStatus = res.challenge.status;
     if (challengeStatus == "completed" || challengeStatus == "terminated") {
-      const allScoreBoardsDetails = await fetchScoreBoardsRequest(auth.data.token, challengeId);
+      const allScoreBoardsDetails = await fetchScoreBoardsRequest(challengeId);
       setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
     } else {
       setScoreBoardsInfo([]);
@@ -115,18 +114,18 @@ const Challenge = ({
     
   };
   const removeCompletionTask = async (taskId) => {
-    await removeCompletionTaskRequest(auth.data.token, taskId);
+    await removeCompletionTaskRequest(taskId);
     getChallenge();
     getTasksInChallenge();
   };
   const terminateChallenge = async () => {
-    await terminateChallengeRequest(auth.data.token, challengeId);
+    await terminateChallengeRequest(challengeId);
   };
   const reopenChallenge = async () => {
-    await reopenChallengeRequest(auth.data.token, challengeId);
+    await reopenChallengeRequest(challengeId);
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

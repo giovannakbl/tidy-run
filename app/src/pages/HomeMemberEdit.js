@@ -38,7 +38,6 @@ const HomeMemberEdit = ({
  
   const getHomeMember = async () => {
     const fetchedHomeMember = await fetchHomeMemberRequest(
-      auth.data.token,
       homeMemberId
     );
     setFormValues({
@@ -58,31 +57,21 @@ const HomeMemberEdit = ({
     console.log(formValues);
     if (isFormValid()) {
       setIsSubmitted(true);
-    await editHomeMemberRequest(auth.data.token, homeMemberId, formValues);
+    await editHomeMemberRequest(homeMemberId, formValues);
     console.log(isSubmitted);
     
     // navigate("/home-members");
     }
   };
   const handleDeleteHomeMember = async () => {
-    await deleteHomeMemberRequest(auth.data.token, homeMemberId);
+    await deleteHomeMemberRequest(homeMemberId);
     navigate("/home-members");
   };
-  useEffect(() => {
-    console.log(homeMembers.status);
-  }, [homeMembers.status]);
+
 
   const isFormValid = () => {
     
-    if (
-      formValues.name === homeMembers.data.homeMember.name &&
-      formValues.avatar_icon === homeMembers.data.homeMember.avatar_icon &&
-      formValues.icon_color === homeMembers.data.homeMember.icon_color
-    ) {
-      setFormErrorMessage("No changes were made");
-      return false;
-    }
-  
+    
     if (formValues.name) {
       if (formValues.name.trim().length === 0 || formValues.name === null) {
         setFormErrorMessage("The name must have at least a number or letter");
@@ -95,7 +84,7 @@ const HomeMemberEdit = ({
 
 
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

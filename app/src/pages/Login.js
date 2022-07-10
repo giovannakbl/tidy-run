@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginRequest } from "../store/Auth/actions";
@@ -22,11 +22,12 @@ const Login = ({ auth, loginRequest }) => {
     e.preventDefault();
       setIsSubmitted(true);
       await loginRequest(formValues);
-      setIsSubmitted(true);
   };
-  
+  // useEffect(()=>{
+  //   console.log(auth);
+  // },[auth.loading]);
 
-  if (auth.data.token) return <Navigate to="/" replace />;
+  if (!auth.loading && auth.authenticated) return <Navigate to="/" replace />;
 
   return (
     <>

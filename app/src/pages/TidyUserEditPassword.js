@@ -27,7 +27,7 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     handleLogout(); }
   };
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   const handleLogout = async () => {
     // await logoutRequest();
@@ -54,7 +54,7 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

@@ -30,12 +30,12 @@ const TidyUserEditEmail = ({
     e.preventDefault();
     if (isFormValid()) {
       setIsSubmitted(true);
-    await tidyUserEdit(auth.data.token, formValues);
-    handleLogout();
+    await tidyUserEdit(formValues);
+    // handleLogout();
     }
   };
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   const handleLogout = async () => {
     await logoutRequest();
@@ -60,7 +60,7 @@ const TidyUserEditEmail = ({
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

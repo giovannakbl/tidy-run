@@ -8,16 +8,16 @@ import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "../components/spinner/Spinner";
 
-const GameRules = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
+const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
   let navigate = useNavigate();
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   useEffect(() => {
     getTidyUser();
   }, []);
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

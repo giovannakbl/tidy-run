@@ -2,14 +2,13 @@ gesdinet_jwt_refresh_token:
     refresh_token_class: App\Entity\RefreshToken
     ttl: 2592000 # time in seconds
     ttl_update: false
+    single_use: true
     token_parameter_name: refresh_token
-    return_expiration: true
-    return_expiration_parameter_name: refresh_token_expiration
-    # cookie:
-    #   enabled: true
-    #   same_site: lax               # default value
-    #   path: /                      # default value
-    #   domain: null                 # default value
-    #   http_only: true              # default value
-    #   secure: true                 # default value
-    #   remove_token_from_body: true # default value
+    cookie:
+      enabled: true
+      same_site: lax              # default value
+      path: /                     # default value
+      domain: localhost                 # default value
+      http_only: true              # default value
+      secure: true                 # default value
+      remove_token_from_body: true # default value

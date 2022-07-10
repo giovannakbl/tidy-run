@@ -11,17 +11,14 @@ import Spinner from "../components/spinner/Spinner";
 const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
   let navigate = useNavigate();
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
-  };
-  const handleLogout = async () => {
-    await logoutRequest();
+    await tidyUserRequest();
   };
 
   useEffect(() => {
     getTidyUser();
   }, []);
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

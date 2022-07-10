@@ -1,4 +1,4 @@
-import styles from "./Spinner.module.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Spinner() {

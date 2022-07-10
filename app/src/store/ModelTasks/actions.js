@@ -1,178 +1,97 @@
 import { ModelTasksActionTypes } from "./types";
 import { baseURL } from "..";
 import { getErrorMessageApi } from "..";
+import { applyMiddleware } from "@reduxjs/toolkit";
+import api from "../../services/api";
 
-
-export const allModelTasksRequest = (token) => async (dispatch) => {
+export const allModelTasksRequest = () => async (dispatch) => {
   try {
     dispatch({ type: ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_REQUEST });
-    const asyncResp = await getAllModelTasksApi(token);
+    const modelTasksRes = await api.get(`/v1/model_tasks`);
     dispatch({
       type: ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_SUCCESS,
-      payload: asyncResp,
+      payload: modelTasksRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return modelTasksRes.data;
+  } catch (err) {
     dispatch({
       type: ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_ERROR,
-      payload: e,
+      payload: err,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function getAllModelTasksApi(token) {
-  const res = await fetch(baseURL + "/api/v1/model_tasks", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
-
 export const fetchModelTaskRequest =
-  (token, modelTaskId) => async (dispatch) => {
+  (modelTaskId) => async (dispatch) => {
     try {
       dispatch({ type: ModelTasksActionTypes.FETCH_MODEL_TASK_REQUEST });
-      const asyncResp = await fetchModelTaskApi(token, modelTaskId);
+      const modelTasksRes = await api.get(`/v1/model_tasks/${modelTaskId}`);
       dispatch({
         type: ModelTasksActionTypes.FETCH_MODEL_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: modelTasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return modelTasksRes.data;
+    } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.FETCH_MODEL_TASK_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function fetchModelTaskApi(token, modelTaskId) {
-  const res = await fetch(baseURL + "/api/v1/model_tasks/" + modelTaskId, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const editModelTaskRequest =
-  (token, modelTaskId, formValues) => async (dispatch) => {
+  ( modelTaskId, formValues) => async (dispatch) => {
     try {
       dispatch({ type: ModelTasksActionTypes.EDIT_MODEL_TASK_REQUEST });
-      const asyncResp = await editModelTaskApi(token, modelTaskId, formValues);
+      const modelTasksRes = await api.put(`/v1/model_tasks/${modelTaskId}`, formValues);
       dispatch({
         type: ModelTasksActionTypes.EDIT_MODEL_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: modelTasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return modelTasksRes.data;
+    } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.EDIT_MODEL_TASK_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function editModelTaskApi(token, modelTaskId, formValues) {
-  const res = await fetch(baseURL + "/api/v1/model_tasks/" + modelTaskId, {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const deleteModelTaskRequest =
-  (token, modelTaskId) => async (dispatch) => {
+  (modelTaskId) => async (dispatch) => {
     try {
       dispatch({ type: ModelTasksActionTypes.DELETE_MODEL_TASK_REQUEST });
-      const asyncResp = await deleteModelTaskApi(token, modelTaskId);
+      const modelTasksRes = await api.delete(`/v1/model_tasks/${modelTaskId}`);
       dispatch({
         type: ModelTasksActionTypes.DELETE_MODEL_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: modelTasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return modelTasksRes.data;
+    } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.DELETE_MODEL_TASK_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function deleteModelTaskApi(token, modelTaskId) {
-  const res = await fetch(baseURL + "/api/v1/model_tasks/" + modelTaskId, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const createModelTaskRequest =
-  (token, formValues) => async (dispatch) => {
+  (formValues) => async (dispatch) => {
     try {
       dispatch({ type: ModelTasksActionTypes.CREATE_MODEL_TASK_REQUEST });
-      const asyncResp = await createModelTaskApi(token, formValues);
+      const modelTasksRes = await api.post(`/v1/model_tasks`, formValues);
       dispatch({
         type: ModelTasksActionTypes.CREATE_MODEL_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: modelTasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return modelTasksRes.data;
+    } catch (err) {
       dispatch({ type: ModelTasksActionTypes.CREATE_MODEL_TASK_ERROR,
-        payload: e, });
-      throw e;
+        payload: err, });
+      throw err;
     }
   };
-
-async function createModelTaskApi(token, formValues) {
-  const res = await fetch(baseURL + "/api/v1/model_tasks", {
-    method: "POST",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return await res.json();
-}

@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createHomeMemberRequest } from "../store/HomeMembers/actions";
 import { standardOptions } from "../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { tidyUserRequest } from "../store/TidyUser/actions";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
 import Spinner from "../components/spinner/Spinner";
 
-const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
+const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers, tidyUser, tidyUserRequest  }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
@@ -18,6 +19,12 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const getTidyUser = async () => {
+    await tidyUserRequest();
+  };
+  useEffect(() => {
+    getTidyUser();
+  }, []);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(formValues);
@@ -29,7 +36,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
     if (isFormValid()) {
       setIsSubmitted(true);
     try {
-      await createHomeMemberRequest(auth.data.token, formValues);
+      await createHomeMemberRequest(formValues);
       navigate("/home-members");
     } catch (e) {}
   }
@@ -64,7 +71,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -211,6 +218,7 @@ const HomeMemberNew = ({ auth, createHomeMemberRequest, homeMembers }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    tidyUser: state.tidyUser,
     homeMembers: state.auth
   };
 };
@@ -219,6 +227,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       createHomeMemberRequest,
+      tidyUserRequest
     },
     dispatch
   );

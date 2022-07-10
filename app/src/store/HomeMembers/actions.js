@@ -1,181 +1,101 @@
 import { HomeMembersActionTypes } from "./types";
 import { baseURL } from "..";
 import { getErrorMessageApi } from "..";
+import { applyMiddleware } from "@reduxjs/toolkit";
+import api from "../../services/api";
 
-export const allHomeMembersRequest = (token) => async (dispatch) => {
+export const allHomeMembersRequest = () => async (dispatch) => {
   try {
     dispatch({ type: HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_REQUEST });
-    const asyncResp = await getAllHomeMembersApi(token);
+    const homeMembersRes = await api.get(`/v1/home_members`);
     dispatch({
       type: HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_SUCCESS,
-      payload: asyncResp,
+      payload: homeMembersRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return homeMembersRes.data;
+  } catch (err) {
     dispatch({
       type: HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_ERROR,
-      payload: e,
+      payload: err,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function getAllHomeMembersApi(token) {
-  const res = await fetch(baseURL + "/api/v1/home_members", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const fetchHomeMemberRequest =
-  (token, homeMemberId) => async (dispatch) => {
+  (homeMemberId) => async (dispatch) => {
     try {
       dispatch({ type: HomeMembersActionTypes.FETCH_HOME_MEMBER_REQUEST });
-      const asyncResp = await fetchHomeMemberApi(token, homeMemberId);
+      const homeMembersRes = await api.get(`/v1/home_members/${homeMemberId}`);
       dispatch({
         type: HomeMembersActionTypes.FETCH_HOME_MEMBER_SUCCESS,
-        payload: asyncResp,
+        payload: homeMembersRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return homeMembersRes.data;
+    } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.FETCH_HOME_MEMBER_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
 
-async function fetchHomeMemberApi(token, homeMemberId) {
-  const res = await fetch(baseURL + "/api/v1/home_members/" + homeMemberId, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
-
 export const editHomeMemberRequest =
-  (token, homeMemberId, formValues) => async (dispatch) => {
+  (homeMemberId, formValues) => async (dispatch) => {
     try {
       dispatch({ type: HomeMembersActionTypes.EDIT_HOME_MEMBER_REQUEST });
-      const asyncResp = await editHomeMemberApi(
-        token,
-        homeMemberId,
-        formValues
+      const homeMembersRes = await api.put(
+        `/v1/home_members/${homeMemberId}`, formValues
       );
       dispatch({
         type: HomeMembersActionTypes.EDIT_HOME_MEMBER_SUCCESS,
-        payload: asyncResp,
+        payload: homeMembersRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return homeMembersRes.data;
+    } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.EDIT_HOME_MEMBER_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function editHomeMemberApi(token, homeMemberId, formValues) {
-  const res = await fetch(baseURL + "/api/v1/home_members/" + homeMemberId, {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const deleteHomeMemberRequest =
-  (token, homeMemberId) => async (dispatch) => {
+  (homeMemberId) => async (dispatch) => {
     try {
       dispatch({ type: HomeMembersActionTypes.DELETE_HOME_MEMBER_REQUEST });
-      const asyncResp = await deleteHomeMemberApi(token, homeMemberId);
+      const homeMembersRes = await api.delete(`/v1/home_members/${homeMemberId}`);
       dispatch({
         type: HomeMembersActionTypes.DELETE_HOME_MEMBER_SUCCESS,
-        payload: asyncResp,
+        payload: homeMembersRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return homeMembersRes.data;
+    } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.DELETE_HOME_MEMBER_ERROR,
-        payload: e,
+        payload: err,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function deleteHomeMemberApi(token, homeMemberId) {
-  const res = await fetch(baseURL + "/api/v1/home_members/" + homeMemberId, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return res.json();
-}
 
 export const createHomeMemberRequest =
-  (token, formValues) => async (dispatch) => {
+  (formValues) => async (dispatch) => {
     try {
       dispatch({ type: HomeMembersActionTypes.CREATE_HOME_MEMBER_REQUEST });
-      const asyncResp = await createHomeMemberApi(token, formValues);
+      const homeMembersRes = await api.post(`/v1/home_members`, formValues);
       dispatch({
         type: HomeMembersActionTypes.CREATE_HOME_MEMBER_SUCCESS,
-        payload: asyncResp,
+        payload: homeMembersRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return homeMembersRes.data;
+    } catch (err) {
       dispatch({ type: HomeMembersActionTypes.CREATE_HOME_MEMBER_ERROR,
-        payload: e, });
-      throw e;
+        payload: err, });
+      throw err;
     }
   };
 
-async function createHomeMemberApi(token, formValues) {
-  const res = await fetch(baseURL + "/api/v1/home_members", {
-    method: "POST",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    const errorInfo = await res.json();
-    errorInfo.error_message_api = getErrorMessageApi(errorInfo);
-    throw errorInfo;
-  }
-  return await res.json();
-}

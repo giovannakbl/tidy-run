@@ -23,11 +23,11 @@ const TidyUser = ({
   const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   let navigate = useNavigate();
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   const deleteTidyUser = async () => {
     await logoutRequest();
-    await deleteTidyUserRequest(auth.data.token);
+    await deleteTidyUserRequest();
   };
   const handleLogout = async () => {
     await logoutRequest();
@@ -35,8 +35,8 @@ const TidyUser = ({
   useEffect(() => {
     getTidyUser();
   }, []);
-
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

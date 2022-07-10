@@ -11,19 +11,19 @@ import Spinner from "../components/spinner/Spinner";
 const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
   let navigate = useNavigate();
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   useEffect(() => {
     getTidyUser();
   }, []);
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
       <Header></Header>
       <main>
-        <h1>Game Rules</h1>
+        <h1>Getting Started</h1>
         
 
 

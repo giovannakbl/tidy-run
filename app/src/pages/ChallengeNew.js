@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { createChallengeRequest } from "../store/Challenge/actions";
+import { tidyUserRequest } from "../store/TidyUser/actions";
 import Header from '../components/Header';
 import Alert from "../components/alert/Alert";
 import Spinner from "../components/spinner/Spinner";
 
-const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
+const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyUserRequest }) => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     name: undefined,
@@ -17,6 +18,12 @@ const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  useEffect(() => {
+    getTidyUser();
+  }, []);
+  const getTidyUser = async () => {
+    await tidyUserRequest();
+  };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     console.log(formValues);
@@ -28,7 +35,7 @@ const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
     if (isFormValid()) {
       setIsSubmitted(true);
     try {
-      const result = await createChallengeRequest(auth.data.token, formValues);
+      const result = await createChallengeRequest(formValues);
       let newChallenge = result.challenge;
       navigate("/challenge/" + newChallenge.id);
     } catch (e) {}
@@ -64,7 +71,7 @@ const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
     return true;
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     
@@ -144,7 +151,8 @@ const ChallengeNew = ({ auth, createChallengeRequest, challenge }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
-    challenge: state.challenge
+    challenge: state.challenge,
+    tidyUser: state.tidyUser
   };
 };
 
@@ -152,6 +160,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       createChallengeRequest,
+      tidyUserRequest
     },
     dispatch
   );
