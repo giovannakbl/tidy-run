@@ -32,7 +32,8 @@ instance.interceptors.request.use(
     if (
       config.url !== "/token/refresh" &&
       config.url !== "/login_check" &&
-      config.url !== `/api/v1/tidy_user/register`
+      config.url !== `/api/v1/tidy_user/register` &&
+      config.url !== `/token/invalidate`
     ) {
       const token = store.getState().auth.data.token;
       if (token) {

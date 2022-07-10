@@ -78,7 +78,7 @@ export const refreshToken = () => async (dispatch) => {
 export const logoutRequest = () => async  (dispatch) => {
   try {
     dispatch({ type: AuthActionTypes.LOGOUT_REQUEST });
-    const res = await api.post("/token/invalidate", undefined, {withCredentials: true})
+    const res = await api.delete("/token/invalidate", {withCredentials: true})
     dispatch({
       type: AuthActionTypes.LOGOUT_SUCCESS,
       payload: res.data,
