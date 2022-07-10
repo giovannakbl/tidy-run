@@ -16,7 +16,7 @@ export const allModelTasksRequest = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -35,7 +35,7 @@ export const fetchModelTaskRequest =
     } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.FETCH_MODEL_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -54,7 +54,7 @@ export const editModelTaskRequest =
     } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.EDIT_MODEL_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -73,7 +73,7 @@ export const deleteModelTaskRequest =
     } catch (err) {
       dispatch({
         type: ModelTasksActionTypes.DELETE_MODEL_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -91,7 +91,7 @@ export const createModelTaskRequest =
       return modelTasksRes.data;
     } catch (err) {
       dispatch({ type: ModelTasksActionTypes.CREATE_MODEL_TASK_ERROR,
-        payload: err, });
+        payload: err.data, });
       throw err;
     }
   };

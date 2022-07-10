@@ -15,7 +15,7 @@ export const fetchTaskRequest = (taskId) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TasksActionTypes.FETCH_TASK_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -34,7 +34,7 @@ export const fetchTasksInChallengeRequest =
     } catch (err) {
       dispatch({
         type: TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -53,7 +53,7 @@ export const editTaskRequest =
     } catch (err) {
       dispatch({
         type: TasksActionTypes.EDIT_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -71,7 +71,7 @@ export const deleteTaskRequest = (taskId) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TasksActionTypes.DELETE_TASK_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -90,7 +90,7 @@ export const createTaskRequest =
       return tasksRes.data;
     } catch (err) {
       dispatch({ type: TasksActionTypes.CREATE_TASK_ERROR,
-        payload: err, });
+        payload: err.data, });
       throw err;
     }
   };
@@ -108,7 +108,7 @@ export const completeTaskRequest =
     } catch (err) {
       dispatch({
         type: TasksActionTypes.COMPLETE_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -127,7 +127,7 @@ export const removeCompletionTaskRequest =
     } catch (err) {
       dispatch({
         type: TasksActionTypes.REMOVE_COMPLETION_TASK_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }

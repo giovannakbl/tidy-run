@@ -18,7 +18,7 @@ export const fetchScoreBoardsRequest =
     } catch (err) {
       dispatch({
         type: ScoreBoardsActionTypes.FETCH_SCORE_BOARDS_OF_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }

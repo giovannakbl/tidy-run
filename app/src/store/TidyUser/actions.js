@@ -15,7 +15,7 @@ export const tidyUserRequest = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TidyUserActionTypes.FETCH_TIDY_USER_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -33,7 +33,7 @@ export const tidyUserEdit = (formValues) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TidyUserActionTypes.EDIT_TIDY_USER_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -51,7 +51,7 @@ export const createTidyUserRequest = (formValues) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TidyUserActionTypes.CREATE_TIDY_USER_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -70,7 +70,7 @@ export const deleteTidyUserRequest = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: TidyUserActionTypes.DELETE_TIDY_USER_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }

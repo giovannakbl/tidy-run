@@ -89,20 +89,33 @@ const Challenge = ({
     return result;
   };
   const getChallenge = async () => {
+    try{
     await fetchChallengeRequest(challengeId);
+    } catch(e) {
+
+    }
   };
 
   const getTasksInChallenge = async () => {
+    try{
     const allTasksDetails = await fetchTasksInChallengeRequest(
       challengeId
     );
     setTasksInfo(getTasksInfo(allTasksDetails));
+  } catch(e) {
+
+  }
   };
   const getHomeMembers = async () => {
+    try{
     const allHomeMembersDetails = await allHomeMembersRequest();
     setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
+  } catch(e) {
+
+  }
   };
   const getScoreBoards = async () => {
+    try{
     const res = await fetchChallengeRequest(challengeId);
     const challengeStatus = res.challenge.status;
     if (challengeStatus == "completed" || challengeStatus == "terminated") {
@@ -111,18 +124,32 @@ const Challenge = ({
     } else {
       setScoreBoardsInfo([]);
     }
-    
+  } catch(e) {
+
+  }
   };
   const removeCompletionTask = async (taskId) => {
+    try{
     await removeCompletionTaskRequest(taskId);
     getChallenge();
     getTasksInChallenge();
+  } catch(e) {
+
+  }
   };
   const terminateChallenge = async () => {
+    try{
     await terminateChallengeRequest(challengeId);
+  } catch(e) {
+
+  }
   };
   const reopenChallenge = async () => {
+    try{
     await reopenChallengeRequest(challengeId);
+  } catch(e) {
+
+  }
   };
 
   if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;

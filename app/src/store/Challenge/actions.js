@@ -15,7 +15,7 @@ export const allChallengesRequest = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: ChallengeActionTypes.FETCH_ALL_CHALLENGES_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -34,7 +34,7 @@ export const fetchChallengeRequest =
     } catch (err) {
       dispatch({
         type: ChallengeActionTypes.FETCH_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -53,7 +53,7 @@ export const editChallengeRequest =
     } catch (err) {
       dispatch({
         type: ChallengeActionTypes.EDIT_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -72,7 +72,7 @@ export const deleteChallengeRequest =
     } catch (err) {
       dispatch({
         type: ChallengeActionTypes.DELETE_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -91,7 +91,7 @@ export const createChallengeRequest =
       return challengesRes.data;
     } catch (err) {
       dispatch({ type: ChallengeActionTypes.CREATE_CHALLENGE_ERROR,
-        payload: err, });
+        payload: err.data, });
       throw err;
     }
   };
@@ -109,7 +109,7 @@ export const terminateChallengeRequest =
     } catch (err) {
       dispatch({
         type: ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -129,7 +129,7 @@ export const reopenChallengeRequest =
     } catch (err) {
       dispatch({
         type: ChallengeActionTypes.REOPEN_CHALLENGE_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }

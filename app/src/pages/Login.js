@@ -5,10 +5,11 @@ import { loginRequest } from "../store/Auth/actions";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { tidyUserRequest } from "../store/TidyUser/actions";
 import Alert from "../components/alert/Alert";
 import Spinner from "../components/spinner/Spinner";
 
-const Login = ({ auth, loginRequest }) => {
+const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({ username: "", password: "" });
@@ -23,18 +24,42 @@ const Login = ({ auth, loginRequest }) => {
       setIsSubmitted(true);
       await loginRequest(formValues);
   };
+  useEffect(()=>{
+    console.log(auth);
+  },[auth.status]);
+  useEffect(()=>{
+    console.log(tidyUser);
+  },[tidyUser.status]);
   // useEffect(()=>{
-  //   console.log(auth);
-  // },[auth.loading]);
+  //   console.log(tidyUser);
+  // },[tidyUser.status]);
+  useEffect(()=>{
+    // console.log(auth);
+    try{
+    getTidyUser();
+  } catch(e) {
 
-  if (!auth.loading && auth.authenticated) return <Navigate to="/" replace />;
+  }
+  },[]);
+  const getTidyUser = async () => {
+    try{
+    await tidyUserRequest();
+    } catch(e) {
+
+    }
+  };
+
+  if (!auth.idle && !auth.loading && auth.authenticated) return <Navigate to="/" replace />;
 
   return (
     <>
       <main>
+        
       {isSubmitted && auth.status === "rejected" && (
           <Alert type="error" message={auth.error.error_message_api} />
         )}
+{/* {auth.status === 'idle' || auth.status === 'loading'  ? <Spinner/> :  */}
+<>
         <form className="login-form" onSubmit={handleSubmit}>
           <h1>Login</h1>
           <label htmlFor="username">Email</label>
@@ -66,6 +91,8 @@ const Login = ({ auth, loginRequest }) => {
           <p className="standard-info">You don't have an account?</p>
           <p className="custom-info">Go to Register</p>
         </button>
+        </>
+{/* } */}
       </main>
     </>
   );
@@ -82,6 +109,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       loginRequest,
+      tidyUserRequest
     },
     dispatch
   );

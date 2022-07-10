@@ -20,7 +20,7 @@ export const loginRequest = (formValues) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: AuthActionTypes.LOGIN_FAILURE,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -61,12 +61,13 @@ export const refreshToken = () => async (dispatch) => {
         payload: res.data,
       });
       return res.data;
-    } catch (e) {
+    } catch (err) {
+      console.log('.... refresh fail');
       dispatch({
         type: AuthActionTypes.REFRESH_FAILURE,
-        payload: e,
+        payload: err.data,
       });
-      throw e;
+      throw err;
      }
 
   };
@@ -87,7 +88,7 @@ export const logoutRequest = () => async  (dispatch) => {
   } catch (e) {
     dispatch({
       type: AuthActionTypes.LOGOUT_FAILURE,
-      payload: e,
+      payload: e.data,
     });
     throw e;
    }

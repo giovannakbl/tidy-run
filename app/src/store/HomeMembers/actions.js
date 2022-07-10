@@ -16,7 +16,7 @@ export const allHomeMembersRequest = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: HomeMembersActionTypes.FETCH_ALL_HOME_MEMBERS_ERROR,
-      payload: err,
+      payload: err.data,
     });
     throw err;
   }
@@ -36,7 +36,7 @@ export const fetchHomeMemberRequest =
     } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.FETCH_HOME_MEMBER_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -57,7 +57,7 @@ export const editHomeMemberRequest =
     } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.EDIT_HOME_MEMBER_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -76,7 +76,7 @@ export const deleteHomeMemberRequest =
     } catch (err) {
       dispatch({
         type: HomeMembersActionTypes.DELETE_HOME_MEMBER_ERROR,
-        payload: err,
+        payload: err.data,
       });
       throw err;
     }
@@ -94,7 +94,7 @@ export const createHomeMemberRequest =
       return homeMembersRes.data;
     } catch (err) {
       dispatch({ type: HomeMembersActionTypes.CREATE_HOME_MEMBER_ERROR,
-        payload: err, });
+        payload: err.data, });
       throw err;
     }
   };
