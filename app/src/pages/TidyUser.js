@@ -9,6 +9,7 @@ import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCookies } from "react-cookie";
 import DeleButtton from "../components/delete-button/DeleteButton";
 import Spinner from "../components/spinner/Spinner";
 
@@ -22,21 +23,31 @@ const TidyUser = ({
 }) => {
   const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   let navigate = useNavigate();
-  const getTidyUser = async () => {
-    await tidyUserRequest();
+  const [cookies, setCookie] = useCookies(["user"]);
+  const handleCookieLogin = () => {
+    setCookie("isLoggedIn", "yes", { path: "/" });
   };
+  const handleCookieLogout = () => {
+    setCookie("isLoggedIn", "no", { path: "/" });
+  };
+  // const getTidyUser = async () => {
+  //   await tidyUserRequest();
+  // };
   const deleteTidyUser = async () => {
-    await logoutRequest();
     await deleteTidyUserRequest();
+    await logoutRequest();
+    handleCookieLogout();
   };
   const handleLogout = async () => {
     await logoutRequest();
+    handleCookieLogout();
+    navigate("/login")
   };
-  useEffect(() => {
-    getTidyUser();
-  }, []);
+  // useEffect(() => {
+  //   getTidyUser();
+  // }, []);
   
-  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

@@ -85,11 +85,11 @@ export const logoutRequest = () => async  (dispatch) => {
       payload: res.data,
     });
     return res.data;
-  } catch (e) {
+  } catch (err) {
     dispatch({
       type: AuthActionTypes.LOGOUT_FAILURE,
-      payload: e.data,
+      payload: err.data,
     });
-    throw e;
+    throw err;
    }
 };

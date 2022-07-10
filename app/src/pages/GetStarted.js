@@ -17,7 +17,7 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
     getTidyUser();
   }, []);
 
-  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

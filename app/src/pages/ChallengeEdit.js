@@ -88,7 +88,7 @@ const ChallengeEdit = ({
     return true;
   };
 
-  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

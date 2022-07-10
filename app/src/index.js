@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import App from './App';
+import { CookiesProvider } from "react-cookie";
 // import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -33,7 +34,9 @@ export default function format(stringDate) {
 
 root.render(
     <Provider store={store}>
+      <CookiesProvider>
       <App />
+      </CookiesProvider>
     </Provider>
 );
 

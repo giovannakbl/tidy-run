@@ -32,7 +32,7 @@ const ChallengeList = ({
     console.log(challenge);
   },[challenge.loading]);
 
-  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  // if ((auth.status !== 'idle' && auth.status !== 'loading' && !auth.authenticated)) return <Navigate to="/login" replace />;
 
   return (
     <>
