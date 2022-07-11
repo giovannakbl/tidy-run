@@ -78,7 +78,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           onClick={() => navigate("/get-started")}
         >
           <div>
-            <FontAwesomeIcon icon="fa-info" />
+            <FontAwesomeIcon icon="fa-circle-info" />
           </div>
           <div>See more details</div>
         </button>
@@ -96,7 +96,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           onClick={() => navigate("/game-rules")}
         >
           <div>
-            <FontAwesomeIcon icon="fa-info" />
+            <FontAwesomeIcon icon="fa-circle-info" />
           </div>
           <div>See more details</div>
         </button>

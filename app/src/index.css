@@ -31,6 +31,7 @@
   --white:  rgb(251, 245, 245);
   --red: red;
   min-width:320px; 
+  --other: rgb(17, 27, 87);
 }
 button {
   background-color: var(--mediumpurple);

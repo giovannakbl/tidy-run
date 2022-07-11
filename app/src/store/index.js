@@ -8,53 +8,126 @@ import { tasksReducer } from "./Tasks/reducer";
 import { tidyUserReducer } from "./TidyUser/reducer";
 import { scoreBoardsReducer } from "./ScoreBoards/reducer";
 
-export const baseURL = "http://localhost:8000";
+// export const baseURL = "http://localhost:8000";
 // export const baseURL = "http://192.168.88.110:8000";
 
 
 export const standardOptions = {
   taskIcon: [
     {
-      name: "Mop",
+      name: "Mug",
       icon: "coffee",
     },
     {
-      name: "Brush",
-      icon: "fa-apple-whole",
+      name: "Pet",
+      icon: "fa-paw",
     },
     {
-      name: "Cloth",
-      icon: "fa-bell",
+      name: "Car",
+      icon: "fa-car",
     },
     {
       name: "Spray",
-      icon: "fa-bicycle",
+      icon: "fa-spray-can-sparkles",
+    },
+    {
+      name: "Fridge",
+      icon: "fa-toilet-portable",
+    },
+    {
+      name: "Garage",
+      icon: "fa-warehouse",
+    },
+    {
+      name: "Book",
+      icon: "fa-book",
+    },
+    {
+      name: "Cake",
+      icon: "fa-cake-candles",
+    },
+
+    {
+      name: "Bucket",
+      icon: "fa-bucket",
+    },
+    {
+      name: "ToiletPaper",
+      icon: "fa-toilet-paper",
+    },
+    {
+      name: "Bath",
+      icon: "fa-bath",
+    },
+    {
+      name: "Baby",
+      icon: "fa-baby",
+    },
+    {
+      name: "Shirt",
+      icon: "fa-shirt",
+    },
+    {
+      name: "Brush",
+      icon: "fa-brush",
     },
     {
       name: "Broom",
-      icon: "fa-bolt",
+      icon: "fa-broom",
+    },
+    {
+      name: "Wrench",
+      icon: "fa-wrench",
+    },
+    {
+      name: "Trash",
+      icon: "fa-trash-can",
+    },
+    {
+      name: "Candy",
+      icon: "fa-candy-cane",
+    },
+    {
+      name: "Bed",
+      icon: "fa-bed",
+    },
+    {
+      name: "KitchenSet",
+      icon: "fa-kitchen-set",
     },
   ],
   iconColor: [
     {
       name: "Red",
-      color: "red",
+      color: "rgb(212, 86, 86)",
     },
     {
       name: "Green",
-      color: "green",
+      color: "rgb(64, 162, 79)",
     },
     {
       name: "Blue",
-      color: "blue",
+      color: "rgb(86, 108, 193",
     },
     {
       name: "Yellow",
-      color: "#9a7600",
+      color: "rgb(186, 186, 51)",
     },
     {
       name: "Pink",
-      color: "pink",
+      color: "rgb(180, 94, 151)",
+    },
+    {
+      name: "NavyBlue",
+      color: "rgb(17, 27, 87)",
+    },
+    {
+      name: "DarkRed",
+      color: "rgb(129, 39, 39)",
+    },
+    {
+      name: "DarkPink",
+      color: "rgb(106, 28, 87)",
     },
   ],
   difficulty: [
@@ -71,27 +144,51 @@ export const standardOptions = {
   avatarIcon: [
     {
       name: "Dog",
-      icon: "coffee",
+      icon: "fa-dog",
     },
     {
       name: "Cat",
-      icon: "fa-apple-whole",
+      icon: "fa-cat",
     },
     {
-      name: "Rabbit",
-      icon: "fa-bell",
+      name: "Dragon",
+      icon: "fa-dragon",
     },
     {
-      name: "Wale",
-      icon: "fa-bicycle",
+      name: "Astronaut",
+      icon: "fa-user-astronaut",
     },
     {
-      name: "Lizzard",
-      icon: "fa-bicycle",
+      name: "UserTie",
+      icon: "fa-user-tie",
     },
     {
-      name: "Banana",
-      icon: "fa-bicycle",
+      name: "ChessQueen",
+      icon: "fa-chess-queen",
+    },
+    {
+      name: "CheesKnight",
+      icon: "fa-chess-knight",
+    },
+    {
+      name: "Ghost",
+      icon: "fa-ghost",
+    },
+    {
+      name: "Doctor",
+      icon: "fa-user-doctor",
+    },
+    {
+      name: "Biker",
+      icon: "fa-person-biking",
+    },
+    {
+      name: "SecretAgent",
+      icon: "fa-user-secret",
+    },
+    {
+      name: "Robot",
+      icon: "fa-robot",
     },
   ],
 };
