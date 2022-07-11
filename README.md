@@ -12,4 +12,4 @@ Changes made in the source code are automatically reloaded on both api and app.
 
 ## Endpoints
 
-tidy-run-api-documentation.pdf
+[Tidy-run-api-documentation](https://github.com/giovannakbl/tidy-run/blob/develop/tidy-run-api-documentation.pdf)
