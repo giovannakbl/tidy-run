@@ -17,17 +17,11 @@ const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
     getTidyUser();
   }, []);
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
         <h1>Game Rules</h1>
-        
-
-
-
 
         <div className="game-explanation-container">
           <h2 className="game-explanation-title">Tidy Run</h2>
@@ -49,25 +43,24 @@ const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
           <p className="game-explanation-text">
             Tasks that need to be done between the 01 of July and the 10 of
             July:
-            
           </p>
           <ul>
-              <li>
-                <p className="game-explanation-text">Clean the windows</p>
-              </li>
-              <li>
-                <p className="game-explanation-text">Mow the lawn</p>
-              </li>
-              <li>
-                <p className="game-explanation-text">Clean the bathroom</p>
-              </li>
-              <li>
-                <p className="game-explanation-text">Vacuum the living room</p>
-              </li>
-              <li>
-                <p className="game-explanation-text">Take out the trash</p>
-              </li>
-            </ul>
+            <li>
+              <p className="game-explanation-text">Clean the windows</p>
+            </li>
+            <li>
+              <p className="game-explanation-text">Mow the lawn</p>
+            </li>
+            <li>
+              <p className="game-explanation-text">Clean the bathroom</p>
+            </li>
+            <li>
+              <p className="game-explanation-text">Vacuum the living room</p>
+            </li>
+            <li>
+              <p className="game-explanation-text">Take out the trash</p>
+            </li>
+          </ul>
           <p className="game-explanation-text">
             The members of the house are competitors in a challenge, where they
             perform those tasks and gain points for their completion.
@@ -100,8 +93,6 @@ const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
             chocolates for example.
           </p>
           <p className="game-explanation-text">Let's do it!</p>
-
-          
         </div>
       </main>
     </>

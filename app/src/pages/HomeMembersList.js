@@ -41,8 +41,6 @@ const HomeMemberList = ({
     setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
     <Header></Header>

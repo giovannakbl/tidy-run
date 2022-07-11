@@ -17,20 +17,14 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
     getTidyUser();
   }, []);
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
         <h1>Getting Started</h1>
-        
-
-
-
 
         <div className="game-explanation-container">
-        <h2 className="game-explanation-title">Getting started:</h2>
+          <h2 className="game-explanation-title">Getting started:</h2>
           <p className="game-explanation-text">
             Now that you have created an account, I am going to give you a step
             by step for setting everything up and start competing!

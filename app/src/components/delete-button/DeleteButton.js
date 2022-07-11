@@ -1,4 +1,4 @@
-// import styles from "./DeleteButton.module.css";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DeleButtton = (props) => {

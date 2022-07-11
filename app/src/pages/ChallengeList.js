@@ -22,18 +22,8 @@ const ChallengeList = ({
   const getAllChallenges = async () => {
     await allChallengesRequest();
   };
-  const handleLogout = async () => {
-    await logoutRequest();
-  };
-  useEffect(() => {
-    console.log(auth);
-  }, [auth.status]);
-  useEffect(()=>{
-    console.log(challenge);
-  },[challenge.loading]);
 
-  // if ((auth.status !== 'idle' && auth.status !== 'loading' && !auth.authenticated)) return <Navigate to="/login" replace />;
-
+  
   return (
     <>
     <Header></Header>
@@ -47,7 +37,6 @@ const ChallengeList = ({
         New Challenge
       </button>
       {challenge.loading ? (
-        // <Spinner/>
         <Spinner/>
       ) : challenge.error ? (
         <p>Error</p>

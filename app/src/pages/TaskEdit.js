@@ -38,7 +38,6 @@ const TaskEdit = ({
   }, []);
   const getTask = async () => {
     const fetchedTask = await fetchTaskRequest(taskId);
-    console.log(fetchedTask);
     setFormValues({
       name: fetchedTask.task.name,
       task_icon: fetchedTask.task.task_icon,
@@ -48,7 +47,6 @@ const TaskEdit = ({
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -73,8 +71,6 @@ const TaskEdit = ({
     return true;
   };
   
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
     <Header></Header>

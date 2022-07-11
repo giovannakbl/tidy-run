@@ -35,11 +35,9 @@ const HomeMemberEdit = ({
   useEffect(() => {
     getHomeMember();
   }, []);
- 
+
   const getHomeMember = async () => {
-    const fetchedHomeMember = await fetchHomeMemberRequest(
-      homeMemberId
-    );
+    const fetchedHomeMember = await fetchHomeMemberRequest(homeMemberId);
     setFormValues({
       name: fetchedHomeMember.home_member.name,
       avatar_icon: fetchedHomeMember.home_member.avatar_icon,
@@ -48,19 +46,14 @@ const HomeMemberEdit = ({
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formValues);
     if (isFormValid()) {
       setIsSubmitted(true);
-    await editHomeMemberRequest(homeMemberId, formValues);
-    console.log(isSubmitted);
-    
-    // navigate("/home-members");
+      await editHomeMemberRequest(homeMemberId, formValues);
     }
   };
   const handleDeleteHomeMember = async () => {
@@ -68,29 +61,21 @@ const HomeMemberEdit = ({
     navigate("/home-members");
   };
 
-
   const isFormValid = () => {
-    
-    
     if (formValues.name) {
       if (formValues.name.trim().length === 0 || formValues.name === null) {
         setFormErrorMessage("The name must have at least a number or letter");
-        console.log("Vazio");
         return false;
       }
     }
     return true;
   };
 
-
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
-      {isSubmitted && homeMembers.status === "rejected" ? (
+        {isSubmitted && homeMembers.status === "rejected" ? (
           <Alert type="error" message={homeMembers.error.error_message_api} />
         ) : null}
         {isSubmitted && homeMembers.status === "succeeded" ? (
@@ -107,7 +92,7 @@ const HomeMemberEdit = ({
           <Alert type="error" message={formErrorMessage} />
         ) : null}
         {homeMembers.loading ? (
-          <Spinner/>
+          <Spinner />
         ) : homeMembers.error ? (
           <p>Error</p>
         ) : (
@@ -188,10 +173,10 @@ const HomeMemberEdit = ({
                   <button type="submit">Save Changes</button>
                 </form>
                 <DeleButtton
-              isDeletedRequested={isDeletedRequested}
-              deleteFunction={handleDeleteHomeMember}
-              setIsDeletedRequested={setIsDeletedRequested}
-            />
+                  isDeletedRequested={isDeletedRequested}
+                  deleteFunction={handleDeleteHomeMember}
+                  setIsDeletedRequested={setIsDeletedRequested}
+                />
               </>
             )}
           </>

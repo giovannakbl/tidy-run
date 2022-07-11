@@ -42,8 +42,6 @@ const ModelTasksList = ({
   };
 
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>

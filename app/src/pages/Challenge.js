@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
 import {
@@ -51,20 +50,20 @@ const Challenge = ({
   const getHomeMembersIndex = (allHomeMembersDetails) => {
     let result = {};
     if (allHomeMembersDetails.home_members_all) {
-    allHomeMembersDetails.home_members_all.map(
-      (item) =>
-        (result[item.id] = {
-          id: item.id,
-          name: item.name,
-          color: standardOptions.iconColor.find(
-            (element) => element.name === item.icon_color
-          ).color,
-          icon: standardOptions.avatarIcon.find(
-            (element) => element.name === item.avatar_icon
-          ).icon,
-        })
-    );
-  }
+      allHomeMembersDetails.home_members_all.map(
+        (item) =>
+          (result[item.id] = {
+            id: item.id,
+            name: item.name,
+            color: standardOptions.iconColor.find(
+              (element) => element.name === item.icon_color
+            ).color,
+            icon: standardOptions.avatarIcon.find(
+              (element) => element.name === item.avatar_icon
+            ).icon,
+          })
+      );
+    }
     return result;
   };
   const getTasksInfo = (allTasksDetails) => {
@@ -89,70 +88,54 @@ const Challenge = ({
     return result;
   };
   const getChallenge = async () => {
-    try{
-    await fetchChallengeRequest(challengeId);
-    } catch(e) {
-
-    }
+    try {
+      await fetchChallengeRequest(challengeId);
+    } catch (e) {}
   };
 
   const getTasksInChallenge = async () => {
-    try{
-    const allTasksDetails = await fetchTasksInChallengeRequest(
-      challengeId
-    );
-    setTasksInfo(getTasksInfo(allTasksDetails));
-  } catch(e) {
-
-  }
+    try {
+      const allTasksDetails = await fetchTasksInChallengeRequest(challengeId);
+      setTasksInfo(getTasksInfo(allTasksDetails));
+    } catch (e) {}
   };
   const getHomeMembers = async () => {
-    try{
-    const allHomeMembersDetails = await allHomeMembersRequest();
-    setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
-  } catch(e) {
-
-  }
+    try {
+      const allHomeMembersDetails = await allHomeMembersRequest();
+      setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
+    } catch (e) {}
   };
   const getScoreBoards = async () => {
-    try{
-    const res = await fetchChallengeRequest(challengeId);
-    const challengeStatus = res.challenge.status;
-    if (challengeStatus == "completed" || challengeStatus == "terminated") {
-      const allScoreBoardsDetails = await fetchScoreBoardsRequest(challengeId);
-      setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
-    } else {
-      setScoreBoardsInfo([]);
-    }
-  } catch(e) {
-
-  }
+    try {
+      const res = await fetchChallengeRequest(challengeId);
+      const challengeStatus = res.challenge.status;
+      if (challengeStatus == "completed" || challengeStatus == "terminated") {
+        const allScoreBoardsDetails = await fetchScoreBoardsRequest(
+          challengeId
+        );
+        setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
+      } else {
+        setScoreBoardsInfo([]);
+      }
+    } catch (e) {}
   };
   const removeCompletionTask = async (taskId) => {
-    try{
-    await removeCompletionTaskRequest(taskId);
-    getChallenge();
-    getTasksInChallenge();
-  } catch(e) {
-
-  }
+    try {
+      await removeCompletionTaskRequest(taskId);
+      getChallenge();
+      getTasksInChallenge();
+    } catch (e) {}
   };
   const terminateChallenge = async () => {
-    try{
-    await terminateChallengeRequest(challengeId);
-  } catch(e) {
-
-  }
+    try {
+      await terminateChallengeRequest(challengeId);
+    } catch (e) {}
   };
   const reopenChallenge = async () => {
-    try{
-    await reopenChallengeRequest(challengeId);
-  } catch(e) {
-
-  }
+    try {
+      await reopenChallengeRequest(challengeId);
+    } catch (e) {}
   };
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
@@ -167,7 +150,7 @@ const Challenge = ({
           </button>
         </div>
         {challenge.loading ? (
-          <Spinner/>
+          <Spinner />
         ) : challenge.error ? (
           <p>Error</p>
         ) : (
@@ -241,37 +224,23 @@ const Challenge = ({
               </button>
             ) : null}
           </>
-
         )}
-        
+
         {challenge.loading ||
         tasks.loading ||
-        homeMembers.loading 
-        // || ( challenge.data.challenge.status != "created" && challenge.data.challenge.status != "active" &&
-        // Object.keys(homeMembersIndex).length === 0) 
-        || (homeMembers.data.homeMembersList.length > 0 && Object.keys(homeMembersIndex).length === 0)
-        || tasksInfo.length === 0
-        ? (
-          null
-        ) : challenge.error || tasks.error || homeMembers.error ? (
+        homeMembers.loading ||
+        (homeMembers.data.homeMembersList.length > 0 &&
+          Object.keys(homeMembersIndex).length === 0) ||
+        tasksInfo.length === 0 ? null : challenge.error ||
+          tasks.error ||
+          homeMembers.error ? (
           <p>Error</p>
         ) : (
           <>
-          
-            
-
-
-
-
-
-
-
-
-{tasksInfo.map((item) => (
+            {tasksInfo.map((item) => (
               <div className="task-info">
                 <div className="task-internal">
-                <div className="flex-row-start ">
-                {/* <div className="flex-row-start half-width"> */}
+                  <div className="flex-row-start ">
                     <div className="full-height">
                       <div
                         className="fa-icons"
@@ -282,38 +251,36 @@ const Challenge = ({
                         <FontAwesomeIcon icon={item.icon} />
                       </div>
                     </div>
-                  <div className="flex-column-start full-width">
-                    <div className="middle-height task-main-text">
-                      <p
-                        style={{
-                          color: item.color,
-                          textDecoration: item.completedAt
-                            ? "line-through"
-                            : "none",
-                        }}
-                      >
-                        {item.name}
-                      </p>
+                    <div className="flex-column-start full-width">
+                      <div className="middle-height task-main-text">
+                        <p
+                          style={{
+                            color: item.color,
+                            textDecoration: item.completedAt
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
+                          {item.name}
+                        </p>
+                      </div>
+                      <div className="middle-height task-sec-text">
+                        <p
+                          style={{
+                            color: item.color,
+                          }}
+                        >
+                          Difficulty: {item.difficulty}
+                        </p>
+                        {item.completedAt ? (
+                          <p>Completed At: {format(item.completedAt)}</p>
+                        ) : null}
+                      </div>
                     </div>
-                  <div className="middle-height task-sec-text">
-                    
-                    <p
-                      style={{
-                        color: item.color,
-                      }}
-                    >
-                      Difficulty: {item.difficulty}
-                    </p>
-                    {item.completedAt ? (
-                      <p>Completed At: {format(item.completedAt)}</p>
-                    ) : null}
                   </div>
-                  </div>
-                </div >               
-                    {item.completedAt ? (
-                      <>
-                {/* <div className="flex-row-start half-width"> */}
-                <div className="after-icon">
+                  {item.completedAt ? (
+                    <>
+                      <div className="after-icon">
                         <div className="full-height">
                           <div
                             className="home-member-in-task-icon"
@@ -326,22 +293,25 @@ const Challenge = ({
                               icon={homeMembersIndex[item.homeMemberId].icon}
                             />
                           </div>
+                        </div>
+                        <div>
+                          <div className="middle-height after-icon-main-text">
+                            <p
+                              style={{
+                                color:
+                                  homeMembersIndex[item.homeMemberId].color,
+                              }}
+                            >
+                              {homeMembersIndex[item.homeMemberId].name}
+                            </p>
                           </div>
-                          {/* <div className="flex-column-start full-width"> */}
-                            <div>
-                            <div className="middle-height after-icon-main-text">
-                            <p style={{
-                              color:
-                                homeMembersIndex[item.homeMemberId].color,
-                            }}>{homeMembersIndex[item.homeMemberId].name}</p>
-                            </div>
-                            <div className="aligned-secondary task-sec-text">
+                          <div className="aligned-secondary task-sec-text">
                             <p>{item.pointsEarned} Points Earned</p>
-                            </div>
-                            </div>
-                </div >                   
-                      </>
-                    ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
                 <div className="flex-row-start">
                   {challenge.data.challenge.status == "created" ||
@@ -392,8 +362,9 @@ const Challenge = ({
             .challenge.status != "completed" &&
           challenge.data.challenge.status !=
             "terminated" ? null : scoreBoards.loading ||
-          Object.keys(homeMembersIndex).length === 0 || (scoreBoardsInfo).length === 0? (
-          <Spinner/>
+          Object.keys(homeMembersIndex).length === 0 ||
+          scoreBoardsInfo.length === 0 ? (
+          <Spinner />
         ) : scoreBoards.error ? (
           <p>Error</p>
         ) : (
@@ -402,12 +373,12 @@ const Challenge = ({
             {scoreBoardsInfo.map((item) => (
               <>
                 <div className="ranking-info score-board-column-start">
-                  {/* <div className="flex-row-between"> */}
-                    <div className="flex-row-start">
-                      <h3 className="custom-info">Position: {item.rank_in_challenge}</h3>
-                    </div>
-                    {/* <div className="flex-row-start"> */}
-                    <div className="flex-row-start">
+                  <div className="flex-row-start">
+                    <h3 className="custom-info">
+                      Position: {item.rank_in_challenge}
+                    </h3>
+                  </div>
+                  <div className="flex-row-start">
                     <div className="full-height">
                       <div
                         className="fa-icons"
@@ -420,8 +391,8 @@ const Challenge = ({
                           icon={homeMembersIndex[item.home_member_id].icon}
                         />
                       </div>
-                      </div>
-                      <div className="flex-column-start full-width">
+                    </div>
+                    <div className="flex-column-start full-width">
                       <div className="home-member-name">
                         <p
                           style={{
@@ -430,19 +401,12 @@ const Challenge = ({
                         >
                           {homeMembersIndex[item.home_member_id].name}
                         </p>
-                        </div>
-                        <div 
-                      // className="home-member-name after-icon after-icon-main-text"
-                      className="middle-height task-sec-text home-member-name home-member-points"
-                      // className="flex-row-start"
-                      >
-                        <p>Total points: {item.total_points}</p>
-                        </div>
                       </div>
-                      
-                        
-                  {/* </div> */}
-                </div>
+                      <div className="middle-height task-sec-text home-member-name home-member-points">
+                        <p>Total points: {item.total_points}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </>
             ))}

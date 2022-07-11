@@ -15,7 +15,6 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -24,13 +23,10 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
-    handleLogout(); }
+ }
   };
   const getTidyUser = async () => {
     await tidyUserRequest();
-  };
-  const handleLogout = async () => {
-    // await logoutRequest();
   };
   useEffect(() => {
     getTidyUser();
@@ -53,8 +49,6 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     }
     return true;
   };
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

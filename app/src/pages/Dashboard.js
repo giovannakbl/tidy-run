@@ -10,21 +10,16 @@ import Spinner from "../components/spinner/Spinner";
 import { useCookies } from "react-cookie";
 
 const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
-  // const [cookies, setCookie] = useCookies(["user"]);
+  
   let navigate = useNavigate();
-  // const checkLogin = () => {
-  //   console.log(cookies);
-  //   if(cookies.isLoggedIn === "no") {
-  //     navigate("/login");
-  //   }
-  // };
+  const getTidyUser = async () => {
+    await tidyUserRequest();
+  };
 
-  // useEffect(() => {
-  //   checkLogin();
-  // }, []);
-
-  // if ((auth.status !== 'idle' && auth.status !== 'loading' && !auth.authenticated)) return <Navigate to="/login" replace />;
-
+  useEffect(() => {
+    getTidyUser();
+  }, []);
+  
   return (
     <>
       <Header></Header>

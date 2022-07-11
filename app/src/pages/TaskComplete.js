@@ -111,8 +111,6 @@ const TaskComplete = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
@@ -152,7 +150,6 @@ const TaskComplete = ({
             <div className="task-info">
               <div className="flex-row-start">
               <div >
-              {/* <div className="full-height"> */}
                 <div
                   className="fa-icons"
                   style={{

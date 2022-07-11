@@ -47,26 +47,8 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
   }
   };
   useEffect(() => {
-    console.log("verifiquei autenticacao na pag login");
     checkLogin();
   }, []);
-  useEffect(() => {
-    console.log(auth);
-    
-  }, [auth.status]);
-  // useEffect(() => {
-  //   if (cookies.isLoggedIn === "yes") {
-  //     checkLogin();
-  //     // console.log("redirecao");
-  //     // navigate("/");
-  //   }
-  // }, []);
-
-  // if (
-  //    !auth.idle && !auth.loading && auth.authenticated) 
-
-  //   return <Navigate to="/" replace />;
-  
 
   return (
     <>
@@ -74,7 +56,6 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
         {isSubmitted && auth.status === "rejected" && (
           <Alert type="error" message={auth.error.error_message_api} />
         )}
-        {/* {auth.status === 'idle' || auth.status === 'loading'  ? <Spinner/> :  */}
         <>
           <form className="login-form" onSubmit={handleSubmit}>
             <h1>Login</h1>
@@ -108,7 +89,6 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
             <p className="custom-info">Go to Register</p>
           </button>
         </>
-        {/* } */}
       </main>
     </>
   );

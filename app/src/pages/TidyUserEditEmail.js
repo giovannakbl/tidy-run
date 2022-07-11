@@ -25,7 +25,6 @@ const TidyUserEditEmail = ({
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -43,15 +42,13 @@ const TidyUserEditEmail = ({
       }
     await tidyUserEdit(newEmail);
     await loginRequest(newLogin);
-    // handleLogout();
+
     }
   };
   const getTidyUser = async () => {
     await tidyUserRequest();
   };
-  const handleLogout = async () => {
-    await logoutRequest();
-  };
+
   useEffect(() => {
     getTidyUser();
   }, []);
@@ -72,8 +69,7 @@ const TidyUserEditEmail = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
+  
   return (
     <>
     <Header></Header>

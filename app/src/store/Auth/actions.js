@@ -9,9 +9,6 @@ import Cookies from 'js-cookie';
 export const loginRequest = (formValues) => async (dispatch) => {
   try {
     dispatch({ type: AuthActionTypes.LOGIN_REQUEST });
-    // try {
-    // await api.post("/token/invalidate", undefined, {withCredentials: true})
-    // } finally {
     const res = await api.post("/login_check", formValues, {withCredentials: true})
     
     dispatch({
@@ -19,7 +16,6 @@ export const loginRequest = (formValues) => async (dispatch) => {
       payload: res.data,
     });
     return res.data;
-  // }
   } catch (err) {
     dispatch({
       type: AuthActionTypes.LOGIN_FAILURE,
@@ -28,32 +24,6 @@ export const loginRequest = (formValues) => async (dispatch) => {
     throw err;
   }
 };
-
-// export const refreshToken = () => async (dispatch) => {
-//   try {
-//     dispatch({ type: AuthActionTypes.REFRESH_REQUEST });
-//     console.log("before refresh")
-//     const res = await api.post("/token/refresh", undefined, {withCredentials: true})
-//     console.log("after refresh")
-//     console.log(res.data);
-//     dispatch({
-//       type: AuthActionTypes.REFRESH_SUCCESS,
-//       payload: {}
-//       // res.data,
-//     });
-//     console.log("refreshed success")
-//     return res.data;
-//   } catch (err) {
-//     console.log(err)
-//     console.log("refresh failure")
-//     dispatch({
-//       type: AuthActionTypes.REFRESH_FAILURE,
-//       payload: err,
-//     });
-//     throw err;
-//   }
-// };
-
 
 
 export const refreshToken = () => async (dispatch) => {
@@ -67,13 +37,8 @@ export const refreshToken = () => async (dispatch) => {
       });
       return res.data;
     } catch (err) {
-      console.log('.... refresh fail');
       Cookies.set('isLoggedIn', 'no', { path: "/" })
-      // window.href='/login'
       window.location.reload();
-        
-    
- 
       dispatch({
         type: AuthActionTypes.REFRESH_FAILURE,
         payload: err.data,
@@ -84,9 +49,6 @@ export const refreshToken = () => async (dispatch) => {
   };
 
 
-// export const logoutRequest = () => (dispatch) => {
-//   dispatch({ type: AuthActionTypes.LOGOUT_SUCCESS });
-// };
 export const logoutRequest = () => async  (dispatch) => {
   try {
     dispatch({ type: AuthActionTypes.LOGOUT_REQUEST });

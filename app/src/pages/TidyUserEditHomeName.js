@@ -19,7 +19,6 @@ const TidyUserEditHomeName = ({
   const [formValues, setFormValues] = useState({ password: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -30,7 +29,6 @@ const TidyUserEditHomeName = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
-    // navigate("/account");
     }
   };
   const getTidyUser = async () => {
@@ -56,8 +54,6 @@ const TidyUserEditHomeName = ({
     }
     return true;
   };
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

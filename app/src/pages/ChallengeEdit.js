@@ -46,7 +46,6 @@ const ChallengeEdit = ({
   const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
     setIsDeletedRequested(false);
@@ -87,8 +86,6 @@ const ChallengeEdit = ({
     }
     return true;
   };
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>

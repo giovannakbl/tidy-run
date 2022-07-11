@@ -54,7 +54,6 @@ const TaskNew = ({
 
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setIsSubmitted(false);
     setFormErrorMessage(undefined);
   };
@@ -79,7 +78,7 @@ const TaskNew = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
