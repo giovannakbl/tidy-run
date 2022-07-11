@@ -67,6 +67,7 @@ import {
   faPersonBiking,
   faUserSecret,
   faRobot,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { faAngry as farfaAngry } from "@fortawesome/free-regular-svg-icons";
 
@@ -131,7 +132,8 @@ faSoap,
 faUserDoctor,
 faPersonBiking,
 faUserSecret,
-faRobot
+faRobot,
+faPlus
 
 
 

@@ -48,37 +48,45 @@ const TidyUser = ({
     <>
       <Header></Header>
       <main>
-        <div className="go-back-area"></div>
-        <h1>User info</h1>
-        <button type="button" className="logout-button" onClick={handleLogout}>
+        <h1 className="page-main-title">User info</h1>
+        <button type="button" className="card-button logout-button" onClick={handleLogout}>
           Logout
         </button>
         <div className="account-info-container">
-          <div>
-            <p className="label-text">Email: {tidyUser.data.email}</p>
-          </div>
-          <button
-            className="action-button"
+      
+        <p className="account-info-text-main">Email: </p>
+                <p className="account-info-text-sec">
+                {tidyUser.data.email}
+                </p>
+         
+
+              <button className="card-button" 
             type="button"
             onClick={() => navigate("/account/email")}
           >
-            <div>
+            
+            <div className="card-icon-button">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
             <div>Change your email</div>
           </button>
+   
         </div>
 
         <div className="account-info-container">
           <div>
-            <p className="label-text">Family Name: {tidyUser.data.home_name}</p>
+          <p className="account-info-text-main">Family Name: </p>
+          <p className="account-info-text-sec">
+          {tidyUser.data.home_name}
+                </p>
+            
           </div>
           <button
-            className="action-button"
+            className="card-button"
             type="button"
             onClick={() => navigate("/account/home-name")}
           >
-            <div>
+            <div className="card-icon-button">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
             <div>Change your family name</div>
@@ -87,36 +95,31 @@ const TidyUser = ({
 
         <div className="account-info-container">
           <div>
-            <p className="label-text">Password</p>
+          <p className="account-info-text-main">Password: </p>
           </div>
 
           <button
-            className="action-button"
+            className="card-button"
             type="button"
             onClick={() => navigate("/account/password")}
           >
-            <div>
+            <div className="card-icon-button">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
             <div>Change your password</div>
           </button>
         </div>
+        <div className="account-info-container">
 
-        <div className="delete-account-container">
-          <p className="label-text">Delete your account</p>
-
-          {isDeletedRequested ? null : (
-            <div className="delete-account-message">
-              <p className="label-text">This action is permanent</p>
-            </div>
-          )}
-        </div>
+          <p className="account-info-text-main">Delete your account</p>
+   
 
         <DeleButtton
           isDeletedRequested={isDeletedRequested}
           deleteFunction={deleteTidyUser}
           setIsDeletedRequested={setIsDeletedRequested}
         />
+        </div>
       </main>
     </>
   );

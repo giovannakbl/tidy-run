@@ -85,7 +85,7 @@ const HomeMemberNew = ({
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-        <div className="go-back-area">
+        
           <button
             className="go-back-button"
             type="button"
@@ -93,24 +93,24 @@ const HomeMemberNew = ({
           >
             &#60;&#60; Go back to Home Members List
           </button>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Name</label>
+        
+          <h1 className="page-main-title">New Home Member</h1>
+        <form className="standard-form" onSubmit={handleSubmit}>
+          <label className="standard-label" htmlFor="name">Name</label>
           <input
             id="name"
             name="name"
             type="text"
             onChange={handleInputChange}
             value={formValues.name}
-            className="input-text"
+            className="standard-text-input"
             required
           />
-          <p className="label-text">Choose icon</p>
-          <div className="radio-list icon-list">
+          <p className="standard-label">Choose icon</p>
+          <div className="icon-list">
             {standardOptions.avatarIcon.map((item) => (
               <>
-                <div>
+                <div className="icon-option">
                   <input
                     type="radio"
                     id={item.name}
@@ -119,7 +119,7 @@ const HomeMemberNew = ({
                     onChange={handleInputChange}
                   />
                   <label htmlFor={item.name}>
-                    <div className="fa-icons">
+                    <div  className="icon-list-circle">
                       <FontAwesomeIcon icon={item.icon} />
                     </div>
                   </label>
@@ -127,11 +127,11 @@ const HomeMemberNew = ({
               </>
             ))}
           </div>
-          <p className="label-text">Choose color</p>
-          <div className="radio-list icon-list">
+          <p className="standard-label">Choose color</p>
+          <div className="icon-list">
             {standardOptions.iconColor.map((item) => (
               <>
-                <div>
+                <div className="icon-option">
                   <input
                     type="radio"
                     id={item.name}
@@ -141,7 +141,7 @@ const HomeMemberNew = ({
                   />
                   <label htmlFor={item.name}>
                     <div
-                      className="fa-icons"
+                       className="icon-list-circle"
                       style={{
                         backgroundColor: item.color,
                       }}
@@ -151,7 +151,9 @@ const HomeMemberNew = ({
               </>
             ))}
           </div>
-          <button type="submit">Create Home Member</button>
+          <div className="card-row-buttons-center">
+              <button className="card-button" type="submit">Create Home Member</button>
+              </div>
         </form>
       </main>
     </>

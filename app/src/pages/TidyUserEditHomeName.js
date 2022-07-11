@@ -84,20 +84,28 @@ const TidyUserEditHomeName = ({
           &#60;&#60; Go back to user details
         </button>
       </div>
-      <h2>Change your Home Name</h2>
+      <h2 className="page-main-title">Change your Home Name</h2>
+      <div className="account-info-container">
+          <p className="account-info-text-main">Current Home Name: </p>
+          <p className="account-info-text-sec">{tidyUser.data.home_name}</p>
 
-      <p className="label-text">Current family name: {tidyUser.data.home_name}</p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="home_name">Home Name</label>
+          
+        </div>
+
+      
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="home_name">New Home Name</label>
         <input
           id="home_name"
           name="home_name"
           type="home_name"
           onChange={handleInputChange}
           value={formValues.home_name}
-          className="input-text"
+          className="standard-text-input"
         />
-        <button type="submit">Save Changes</button>
+        <div className="card-row-buttons-center">
+            <button className="card-button" type="submit">Save Changes</button>
+      </div>
       </form>
       </main>
     </>

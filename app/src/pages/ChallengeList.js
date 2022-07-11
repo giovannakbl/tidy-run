@@ -8,6 +8,7 @@ import { bindActionCreators } from "redux";
 import Header from '../components/Header';
 import format  from "..";
 import Spinner from "../components/spinner/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ChallengeList = ({
   auth,
@@ -28,14 +29,19 @@ const ChallengeList = ({
     <>
     <Header></Header>
     <main>
-      <h1>Challenges</h1>
-      <button className="button-new-item"
-        onClick={() => {
-          navigate("/challenge-new");
-        }}
-      ><div className="circle-new-item"><p>+</p></div>
-        New Challenge
-      </button>
+      <h1 className="page-main-title">Challenges</h1>
+      <button
+                className="new-item-button"
+                onClick={() => navigate("/challenge-new")}
+              >
+                <div>
+                  <FontAwesomeIcon className="new-item-icon" icon="fa-plus" />
+                </div>
+                <div>New Challenge</div>
+              </button>
+
+
+      
       {challenge.loading ? (
         <Spinner/>
       ) : challenge.error ? (
@@ -44,15 +50,49 @@ const ChallengeList = ({
         <>
           {challenge.data.challengeList.map((item) => (
 
-          <div className="challenge-info">
-          <h2>{item.name}</h2>
-          <div className="flex-row-start"><h3 className="standard-info">Status: </h3><h3 className="custom-info">{item.status}</h3></div>
-          <div className="flex-row-start"><h3 className="standard-info">Start date: </h3><h3 className="custom-info">{format(item.start_date)}</h3></div>
-          <div className="flex-row-start"><h3 className="standard-info">End date: </h3><h3 className="custom-info">{format(item.end_date)}</h3></div>
-          <div className="flex-row-start"><h3 className="standard-info">Prize: </h3><h3 className="custom-info">{item.prize}</h3></div>
-          <button onClick={() => navigate("/challenge/" + item.id)}>
-              See more details
-             </button>
+          <div className="challenge-card">
+<div className="card-row-center">
+                <h2 className="card-text-title">
+                {item.name}
+                </h2>
+              </div>
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Status: </h3>
+                <h3 className="card-text-custom-info">
+                  {item.status}
+                </h3>
+              </div>
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Start date: </h3>
+                <h3 className="card-text-custom-info">
+                  {format(item.start_date)}
+                </h3>
+              </div>
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">End date: </h3>
+                <h3 className="card-text-custom-info">
+                  {format(item.end_date)}
+                </h3>
+              </div>
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Prize: </h3>
+                <h3 className="card-text-custom-info">
+                  {item.prize}
+                </h3>
+              </div>
+              <div className="card-row-buttons-left">
+              <button
+                    className="card-button"
+                    type="button"
+                    onClick={() => navigate("/challenge/" + item.id)}
+                  >
+                    {/* <div className="card-icon-button">
+                      <FontAwesomeIcon icon="fa-pencil" />
+                    </div> */}
+                    <div>See more details</div>
+                  </button>
+              </div>
+
           </div>
           ))}
 

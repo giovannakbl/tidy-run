@@ -11,22 +11,22 @@ const Header = ({ auth, logoutRequest }) => {
 
   return (
     <>
-      <header className="header">
-        <button
+      <header >
+        <button className="header-button"
           onClick={() => {
             navigate("/");
           }}
         >
           Home
         </button>
-        <button
+        <button className="header-button"
           onClick={() => {
             navigate("/challenge-list");
           }}
         >
           Challenges
         </button>
-        <button
+        <button className="header-button"
           onClick={() => {
             navigate("/account");
           }}

@@ -99,31 +99,31 @@ const ModelTaskEdit = ({
           <p>Error</p>
         ) : (
           <>
-            <div className="go-back-area">
+       
               <button
                 className="go-back-button"
                 onClick={() => navigate("/model-tasks")}
               >
                 &#60;&#60; Go back to Model Task List
               </button>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name</label>
+        
+              <h1 className="page-main-title">Edit Model Task</h1>
+            <form className="standard-form" onSubmit={handleSubmit}>
+              <label className="standard-label" htmlFor="name">Name</label>
               <input
                 id="name"
                 name="name"
                 type="text"
                 onChange={handleInputChange}
                 value={formValues.name}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <p className="label-text">Choose icon</p>
-              <div className="radio-list icon-list">
+              <p className="standard-label">Choose icon</p>
+              <div className="icon-list">
                 {standardOptions.taskIcon.map((item) => (
                   <>
-                    <div>
+                    <div className="icon-option">
                       <input
                         type="radio"
                         id={item.name}
@@ -133,7 +133,7 @@ const ModelTaskEdit = ({
                         onChange={handleInputChange}
                       />
                       <label htmlFor={item.name}>
-                        <div className="fa-icons">
+                      <div className="icon-list-circle" >
                           <FontAwesomeIcon icon={item.icon} />
                         </div>
                       </label>
@@ -141,11 +141,11 @@ const ModelTaskEdit = ({
                   </>
                 ))}
               </div>
-              <p className="label-text">Choose color</p>
-              <div className="radio-list icon-list">
+              <p className="standard-label">Choose color</p>
+              <div className="icon-list">
                 {standardOptions.iconColor.map((item) => (
                   <>
-                    <div>
+                    <div className="icon-option">
                       <input
                         type="radio"
                         id={item.name}
@@ -155,8 +155,7 @@ const ModelTaskEdit = ({
                         onChange={handleInputChange}
                       />
                       <label htmlFor={item.name}>
-                        <div
-                          className="fa-icons"
+                      <div className="icon-list-circle" 
                           style={{
                             backgroundColor: item.color,
                           }}
@@ -166,11 +165,11 @@ const ModelTaskEdit = ({
                   </>
                 ))}
               </div>
-              <p className="label-text">Choose difficulty</p>
-              <div className="radio-list">
+              <p className="standard-label">Choose difficulty</p>
+              <div className="radio-text-list">
                 {standardOptions.difficulty.map((item) => (
                   <>
-                    <div>
+                    <div className="radio-text-option">
                       <input
                         type="radio"
                         id={item.name}
@@ -180,13 +179,15 @@ const ModelTaskEdit = ({
                         onChange={handleInputChange}
                       />
                       <label htmlFor={item.name}>
-                        <div className="text-list">{item.name}</div>
+                        <div >{item.name}</div>
                       </label>
                     </div>
                   </>
                 ))}
               </div>
-              <button type="submit">Save Changes</button>
+              <div className="card-row-buttons-center">
+              <button className="card-button" type="submit">Save Changes</button>
+              </div>
             </form>
 
             <DeleButtton

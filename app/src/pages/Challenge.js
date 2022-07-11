@@ -88,139 +88,133 @@ const Challenge = ({
     return result;
   };
   const getChallenge = async () => {
-    try {
-      await fetchChallengeRequest(challengeId);
-    } catch (e) {}
+    await fetchChallengeRequest(challengeId);
   };
 
   const getTasksInChallenge = async () => {
-    try {
-      const allTasksDetails = await fetchTasksInChallengeRequest(challengeId);
-      setTasksInfo(getTasksInfo(allTasksDetails));
-    } catch (e) {}
+    const allTasksDetails = await fetchTasksInChallengeRequest(challengeId);
+    setTasksInfo(getTasksInfo(allTasksDetails));
   };
   const getHomeMembers = async () => {
-    try {
-      const allHomeMembersDetails = await allHomeMembersRequest();
-      setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
-    } catch (e) {}
+    const allHomeMembersDetails = await allHomeMembersRequest();
+    setHomeMembersIndex(getHomeMembersIndex(allHomeMembersDetails));
   };
   const getScoreBoards = async () => {
-    try {
-      const res = await fetchChallengeRequest(challengeId);
-      const challengeStatus = res.challenge.status;
-      if (challengeStatus == "completed" || challengeStatus == "terminated") {
-        const allScoreBoardsDetails = await fetchScoreBoardsRequest(
-          challengeId
-        );
-        setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
-      } else {
-        setScoreBoardsInfo([]);
-      }
-    } catch (e) {}
+    const res = await fetchChallengeRequest(challengeId);
+    const challengeStatus = res.challenge.status;
+    if (challengeStatus == "completed" || challengeStatus == "terminated") {
+      const allScoreBoardsDetails = await fetchScoreBoardsRequest(challengeId);
+      setScoreBoardsInfo(allScoreBoardsDetails.challenge_score_boards);
+    } else {
+      setScoreBoardsInfo([]);
+    }
   };
   const removeCompletionTask = async (taskId) => {
-    try {
-      await removeCompletionTaskRequest(taskId);
-      getChallenge();
-      getTasksInChallenge();
-    } catch (e) {}
+    await removeCompletionTaskRequest(taskId);
+    getChallenge();
+    getTasksInChallenge();
   };
   const terminateChallenge = async () => {
-    try {
-      await terminateChallengeRequest(challengeId);
-    } catch (e) {}
+    await terminateChallengeRequest(challengeId);
   };
   const reopenChallenge = async () => {
-    try {
-      await reopenChallengeRequest(challengeId);
-    } catch (e) {}
+    await reopenChallengeRequest(challengeId);
   };
 
   return (
     <>
       <Header></Header>
       <main>
-        <div className="go-back-area">
-          <button
-            className="go-back-button"
-            onClick={() => navigate("/challenge-list")}
-          >
-            &#60;&#60; Go back to Challenge List
-          </button>
-        </div>
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge-list")}
+        >
+          &#60;&#60; Go back to Challenge List
+        </button>
         {challenge.loading ? (
           <Spinner />
         ) : challenge.error ? (
           <p>Error</p>
         ) : (
           <>
-            <div className="challenge-info">
-              <h2>{challenge.data.challenge.name}</h2>
-
-              <div className="flex-row-start">
-                <h3 className="standard-info">Status: </h3>
-                <h3 className="custom-info">
+            <h1 className="page-main-title">Challenge</h1>
+            <div className="challenge-card">
+              <div className="card-row-center">
+                <h2 className="card-text-title">
+                  {challenge.data.challenge.name}
+                </h2>
+              </div>
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Status: </h3>
+                <h3 className="card-text-custom-info">
                   {challenge.data.challenge.status}
                 </h3>
               </div>
-              <div className="flex-row-start">
-                <h3 className="standard-info">Start date: </h3>
-                <h3 className="custom-info">
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Start date: </h3>
+                <h3 className="card-text-custom-info">
                   {format(challenge.data.challenge.start_date)}
                 </h3>
               </div>
-              <div className="flex-row-start">
-                <h3 className="standard-info">End date: </h3>
-                <h3 className="custom-info">
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">End date: </h3>
+                <h3 className="card-text-custom-info">
                   {format(challenge.data.challenge.end_date)}
                 </h3>
               </div>
-              <div className="flex-row-start">
-                <h3 className="standard-info">Prize: </h3>
-                <h3 className="custom-info">
+              <div className="card-row-left">
+                <h3 className="card-text-standard-info">Prize: </h3>
+                <h3 className="card-text-custom-info">
                   {challenge.data.challenge.prize}
                 </h3>
               </div>
-              {challenge.data.challenge.status == "created" ||
-              challenge.data.challenge.status == "active" ? (
-                <button
-                  className="action-button"
-                  type="button"
-                  onClick={() => navigate("/challenge-edit/" + challengeId)}
-                >
-                  <div>
-                    <FontAwesomeIcon icon="fa-pencil" />
-                  </div>
-                  <div>Edit Challenge</div>
-                </button>
-              ) : challenge.data.challenge.status == "started" ? (
-                <button className="action-button" onClick={terminateChallenge}>
-                  <div>
-                    <FontAwesomeIcon icon="fa-list-check" />
-                  </div>
-                  <div>Terminate this Challenge</div>
-                </button>
-              ) : challenge.data.challenge.status == "terminated" ? (
-                <button className="action-button" onClick={reopenChallenge}>
-                  <div>
-                    <FontAwesomeIcon icon="fa-lock-open" />
-                  </div>
-                  <div>Reopen this Challenge</div>
-                </button>
-              ) : null}
+              <div className="card-row-buttons-left">
+                {challenge.data.challenge.status == "created" ||
+                challenge.data.challenge.status == "active" ? (
+                  <button
+                    className="card-button"
+                    type="button"
+                    onClick={() => navigate("/challenge-edit/" + challengeId)}
+                  >
+                    <div className="card-icon-button">
+                      <FontAwesomeIcon icon="fa-pencil" />
+                    </div>
+                    <div>Edit Challenge</div>
+                  </button>
+                ) : challenge.data.challenge.status == "started" ? (
+                  <button
+                    className="card-button"
+                    onClick={terminateChallenge}
+                  >
+                    <div className="card-icon-button">
+                      <FontAwesomeIcon icon="fa-list-check" />
+                    </div>
+                    <div>Terminate this Challenge</div>
+                  </button>
+                ) : challenge.data.challenge.status == "terminated" ? (
+                  <button
+                    className="card-button"
+                    onClick={reopenChallenge}
+                  >
+                    <div className="card-icon-button">
+                      <FontAwesomeIcon icon="fa-lock-open" />
+                    </div>
+                    <div>Reopen this Challenge</div>
+                  </button>
+                ) : null}
+              </div>
             </div>
-            <h2>Challenge Tasks</h2>
+            <h2 className="page-sec-title">Challenge Tasks</h2>
             {challenge.data.challenge.status == "created" ||
             challenge.data.challenge.status == "active" ? (
               <button
-                className="button-new-item"
+                className="new-item-button"
                 onClick={() => navigate("/task-new/" + challengeId)}
               >
-                <div className="circle-new-item">
-                  <p>+</p>
+                <div>
+                  <FontAwesomeIcon className="new-item-icon" icon="fa-plus" />
                 </div>
-                Add task
+                <div>Add task</div>
               </button>
             ) : null}
           </>
@@ -238,89 +232,88 @@ const Challenge = ({
         ) : (
           <>
             {tasksInfo.map((item) => (
-              <div className="task-info">
-                <div className="task-internal">
-                  <div className="flex-row-start ">
-                    <div className="full-height">
-                      <div
-                        className="fa-icons"
-                        style={{
-                          backgroundColor: item.color,
-                        }}
-                      >
-                        <FontAwesomeIcon icon={item.icon} />
-                      </div>
-                    </div>
-                    <div className="flex-column-start full-width">
-                      <div className="middle-height task-main-text">
-                        <p
-                          style={{
-                            color: item.color,
-                            textDecoration: item.completedAt
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          {item.name}
-                        </p>
-                      </div>
-                      <div className="middle-height task-sec-text">
-                        <p
-                          style={{
-                            color: item.color,
-                          }}
-                        >
-                          Difficulty: {item.difficulty}
-                        </p>
-                        {item.completedAt ? (
-                          <p>Completed At: {format(item.completedAt)}</p>
-                        ) : null}
-                      </div>
-                    </div>
+              <div className="task-card">
+                <div className="task-card-row-initial ">
+                  <div
+                    className="medium-icon-circle"
+                    style={{
+                      backgroundColor: item.color,
+                    }}
+                  >
+                    <FontAwesomeIcon icon={item.icon} />
                   </div>
+
+                  <p
+                    className="task-card-main-title"
+                    style={{
+                      color: item.color,
+                      textDecoration: item.completedAt
+                        ? "line-through"
+                        : "none",
+                    }}
+                  >
+                    {item.name}
+                  </p>
+                </div>
+
+                <div className="task-card-row-advance-one">
+                  <p
+                    className="task-card-standard-text"
+                    style={{
+                      color: item.color,
+                    }}
+                  >
+                    Difficulty: {item.difficulty}
+                  </p>
+                </div>
+                <div className="task-card-row-advance-one">
                   {item.completedAt ? (
-                    <>
-                      <div className="after-icon">
-                        <div className="full-height">
-                          <div
-                            className="home-member-in-task-icon"
-                            style={{
-                              backgroundColor:
-                                homeMembersIndex[item.homeMemberId].color,
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              icon={homeMembersIndex[item.homeMemberId].icon}
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div className="middle-height after-icon-main-text">
-                            <p
-                              style={{
-                                color:
-                                  homeMembersIndex[item.homeMemberId].color,
-                              }}
-                            >
-                              {homeMembersIndex[item.homeMemberId].name}
-                            </p>
-                          </div>
-                          <div className="aligned-secondary task-sec-text">
-                            <p>{item.pointsEarned} Points Earned</p>
-                          </div>
-                        </div>
-                      </div>
-                    </>
+                    <p className="task-card-standard-text">
+                      Completed At: {format(item.completedAt)}
+                    </p>
                   ) : null}
                 </div>
-                <div className="flex-row-start">
+
+                {item.completedAt ? (
+                  <>
+                    <div className="task-card-row-advance-one">
+                      <div
+                        className="small-icon-circle"
+                        style={{
+                          backgroundColor:
+                            homeMembersIndex[item.homeMemberId].color,
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={homeMembersIndex[item.homeMemberId].icon}
+                        />
+                      </div>
+
+                      <p
+                        className="task-card-sec-title"
+                        style={{
+                          color: homeMembersIndex[item.homeMemberId].color,
+                        }}
+                      >
+                        {homeMembersIndex[item.homeMemberId].name}
+                      </p>
+                    </div>
+                    <div className="task-card-row-advance-two">
+                      <p className="task-card-standard-text">
+                        {item.pointsEarned} Points Earned
+                      </p>
+                    </div>
+                  </>
+                ) : null}
+
+                <div className="card-row-buttons-left">
                   {challenge.data.challenge.status == "created" ||
                   challenge.data.challenge.status == "active" ? (
                     <button
-                      className="action-button"
+                      className="card-button"
                       onClick={() => navigate("/task-edit/" + item.id)}
                     >
-                      <div>
+                      <div className="card-icon-button">
                         <FontAwesomeIcon icon="fa-pencil" />
                       </div>
                       <div>Edit</div>
@@ -329,10 +322,10 @@ const Challenge = ({
                   {challenge.data.challenge.status != "terminated" &&
                   item.completedAt ? (
                     <button
-                      className="action-button"
+                      className="card-button"
                       onClick={() => removeCompletionTask(item.id)}
                     >
-                      <div>
+                      <div className="card-icon-button">
                         <FontAwesomeIcon icon="fa-xmark" />
                       </div>
                       <div>Remove completion of task</div>
@@ -342,10 +335,10 @@ const Challenge = ({
                   !item.completedAt ? (
                     <>
                       <button
-                        className="action-button"
+                        className="card-button"
                         onClick={() => navigate("/task-complete/" + item.id)}
                       >
-                        <div>
+                        <div className="card-icon-button">
                           <FontAwesomeIcon icon="fa-check" />
                         </div>
                         <div>Complete</div>
@@ -369,19 +362,20 @@ const Challenge = ({
           <p>Error</p>
         ) : (
           <>
-            <h2>Ranking:</h2>
+            <h2 className="page-sec-title">Ranking:</h2>
             {scoreBoardsInfo.map((item) => (
               <>
-                <div className="ranking-info score-board-column-start">
-                  <div className="flex-row-start">
-                    <h3 className="custom-info">
-                      Position: {item.rank_in_challenge}
+                <div className="task-card">
+                  <div className="card-row-left">
+                  {/* <h3 className="card-text-custom-info">Position: </h3> */}
+                    <h3 className="card-text-custom-info">
+                    Position: {item.rank_in_challenge}
                     </h3>
                   </div>
-                  <div className="flex-row-start">
-                    <div className="full-height">
+                  <div className="task-card-row-initial">
+                    {/* <div className="full-height"> */}
                       <div
-                        className="fa-icons"
+                        className="medium-icon-circle"
                         style={{
                           backgroundColor:
                             homeMembersIndex[item.home_member_id].color,
@@ -391,22 +385,24 @@ const Challenge = ({
                           icon={homeMembersIndex[item.home_member_id].icon}
                         />
                       </div>
-                    </div>
-                    <div className="flex-column-start full-width">
-                      <div className="home-member-name">
-                        <p
+                    {/* </div> */}
+                    {/* <div className="flex-column-start full-width"> */}
+                      {/* <div className="home-member-name"> */}
+                        <p className="task-card-main-title"
                           style={{
                             color: homeMembersIndex[item.home_member_id].color,
                           }}
                         >
                           {homeMembersIndex[item.home_member_id].name}
                         </p>
-                      </div>
-                      <div className="middle-height task-sec-text home-member-name home-member-points">
-                        <p>Total points: {item.total_points}</p>
-                      </div>
-                    </div>
+                      {/* </div> */}
+                      
+                    {/* </div> */}
                   </div>
+                  <div className="task-card-row-advance-one">
+                        <p className="task-card-standard-text"
+                        >Total points: {item.total_points}</p>
+                      </div>
                 </div>
               </>
             ))}

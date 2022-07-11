@@ -21,34 +21,34 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
     <>
       <Header></Header>
       <main>
-        <h1>Getting Started</h1>
+        <h1 className="page-main-title">Getting Started</h1>
 
         <div className="game-explanation-container">
-          <h2 className="game-explanation-title">Getting started:</h2>
-          <p className="game-explanation-text">
+          <h2 className="page-sec-title">Tidy Run</h2>
+          <p className="account-info-text-sec">
             Now that you have created an account, I am going to give you a step
             by step for setting everything up and start competing!
           </p>
 
-          <h3 className="game-explanation-title-left">Step 1:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 1:</h3>
+          <p className="account-info-text-sec">
             You can custom your info and set a name for your home! You can
             access that option by clicking on: Account &gt; Change your family
             name
           </p>
-          <h3 className="game-explanation-title-left">Step 2:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 2:</h3>
+          <p className="account-info-text-sec">
             The next step is adding the list of people who share the same home
             and will be a part of the competition. You can add as many home
             members as you want by going to: Home &gt; New Home Member
           </p>
-          <h3 className="game-explanation-title-left">Step 3:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 3:</h3>
+          <p className="account-info-text-sec">
             Let's create some of the tasks you usually need to get done in your
             home. Go to Home &gt; Manage task models.{" "}
           </p>
-          <h3 className="game-explanation-title-left">Step 4:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 4:</h3>
+          <p className="account-info-text-sec">
             Now that everything is set, we can create our first challenge! Go to
             Challenges &gt; New Challenge. Choose a name for your challenge,
             indicate the dates when it will start and end and what will be the
@@ -57,16 +57,16 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
             you want from the task models you created before. You can always add
             a new task model or edit them if you wish!
           </p>
-          <h3 className="game-explanation-title-left">Step 5:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 5:</h3>
+          <p className="account-info-text-sec">
             Ready, set, go! The competition has started. You can all start doing
             the challenge tasks and whenever a task is completed, you can access
             the challenge details going to Challenges &gt; See more details and
             register the completion of the task, indicating who completed it and
             when.
           </p>
-          <h3 className="game-explanation-title-left">Step 6:</h3>
-          <p className="game-explanation-text">
+          <h3 className="page-sec-title-left">Step 6:</h3>
+          <p className="account-info-text-sec">
             End of the challenge. The challenge can end in two ways: When all
             the tasks are completed, or if terminate the challenge before that.
             You can terminate a challenge if at least one task has been

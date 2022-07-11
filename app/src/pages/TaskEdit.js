@@ -95,7 +95,7 @@ const TaskEdit = ({
         <p>Error</p>
       ) : (
         <>
-          <div className="go-back-area">
+        
             <button
               className="go-back-button"
               onClick={() =>
@@ -104,9 +104,9 @@ const TaskEdit = ({
             >
               &#60;&#60; Go back to Challenge
             </button>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Name</label>
+            <h1 className="page-main-title">Edit Task</h1>
+          <form className="standard-form" onSubmit={handleSubmit}>
+            <label className="standard-label" htmlFor="name">Name</label>
             <input
               id="name"
               name="name"
@@ -114,14 +114,14 @@ const TaskEdit = ({
               onChange={handleInputChange}
               defaultValue={tasks.data.task.name}
               value={formValues.name}
-              className="input-text"
+              className="standard-text-input"
               
             />
-            <p className="label-text">Choose icon</p>
-            <div className="radio-list icon-list">
+            <p className="standard-label">Choose icon</p>
+            <div className="icon-list">
               {standardOptions.taskIcon.map((item) => (
                 <>
-                  <div>
+                  <div className="icon-option">
                     <input
                       type="radio"
                       id={item.name}
@@ -132,7 +132,7 @@ const TaskEdit = ({
                       
                     />
                     <label htmlFor={item.name}>
-                      <div className="fa-icons">
+                    <div className="icon-list-circle" >
                         <FontAwesomeIcon
                           icon = {item.icon}
                         />
@@ -142,12 +142,12 @@ const TaskEdit = ({
                 </>
               ))}
             </div>
-            <p className="label-text">Choose color</p>
-            <div className="radio-list icon-list">
+            <p className="standard-label">Choose color</p>
+            <div className="icon-list">
               
               {standardOptions.iconColor.map((item) => (
                 <>
-                  <div >
+                  <div className="icon-option" >
                     <input
                       type="radio"
                       id={item.name}
@@ -158,8 +158,7 @@ const TaskEdit = ({
                       required
                     />
                     <label htmlFor={item.name}>
-                      <div
-                        className="fa-icons"
+                    <div className="icon-list-circle" 
                         style={{
                           backgroundColor: item.color,
                         }}
@@ -171,13 +170,13 @@ const TaskEdit = ({
             </div>
 
 
-            <p className="label-text">Choose difficulty</p>
-            <div className="radio-list">
+            <p className="standard-label">Choose difficulty</p>
+            <div className="radio-text-list">
             
            
               {standardOptions.difficulty.map((item) => (
                 <>
-                  <div>
+                  <div className="radio-text-option">
                     <input
                       type="radio"
                       id={item.name}
@@ -196,7 +195,9 @@ const TaskEdit = ({
                 </>
               ))}
             </div>
-            <button type="submit">Save Changes</button>
+            <div className="card-row-buttons-center">
+              <button className="card-button" type="submit">Save Changes</button>
+              </div>
           </form>
           <DeleButtton
               isDeletedRequested={isDeletedRequested}

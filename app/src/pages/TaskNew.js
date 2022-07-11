@@ -111,11 +111,12 @@ const TaskNew = ({
           <Spinner/>
         ) : (
           <>
-            <form onSubmit={handleSubmit}>
-              <p className="label-text">Choose a task from your task models</p>
-              <div className="radio-list">
+          <h1 className="page-main-title">New Task</h1>
+            <form className="standard-form" onSubmit={handleSubmit}>
+              <p className="standard-label">Choose a task from your task models</p>
+              <div className="radio-text-icon-list">
                 {modelTasksInfo.length == 0 ? (
-                  <p className="label-text">
+                  <p className="standard-label">
                     You need to create Model tasks in order to insert a task in
                     a challenge
                   </p>
@@ -123,6 +124,7 @@ const TaskNew = ({
                   <>
                     {modelTasksInfo.map((item) => (
                       <>
+                      <div className="radio-text-icon-option">
                         <input
                           type="radio"
                           id={item.id}
@@ -133,52 +135,60 @@ const TaskNew = ({
                           className="small-margin-bottom"
                         />
                         <label htmlFor={item.id} style={{ color: item.color }}>
-                          <div>
+                          <div className="task-option">
+                        <div className="task-card-row-initial ">
                             <div
-                              className="fa-icons "
+                              className="medium-icon-circle" 
                               style={{ backgroundColor: item.color }}
                             >
                               <FontAwesomeIcon icon={item.icon} />
                             </div>
-                          </div>
-                          <div className="flex-column-start full-width">
-                            <div className="model-task-main-text">
-                              <p>{item.name}</p>
+
+                            
+                         
+                          
+                              <p className="task-card-main-title">{item.name}</p>
                             </div>
-                            <div className="model-task-sec-text">
-                              <p>Difficulty: {item.difficulty}</p>
+                            
+                            <div className="task-card-row-advance-one">
+                              <p className="task-card-standard-text">Difficulty: {item.difficulty}</p>
                             </div>
-                          </div>
+                            </div>
                         </label>
+                        </div>
                       </>
                     ))}
                   </>
                 )}
 
+
                 <button
                   type="button"
-                  className="model-task-button"
+                  className="new-item-form-button"
                   onClick={() => navigate("/model-task-new")}
                 >
-                  <div className="model-task-circle">
-                    <div className="white">+</div>
-                  </div>
-                  New task model
+                  <div>
+                  <FontAwesomeIcon className="new-item-form-icon" icon="fa-plus" />
+                </div>
+                <div>New task model</div>
+                  
                 </button>
 
                 <button
                   type="button"
-                  className="model-task-button"
+                  className="new-item-form-button"
                   onClick={() => navigate("/model-tasks")}
                 >
                   <div>
-                    <FontAwesomeIcon icon="fa-pencil" />
+                    <FontAwesomeIcon className="new-item-form-icon" icon="fa-pencil" />
                   </div>
                   <div>Manage task models</div>
                 </button>
               </div>
 
-              <button type="submit">Add Task</button>
+              <div className="card-row-buttons-center ">
+              <button className="card-button" type="submit">Add Task</button>
+              </div>
             </form>
           </>
         )}

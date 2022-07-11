@@ -68,7 +68,7 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      <div className="go-back-area">
+      
         <button
           className="go-back-button"
           onClick={() => {
@@ -78,19 +78,21 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
         >
           &#60;&#60; Go back to user details
         </button>
-      </div>
-      <h2>Change your password</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="password">New Password</label>
+      
+      <h2 className="page-main-title">Change your password</h2>
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="password">New Password</label>
         <input
           id="password"
           name="password"
           type="password"
           onChange={handleInputChange}
           value={formValues.password}
-          className="input-text"
+          className="standard-text-input"
         />
-        <button type="submit">Save Changes</button>
+        <div className="card-row-buttons-center">
+            <button className="card-button" type="submit">Save Changes</button>
+      </div>
       </form>
       </main>
     </>

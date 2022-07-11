@@ -90,56 +90,59 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      <div className="go-back-area">
+      {/* <div className="go-back-area"> */}
         <button
           className="go-back-button"
           onClick={() => navigate("/challenge-list")}
         >
           &#60;&#60; Go back to Challenge List
         </button>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+      {/* </div> */}
+      <h1 className="page-main-title">New Challenge</h1>
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="name">Name</label>
         <input
           id="name"
           name="name"
           type="text"
           onChange={handleInputChange}
           value={formValues.name}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="start_date">Start Date</label>
+        <label className="standard-label" htmlFor="start_date">Start Date</label>
         <input
           id="start_date"
           name="start_date"
           type="date"
           onChange={handleInputChange}
           value={formValues.start_date}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="end_date">End Date</label>
+        <label className="standard-label" htmlFor="end_date">End Date</label>
         <input
           id="end_date"
           name="end_date"
           type="date"
           onChange={handleInputChange}
           value={formValues.end_date}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="prize">Prize</label>
+        <label className="standard-label" htmlFor="prize">Prize</label>
         <input
           id="prize"
           name="prize"
           type="text"
           onChange={handleInputChange}
           value={formValues.prize}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <button type="submit">Create challenge</button>
+        <div className="card-row-buttons-center">
+        <button className="card-button" type="submit">Create challenge</button>
+        </div>
       </form>
       </main>
     </>
