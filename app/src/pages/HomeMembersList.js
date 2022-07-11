@@ -1,63 +1,114 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { allHomeMembersRequest } from "../store/HomeMembers/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import { standardOptions } from "../store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from '../components/Header';
+import Spinner from "../components/spinner/Spinner";
 
 const HomeMemberList = ({
   auth,
   homeMembers,
   allHomeMembersRequest,
-  logoutRequest,
 }) => {
   let navigate = useNavigate();
+  const [homeMembersInfo, setHomeMembersInfo] = useState([]);
   useEffect(() => {
     getAllHomeMembers();
   }, []);
-  const getAllHomeMembers = async () => {
-    await allHomeMembersRequest(auth.data.token);
+  const getHomeMembersInfo = (allHomeMembersDetails) => {
+    let result = [];
+    allHomeMembersDetails.home_members.map(
+      (item, index) =>
+        (result[index] = {
+          id: item.id,
+          name: item.name,
+          color: standardOptions.iconColor.find(
+            (element) => element.name === item.icon_color
+          ).color,
+          icon: standardOptions.avatarIcon.find(
+            (element) => element.name === item.avatar_icon
+          ).icon,
+        })
+    );
+    return result;
   };
-  const handleLogout = async () => {
-    await logoutRequest();
+  const getAllHomeMembers = async () => {
+    const allHomeMembersDetails = await allHomeMembersRequest();
+    setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
 
-  if (auth.data.token == null) return <Navigate to="/login" replace />;
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
-      <button onClick={handleLogout}>Cerrar sesión</button>
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Dashboard
-      </button>
-      <button
+    <Header></Header>
+    <main>
+ 
+<h1>Home Members</h1>
+      <button className="button-new-item"
+      type="button"
         onClick={() => {
           navigate("/home-member-new");
         }}
-      >
-        Create new Home Member
+      ><div className="circle-new-item"><p>+</p></div>
+        New Home Member
       </button>
-      <h1>Home Members</h1>
-      <h2>Check out your Home Members</h2>
+      
+ 
       {homeMembers.loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : homeMembers.error ? (
         <p>Error</p>
       ) : (
-        <ul>
-          {homeMembers.data.homeMembersList.map((item) => (
-            <li key={item.id}>
-              <button onClick={() => navigate("/home-member/" + item.id)}>
-                {item.name}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <>
+{homeMembersInfo.map((item) => (
+                  <>
+                  <div className="task-info">
+                    <div className="member-main-text" style={{
+                          color: item.color,
+                        }}>
+                          <div className="member-main-text">
+                        <div
+                          className="fa-icons"
+                          style={{
+                            backgroundColor: item.color,
+                          }}
+                        >
+                          <FontAwesomeIcon icon={item.icon} />
+                        </div>
+                        </div>
+                        <div className="member-main-text">
+                          <p 
+                           
+                          style={{
+                          color: item.color,
+                        }}
+                       
+                        >{item.name}
+                        </p>
+                        </div>
+                    </div>
+          
+        <button
+                  className="action-button"
+                  type="button"
+                  onClick={() => navigate("/home-member-edit/" + item.id)}
+                >
+                  <div>
+                    <FontAwesomeIcon icon="fa-pencil" />
+                  </div>
+                  <div>Edit Home Member</div>
+                </button>
+                    </div>
+                  </>
+                ))}
+        </>
       )}
+      </main>
     </>
   );
 };
@@ -72,7 +123,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       allHomeMembersRequest,
-      logoutRequest,
     },
     dispatch
   );

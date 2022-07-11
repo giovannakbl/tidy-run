@@ -1,115 +1,77 @@
 import { TidyUserActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
+import api from "../../services/api";
 
-export const tidyUserRequest = (token) => async (dispatch) => {
+export const tidyUserRequest = () => async (dispatch) => {
   try {
     dispatch({ type: TidyUserActionTypes.FETCH_TIDY_USER_REQUEST });
-    const asyncResp = await getTidyUserApi(token);
+    const tidyUserRes = await api.get(`/v1/tidy_user`);
     dispatch({
       type: TidyUserActionTypes.FETCH_TIDY_USER_SUCCESS,
-      payload: asyncResp,
+      payload: tidyUserRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tidyUserRes.data;
+  } catch (err) {
     dispatch({
       type: TidyUserActionTypes.FETCH_TIDY_USER_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function getTidyUserApi(token) {
-  const res = await fetch(baseURL + "/api/v1/tidy_user", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  return res.json();
-}
-
-export const tidyUserEdit = (token, formValues) => async (dispatch) => {
+export const tidyUserEdit = (formValues) => async (dispatch) => {
   try {
     dispatch({ type: TidyUserActionTypes.EDIT_TIDY_USER_REQUEST });
-    const asyncResp = await editTidyUserApi(token, formValues);
+    const tidyUserRes = await api.put(`/v1/tidy_user`, formValues);
     dispatch({
       type: TidyUserActionTypes.EDIT_TIDY_USER_SUCCESS,
-      payload: asyncResp,
+      payload: tidyUserRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tidyUserRes.data;
+  } catch (err) {
     dispatch({
       type: TidyUserActionTypes.EDIT_TIDY_USER_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
-
-async function editTidyUserApi(token, formValues) {
-  const res = await fetch(baseURL + "/api/v1/tidy_user", {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  return res.json();
-}
 
 export const createTidyUserRequest = (formValues) => async (dispatch) => {
   try {
     dispatch({ type: TidyUserActionTypes.CREATE_TIDY_USER_REQUEST });
-    const asyncResp = await createTidyUserApi(formValues);
+    const tidyUserRes = await api.post(`/v1/tidy_user/register`, formValues);
     dispatch({
       type: TidyUserActionTypes.CREATE_TIDY_USER_SUCCESS,
-      payload: asyncResp,
+      payload: tidyUserRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tidyUserRes.data;
+  } catch (err) {
     dispatch({
       type: TidyUserActionTypes.CREATE_TIDY_USER_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function createTidyUserApi(formValues) {
-  const res = await fetch(baseURL + "/api/v1/tidy_user/register", {
-    method: "POST",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  return res.json();
-}
 
-export const deleteTidyUserRequest = (token) => async (dispatch) => {
+export const deleteTidyUserRequest = () => async (dispatch) => {
   try {
     dispatch({ type: TidyUserActionTypes.DELETE_TIDY_USER_REQUEST });
-    const asyncResp = await deleteTidyUserApi(token);
+    const tidyUserRes = await api.delete(`/v1/tidy_user`);
     dispatch({
       type: TidyUserActionTypes.DELETE_TIDY_USER_SUCCESS,
-      payload: asyncResp,
+      payload: tidyUserRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tidyUserRes.data;
+  } catch (err) {
     dispatch({
       type: TidyUserActionTypes.DELETE_TIDY_USER_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
-
-async function deleteTidyUserApi(token) {
-  const res = await fetch(baseURL + "/api/v1/tidy_user", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  return res.json();
-}

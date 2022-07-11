@@ -13,6 +13,7 @@ export const initialStateModelTasks = {
   },
   error: undefined,
   loading: false,
+  status: 'idle',
 };
 
 const modelTasksReducer = (state = initialStateModelTasks, action) => {
@@ -22,14 +23,14 @@ const modelTasksReducer = (state = initialStateModelTasks, action) => {
     case ModelTasksActionTypes.CREATE_MODEL_TASK_REQUEST:
     case ModelTasksActionTypes.DELETE_MODEL_TASK_REQUEST:
     case ModelTasksActionTypes.EDIT_MODEL_TASK_REQUEST: {
-      return { ...state, loading: true, error: undefined };
+      return { ...state, loading: true, status: 'loading', error: undefined };
     }
     case ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_SUCCESS: {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: { ...state.data, modelTasksList: action.payload.model_tasks },
+        status: 'succeeded', error: undefined
       };
     }
     case ModelTasksActionTypes.FETCH_MODEL_TASK_SUCCESS:
@@ -38,19 +39,20 @@ const modelTasksReducer = (state = initialStateModelTasks, action) => {
       return {
         ...state,
         loading: false,
-        error: undefined,
-        data: { ...state.data, modelTask: action.payload.model_task },
+        data: { ...state.data, modelTask: action.payload.model_task,  },
+        status: 'succeeded', error: undefined
       };
     }
     case ModelTasksActionTypes.DELETE_MODEL_TASK_SUCCESS: {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: {
           ...state.data,
           modelTask: initialStateModelTasks.data.modelTask,
+          
         },
+        status: 'succeeded', error: undefined
       };
     }
     case ModelTasksActionTypes.FETCH_ALL_MODEL_TASKS_ERROR:
@@ -58,7 +60,7 @@ const modelTasksReducer = (state = initialStateModelTasks, action) => {
     case ModelTasksActionTypes.CREATE_MODEL_TASK_ERROR:
     case ModelTasksActionTypes.DELETE_MODEL_TASK_ERROR:
     case ModelTasksActionTypes.EDIT_MODEL_TASK_ERROR: {
-      return { ...state, loading: false, error: "We have an error here" };
+      return { ...state, loading: false, status: 'rejected', error: action.payload };
     }
     default: {
       return state;

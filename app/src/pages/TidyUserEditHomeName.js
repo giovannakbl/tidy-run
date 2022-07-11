@@ -4,8 +4,11 @@ import { connect } from "react-redux";
 import { tidyUserEdit, tidyUserRequest } from "../store/TidyUser/actions";
 import { logoutRequest } from "../store/Auth/actions";
 import { bindActionCreators } from "redux";
+import Header from '../components/Header';
+import Alert from "../components/alert/Alert";
+import Spinner from "../components/spinner/Spinner";
 
-const Dashboard = ({
+const TidyUserEditHomeName = ({
   auth,
   tidyUser,
   tidyUserEdit,
@@ -16,14 +19,22 @@ const Dashboard = ({
   const [formValues, setFormValues] = useState({ password: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await tidyUserEdit(auth.data.token, formValues);
-    navigate("/account");
+    if (isFormValid()) {
+      setIsSubmitted(true);
+    await tidyUserEdit(formValues);
+    // navigate("/account");
+    }
   };
   const getTidyUser = async () => {
-    await tidyUserRequest(auth.data.token);
+    await tidyUserRequest();
   };
   const handleLogout = async () => {
     await logoutRequest();
@@ -32,25 +43,54 @@ const Dashboard = ({
     getTidyUser();
   }, []);
 
-  if (auth.data.token == null) return <Navigate to="/login" replace />;
+  const isFormValid = () => {
+    if (
+      !formValues.home_name 
+    ) {
+      setFormErrorMessage("You must inform a home name");
+      return false;
+    }
+    if (formValues.home_name.trim().length === 0 || formValues.home_name === null) {
+      setFormErrorMessage("The name must have at least a number or letter");
+      return false;
+    }
+    return true;
+  };
+
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
-      <button onClick={handleLogout}>Logout</button>
+    <Header></Header>
+    <main>
+    {isSubmitted && tidyUser.status === "rejected" ? (
+          <Alert type="error" message={tidyUser.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tidyUser.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "Your home name was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       <div className="go-back-area">
         <button
           className="go-back-button"
           onClick={() => {
             navigate("/account");
           }}
-          Ï
+          
         >
           &#60;&#60; Go back to user details
         </button>
       </div>
-      <h1>Change your Home Name</h1>
+      <h2>Change your Home Name</h2>
 
-      <p>Current family name: {tidyUser.data.home_name}</p>
+      <p className="label-text">Current family name: {tidyUser.data.home_name}</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="home_name">Home Name</label>
         <input
@@ -59,9 +99,11 @@ const Dashboard = ({
           type="home_name"
           onChange={handleInputChange}
           value={formValues.home_name}
+          className="input-text"
         />
         <button type="submit">Save Changes</button>
       </form>
+      </main>
     </>
   );
 };
@@ -83,4 +125,4 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(TidyUserEditHomeName);

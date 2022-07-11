@@ -17,6 +17,7 @@ export const initialStateTasks = {
   },
   error: undefined,
   loading: false,
+  status: 'idle',
 };
 
 const tasksReducer = (state = initialStateTasks, action) => {
@@ -28,14 +29,14 @@ const tasksReducer = (state = initialStateTasks, action) => {
     case TasksActionTypes.CREATE_TASK_REQUEST:
     case TasksActionTypes.DELETE_TASK_REQUEST:
     case TasksActionTypes.EDIT_TASK_REQUEST: {
-      return { ...state, loading: true, error: undefined };
+      return { ...state, loading: true, status: 'loading', error: undefined };
     }
     case TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_SUCCESS: {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: { ...state.data, tasksList: action.payload.tasks },
+        status: 'succeeded', error: undefined
       };
     }
     case TasksActionTypes.COMPLETE_TASK_SUCCESS:
@@ -46,16 +47,16 @@ const tasksReducer = (state = initialStateTasks, action) => {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: { ...state.data, task: action.payload.task },
+        status: 'succeeded', error: undefined
       };
     }
     case TasksActionTypes.DELETE_TASK_SUCCESS: {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: { ...state.data, task: initialStateTasks.data.task },
+        status: 'succeeded', error: undefined
       };
     }
     case TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_ERROR:
@@ -65,7 +66,7 @@ const tasksReducer = (state = initialStateTasks, action) => {
     case TasksActionTypes.CREATE_TASK_ERROR:
     case TasksActionTypes.DELETE_TASK_ERROR:
     case TasksActionTypes.EDIT_TASK_ERROR: {
-      return { ...state, loading: false, error: "We have an error here" };
+      return { ...state, loading: false, status: 'rejected', error: action.payload };
     }
     default: {
       return state;

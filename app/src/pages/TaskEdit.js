@@ -8,7 +8,11 @@ import {
   fetchTaskRequest,
 } from "../store/Tasks/actions";
 import { standardOptions } from "../store";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from '../components/Header';
+import Alert from "../components/alert/Alert";
+import DeleButtton from "../components/delete-button/DeleteButton";
+import Spinner from "../components/spinner/Spinner";
 
 const TaskEdit = ({
   auth,
@@ -25,36 +29,72 @@ const TaskEdit = ({
     icon_color: undefined,
     difficulty: undefined,
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState(undefined);
+  const [isDeletedRequested, setIsDeletedRequested] = useState(false);
+
   useEffect(() => {
     getTask();
   }, []);
   const getTask = async () => {
-    const fetchedTask = await fetchTaskRequest(auth.data.token, taskId);
+    const fetchedTask = await fetchTaskRequest(taskId);
     console.log(fetchedTask);
-    setFormValues({name: fetchedTask.task.name,
+    setFormValues({
+      name: fetchedTask.task.name,
       task_icon: fetchedTask.task.task_icon,
       icon_color: fetchedTask.task.icon_color,
-      difficulty: fetchedTask.task.difficulty,});
+      difficulty: fetchedTask.task.difficulty,
+    });
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(formValues);
+    setFormErrorMessage(undefined);
+    setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await editTaskRequest(auth.data.token, taskId, formValues);
-    navigate("/challenge/" + tasks.data.task.challenge_id);
+    if (isFormValid()) {
+      setIsSubmitted(true);
+    await editTaskRequest(taskId, formValues);
+    }
   };
   const handleDeleteTask = async () => {
-    await deleteTaskRequest(auth.data.token, taskId);
+    await deleteTaskRequest(taskId);
     navigate("/challenge/" + tasks.data.task.challenge_id);
   };
 
-  if (!auth.data.token) return <Navigate to="/login" replace />;
+  const isFormValid = () => {
+      if (formValues.name.trim().length === 0 || formValues.name === null || formValues.name === undefined) {
+        setFormErrorMessage("The name must have at least a number or letter");
+        return false;
+      }
+    
+    return true;
+  };
+  
+  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
+    <Header></Header>
+    <main>
+    {isSubmitted && tasks.status === "rejected" ? (
+          <Alert type="error" message={tasks.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tasks.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Task was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
       {tasks.loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : tasks.error ? (
         <p>Error</p>
       ) : (
@@ -69,7 +109,6 @@ const TaskEdit = ({
               &#60;&#60; Go back to Challenge
             </button>
           </div>
-          <button onClick={handleDeleteTask}>Delete Task</button>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">Name</label>
             <input
@@ -79,97 +118,99 @@ const TaskEdit = ({
               onChange={handleInputChange}
               defaultValue={tasks.data.task.name}
               value={formValues.name}
+              className="input-text"
+              
             />
-            <p className="">Choose icon</p>
-            <ul className="radio-list">
-            {standardOptions.taskIcon.map((item) => (
-              <>
-              <li>
-                <input
-                  type="radio"
-                  id={item.name}
-                  name="task_icon"
-                  checked = {formValues.task_icon == item.name}
-                  value={item.name}
-                  onChange={handleInputChange}
-                />
-                <label for={item.name} >
-                <div className="fa-icons" >
-                    <FontAwesomeIcon  icon={
-                          standardOptions.taskIcon.find(
-                            (element) =>
-                              element.name === item.name
-                          ).icon 
-                        }  />
-                </div>
-                </label>
-                </li>
-              </>
-            ))}
-            </ul>
-<p>Choose color</p>
-            <ul className="radio-list">
-            {standardOptions.iconColor.map((item) => (
-              <>
-              <li>
-                <input
-                  type="radio"
-                  id={item.name}
-                  name="icon_color"
-                  checked = {formValues.icon_color == item.name}
-                  value={item.name}
-                  onChange={handleInputChange}
-                />
-                <label for={item.name} >
-                <div className="fa-icons" style={{ backgroundColor: standardOptions.iconColor.find(
-                            (element) =>
-                              element.name === item.name
-                          ).color }}>
-                </div>
-                </label>
-                </li>
-              </>
-            ))}
-            </ul>
-
-
-
-
-            {/* <label htmlFor="icon_color">Icon Color</label>
-            <select
-              id="icon_color"
-              name="icon_color"
-              type="text"
-              onChange={handleInputChange}
-              defaultValue={tasks.data.task.icon_color}
-              value={formValues.icon_color}
-            >
+            <p className="label-text">Choose icon</p>
+            <div className="radio-list icon-list">
+              {standardOptions.taskIcon.map((item) => (
+                <>
+                  <div>
+                    <input
+                      type="radio"
+                      id={item.name}
+                      name="task_icon"
+                      checked={formValues.task_icon == item.name}
+                      value={item.name}
+                      onChange={handleInputChange}
+                      
+                    />
+                    <label htmlFor={item.name}>
+                      <div className="fa-icons">
+                        <FontAwesomeIcon
+                          icon = {item.icon}
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </>
+              ))}
+            </div>
+            <p className="label-text">Choose color</p>
+            <div className="radio-list icon-list">
+              
               {standardOptions.iconColor.map((item) => (
-                <option value={item.name}>{item.name}</option>
+                <>
+                  <div >
+                    <input
+                      type="radio"
+                      id={item.name}
+                      name="icon_color"
+                      checked={formValues.icon_color == item.name}
+                      value={item.name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <label htmlFor={item.name}>
+                      <div
+                        className="fa-icons"
+                        style={{
+                          backgroundColor: item.color,
+                        }}
+                      ></div>
+                    </label>
+                  </div>
+                </>
               ))}
-            </select> */}
+            </div>
 
 
-
-
-
-            <label htmlFor="difficulty">Difficulty</label>
-            <select
-              id="difficulty"
-              name="difficulty"
-              type="text"
-              onChange={handleInputChange}
-              defaultValue={tasks.data.task.difficulty}
-              value={formValues.difficulty}
-            >
+            <p className="label-text">Choose difficulty</p>
+            <div className="radio-list">
+            
+           
               {standardOptions.difficulty.map((item) => (
-                <option value={item.name}>{item.name}</option>
+                <>
+                  <div>
+                    <input
+                      type="radio"
+                      id={item.name}
+                      name="difficulty"
+                      checked={formValues.difficulty == item.name}
+                      value={item.name}
+                      onChange={handleInputChange}
+                    />
+                    <label htmlFor={item.name}>
+                      <div className="text-list"
+                
+                        
+                      >{item.name}</div>
+                    </label>
+                  </div>
+                </>
               ))}
-            </select>
+            </div>
             <button type="submit">Save Changes</button>
           </form>
+          <DeleButtton
+              isDeletedRequested={isDeletedRequested}
+              deleteFunction={handleDeleteTask}
+              setIsDeletedRequested={setIsDeletedRequested}
+            />
+          
         </>
       )}
+      </main>
     </>
   );
 };

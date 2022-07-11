@@ -15,6 +15,7 @@ export const initialStateChallenge = {
   },
   error: undefined,
   loading: false,
+  status: 'idle',
 };
 
 const challengeReducer = (state = initialStateChallenge, action) => {
@@ -26,14 +27,14 @@ const challengeReducer = (state = initialStateChallenge, action) => {
     case ChallengeActionTypes.CREATE_CHALLENGE_REQUEST:
     case ChallengeActionTypes.TERMINATE_CHALLENGE_REQUEST:
     case ChallengeActionTypes.REOPEN_CHALLENGE_REQUEST: {
-      return { ...state, loading: true, error: undefined };
+      return { ...state, loading: true, status: 'loading', error: undefined };
     }
     case ChallengeActionTypes.FETCH_ALL_CHALLENGES_SUCCESS: {
       return {
         ...state,
         loading: false,
-        error: undefined,
         data: { ...state.data, challengeList: action.payload.challenges },
+        status: 'succeeded', error: undefined
       };
     }
     case ChallengeActionTypes.EDIT_CHALLENGE_SUCCESS:
@@ -46,6 +47,7 @@ const challengeReducer = (state = initialStateChallenge, action) => {
         loading: false,
         error: undefined,
         data: { ...state.data, challenge: action.payload.challenge },
+        status: 'succeeded', error: undefined
       };
     }
     case ChallengeActionTypes.DELETE_CHALLENGE_SUCCESS: {
@@ -57,6 +59,7 @@ const challengeReducer = (state = initialStateChallenge, action) => {
           ...state.data,
           challenge: initialStateChallenge.data.challenge,
         },
+        status: 'succeeded', error: undefined
       };
     }
     case ChallengeActionTypes.FETCH_ALL_CHALLENGES_ERROR:
@@ -66,7 +69,7 @@ const challengeReducer = (state = initialStateChallenge, action) => {
     case ChallengeActionTypes.CREATE_CHALLENGE_ERROR:
     case ChallengeActionTypes.TERMINATE_CHALLENGE_ERROR:
     case ChallengeActionTypes.REOPEN_CHALLENGE_ERROR: {
-      return { ...state, loading: false, error: "We have an error here" };
+      return { ...state, loading: false, status: 'rejected', error: action.payload };
     }
     default: {
       return state;

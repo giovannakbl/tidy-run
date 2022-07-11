@@ -1,231 +1,134 @@
 import { TasksActionTypes } from "./types";
 import { baseURL } from "..";
+import { getErrorMessageApi } from "..";
+import api from "../../services/api";
 
-export const fetchTaskRequest = (token, taskId) => async (dispatch) => {
+export const fetchTaskRequest = (taskId) => async (dispatch) => {
   try {
     dispatch({ type: TasksActionTypes.FETCH_TASK_REQUEST });
-    const asyncResp = await fetchTaskApi(token, taskId);
+    const tasksRes = await api.get(`/v1/tasks/${taskId}`);
     dispatch({
       type: TasksActionTypes.FETCH_TASK_SUCCESS,
-      payload: asyncResp,
+      payload: tasksRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tasksRes.data;
+  } catch (err) {
     dispatch({
       type: TasksActionTypes.FETCH_TASK_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
-
-async function fetchTaskApi(token, taskId) {
-  const res = await fetch(baseURL + "/api/v1/tasks/" + taskId, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
 
 export const fetchTasksInChallengeRequest =
-  (token, challengeId) => async (dispatch) => {
+  (challengeId) => async (dispatch) => {
     try {
       dispatch({ type: TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_REQUEST });
-      const asyncResp = await fetchTasksInChallengeApi(token, challengeId);
+      const tasksRes = await api.get(`/v1/tasks/challenge_tasks/${challengeId}`);
       dispatch({
         type: TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_SUCCESS,
-        payload: asyncResp,
+        payload: tasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return tasksRes.data;
+    } catch (err) {
       dispatch({
         type: TasksActionTypes.FETCH_TASKS_IN_CHALLENGE_ERROR,
+        payload: err.data,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function fetchTasksInChallengeApi(token, challengeId) {
-  const res = await fetch(
-    baseURL + "/api/v1/tasks/challenge_tasks/" + challengeId,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
 
 export const editTaskRequest =
-  (token, taskId, formValues) => async (dispatch) => {
+  (taskId, formValues) => async (dispatch) => {
     try {
       dispatch({ type: TasksActionTypes.EDIT_TASK_REQUEST });
-      const asyncResp = await editTaskApi(token, taskId, formValues);
+      const tasksRes = await api.put(`/v1/tasks/${taskId}`, formValues);
       dispatch({
         type: TasksActionTypes.EDIT_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: tasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return tasksRes.data;
+    } catch (err) {
       dispatch({
         type: TasksActionTypes.EDIT_TASK_ERROR,
+        payload: err.data,
       });
-      throw e;
+      throw err;
     }
   };
 
-async function editTaskApi(token, taskId, formValues) {
-  const res = await fetch(baseURL + "/api/v1/tasks/" + taskId, {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
-
-export const deleteTaskRequest = (token, taskId) => async (dispatch) => {
+export const deleteTaskRequest = (taskId) => async (dispatch) => {
   try {
     dispatch({ type: TasksActionTypes.DELETE_TASK_REQUEST });
-    const asyncResp = await deleteTaskApi(token, taskId);
+    const tasksRes = await api.delete(`/v1/tasks/${taskId}`);
     dispatch({
       type: TasksActionTypes.DELETE_TASK_SUCCESS,
-      payload: asyncResp,
+      payload: tasksRes.data,
     });
-    return asyncResp;
-  } catch (e) {
+    return tasksRes.data;
+  } catch (err) {
     dispatch({
       type: TasksActionTypes.DELETE_TASK_ERROR,
+      payload: err.data,
     });
-    throw e;
+    throw err;
   }
 };
 
-async function deleteTaskApi(token, taskId) {
-  const res = await fetch(baseURL + "/api/v1/tasks/" + taskId, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
 
 export const createTaskRequest =
-  (token, formValues, challengeId) => async (dispatch) => {
+  (formValues, challengeId) => async (dispatch) => {
     try {
       dispatch({ type: TasksActionTypes.CREATE_TASK_REQUEST });
-      const asyncResp = await createTaskApi(token, formValues, challengeId);
+      const tasksRes = await api.post(`/v1/tasks/${challengeId}`, formValues);
       dispatch({
         type: TasksActionTypes.CREATE_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: tasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
-      dispatch({ type: TasksActionTypes.CREATE_TASK_ERROR });
-      throw e;
+      return tasksRes.data;
+    } catch (err) {
+      dispatch({ type: TasksActionTypes.CREATE_TASK_ERROR,
+        payload: err.data, });
+      throw err;
     }
   };
-
-async function createTaskApi(token, formValues, challengeId) {
-  const res = await fetch(baseURL + "/api/v1/tasks/" + challengeId, {
-    method: "POST",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return await res.json();
-}
 
 export const completeTaskRequest =
-  (token, taskId, formValues) => async (dispatch) => {
+  (taskId, formValues) => async (dispatch) => {
     try {
       dispatch({ type: TasksActionTypes.COMPLETE_TASK_REQUEST });
-      const asyncResp = await completeTaskApi(token, taskId, formValues);
+      const tasksRes = await api.put(`/v1/tasks/complete/${taskId}`, formValues);
       dispatch({
         type: TasksActionTypes.COMPLETE_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: tasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return tasksRes.data;
+    } catch (err) {
       dispatch({
         type: TasksActionTypes.COMPLETE_TASK_ERROR,
+        payload: err.data,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function completeTaskApi(token, taskId, formValues) {
-  const res = await fetch(baseURL + "/api/v1/tasks/complete/" + taskId, {
-    method: "PUT",
-    body: JSON.stringify(formValues),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
 
 export const removeCompletionTaskRequest =
-  (token, taskId) => async (dispatch) => {
+  (taskId) => async (dispatch) => {
     try {
       dispatch({ type: TasksActionTypes.REMOVE_COMPLETION_TASK_REQUEST });
-      const asyncResp = await removeCompletionTaskApi(token, taskId);
+      const tasksRes = await api.put(`/v1/tasks/remove_completion/${taskId}`);
       dispatch({
         type: TasksActionTypes.REMOVE_COMPLETION_TASK_SUCCESS,
-        payload: asyncResp,
+        payload: tasksRes.data,
       });
-      return asyncResp;
-    } catch (e) {
+      return tasksRes.data;
+    } catch (err) {
       dispatch({
         type: TasksActionTypes.REMOVE_COMPLETION_TASK_ERROR,
+        payload: err.data,
       });
-      throw e;
+      throw err;
     }
   };
-
-async function removeCompletionTaskApi(token, taskId) {
-  const res = await fetch(
-    baseURL + "/api/v1/tasks/remove_completion/" + taskId,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-  if (!res.ok) {
-    throw new Error("Failed HTTTP");
-  }
-  return res.json();
-}
