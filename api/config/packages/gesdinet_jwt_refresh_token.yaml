@@ -1,6 +1,7 @@
 gesdinet_jwt_refresh_token:
     refresh_token_class: App\Entity\RefreshToken
-    ttl: 2592000 # time in seconds
+    ttl: 30 # time in seconds
+    # ttl: 2592000 # time in seconds
     ttl_update: false
     single_use: true
     token_parameter_name: refresh_token

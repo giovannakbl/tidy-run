@@ -50,6 +50,10 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
     console.log("verifiquei autenticacao na pag login");
     checkLogin();
   }, []);
+  useEffect(() => {
+    console.log(auth);
+    
+  }, [auth.status]);
   // useEffect(() => {
   //   if (cookies.isLoggedIn === "yes") {
   //     checkLogin();

@@ -1,7 +1,10 @@
 import { AuthActionTypes } from "./types";
 import { baseURL } from "..";
 import { getErrorMessageApi } from "..";
-import api  from "../../services/api"
+import api  from "../../services/api";
+import Cookies from 'js-cookie';
+
+
 
 export const loginRequest = (formValues) => async (dispatch) => {
   try {
@@ -52,7 +55,9 @@ export const loginRequest = (formValues) => async (dispatch) => {
 // };
 
 
+
 export const refreshToken = () => async (dispatch) => {
+  
     try {
       dispatch({ type: AuthActionTypes.REFRESH_REQUEST });
       const res = await api.post("/token/refresh", undefined, {withCredentials: true})
@@ -63,6 +68,12 @@ export const refreshToken = () => async (dispatch) => {
       return res.data;
     } catch (err) {
       console.log('.... refresh fail');
+      Cookies.set('isLoggedIn', 'no', { path: "/" })
+      // window.href='/login'
+      window.location.reload();
+        
+    
+ 
       dispatch({
         type: AuthActionTypes.REFRESH_FAILURE,
         payload: err.data,

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { store } from "../store";
 import { refreshToken } from "../store/Auth/actions";
+import { useCookies } from "react-cookie";
 const { dispatch } = store;
 
 // const getErrorDetail = (err) => {
@@ -20,6 +21,13 @@ const { dispatch } = store;
 // };
 
 const getErrorDetail = (status_code) => {
+  
+
+
+
+
+
+
   const errorMapping = {
     401: "Incorrect Email or Password",
     601: "User Not Found",
@@ -120,7 +128,8 @@ instance.interceptors.response.use(
     return res;
   },
   async (err) => {
-    const {config, response} = err
+    const {config, response} = err;
+  
 
 
 // if (err.response.data !== undefined && err.response.data.status_code !== undefined) {
@@ -197,6 +206,7 @@ if (err.response.data !== undefined && err.response.data.status_code !== undefin
         if (resolved) {
           return resolve(instance(config))
         } else {
+           
           return reject()
         }
        }

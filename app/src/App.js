@@ -28,6 +28,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 
+
 function App() {
   const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -36,6 +37,10 @@ function App() {
       console.log("Olhei cookie");
       setIsAuthenticated(cookies.isLoggedIn === "yes");
     }, []);
+    // useEffect(() => {
+    //   console.log("Mudou store");
+    //   // setIsAuthenticated(cookies.isLoggedIn === "yes");
+    // }, [store]);
     if (!isAuthenticated) return <Navigate to="/login" replace />;
     return children ? children : <Outlet />;
   };
