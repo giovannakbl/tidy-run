@@ -72,7 +72,7 @@ const TaskNew = ({
     if (
       !formValues.model_task_id 
     ) {
-      setFormErrorMessage("You must choose a task model");
+      setFormErrorMessage("You must choose a model task");
       return false;
     }
     return true;
@@ -84,7 +84,23 @@ const TaskNew = ({
     <>
       <Header></Header>
       <main>
-      {isSubmitted && tasks.status === "rejected" ? (
+      
+    
+          <button
+            type="button"
+            className="go-back-button"
+            onClick={() => navigate("/challenge/" + challengeId)}
+          >
+            &#60;&#60; Go back to Challenge
+          </button>
+      
+        {modelTasks.loading ? (
+          <Spinner/>
+        ) : (
+          <>
+          <h1 className="page-main-title">New Task</h1>
+          <div className="alert-area">
+          {isSubmitted && tasks.status === "rejected" ? (
           <Alert type="error" message={tasks.error.error_message_api} />
         ) : null}
         {!tasks.loading && isSubmitted && tasks.status === "succeeded" ? (
@@ -98,28 +114,17 @@ const TaskNew = ({
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-        <div className="go-back-area">
-          <button
-            type="button"
-            className="go-back-button"
-            onClick={() => navigate("/challenge/" + challengeId)}
-          >
-            &#60;&#60; Go back to Challenge
-          </button>
-        </div>
-        {modelTasks.loading ? (
-          <Spinner/>
-        ) : (
-          <>
-          <h1 className="page-main-title">New Task</h1>
+          </div>
             <form className="standard-form" onSubmit={handleSubmit}>
-              <p className="standard-label">Choose a task from your task models</p>
+              <p className="standard-label">Choose a task from your model tasks</p>
               <div className="radio-text-icon-list">
                 {modelTasksInfo.length == 0 ? (
-                  <p className="standard-label">
+                  <div className="invisible-container">
+                  <p className="auxiliar-text">
                     You need to create Model tasks in order to insert a task in
                     a challenge
                   </p>
+                  </div>
                 ) : (
                   <>
                     {modelTasksInfo.map((item) => (
@@ -170,7 +175,7 @@ const TaskNew = ({
                   <div>
                   <FontAwesomeIcon className="new-item-form-icon" icon="fa-plus" />
                 </div>
-                <div>New task model</div>
+                <div>New model task</div>
                   
                 </button>
 
@@ -182,7 +187,7 @@ const TaskNew = ({
                   <div>
                     <FontAwesomeIcon className="new-item-form-icon" icon="fa-pencil" />
                   </div>
-                  <div>Manage task models</div>
+                  <div>Manage model tasks</div>
                 </button>
               </div>
 

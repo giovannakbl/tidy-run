@@ -34,6 +34,10 @@ const TidyUserEditEmail = ({
     e.preventDefault();
     if (isFormValid()) {
       setIsSubmitted(true);
+      const oldLogin = {
+        username: tidyUser.data.email,
+        password: formValues.password,
+      }
       const newEmail = {
         email: formValues.email,
       };
@@ -41,8 +45,15 @@ const TidyUserEditEmail = ({
         username: formValues.email,
         password: formValues.password,
       };
-      await tidyUserEdit(newEmail);
-      await loginRequest(newLogin);
+      try {
+        await loginRequest(oldLogin);
+        await tidyUserEdit(newEmail);
+        await loginRequest(newLogin);
+        // setIsSubmitted(false);
+      } catch(e) {
+
+      }
+     
     }
   };
   const getTidyUser = async () => {
@@ -71,16 +82,8 @@ const TidyUserEditEmail = ({
     <>
       <Header></Header>
       <main>
-        {isSubmitted && tidyUser.status === "rejected" ? (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
-        ) : null}
-        {isSubmitted && tidyUser.status === "succeeded" ? (
-          <Alert type="success" message={"Your email was updated!"} />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
-        <div className="go-back-area">
+        
+      
           <button
             className="go-back-button"
             onClick={() => {
@@ -89,18 +92,39 @@ const TidyUserEditEmail = ({
           >
             &#60;&#60; Go back to user details
           </button>
-        </div>
+       
         <h2 className="page-main-title">Change your email</h2>
-        <div className="account-info-container">
+     
+        <div className="border-container">
           <p className="account-info-text-main">Current Email: </p>
-          <p className="account-info-text-sec">{tidyUser.data.email}</p>
-
+          
+          <p className="card-text-important-info">{tidyUser.data.email}</p>
+          
           <p className="card-text-standard-info">
             Please indicate the new email and your current password to confirm
             the changes
           </p>
         </div>
+        <div className="alert-area">
+        {isSubmitted && tidyUser.status === "rejected" ? (
+          <Alert type="error" message={tidyUser.error.error_message_api} />
+        ) : null}
+        {isSubmitted && auth.status === "rejected" ? (
+          <Alert type="error" message={auth.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tidyUser.status === "succeeded" && auth.status === "succeeded" ? (
+          <Alert type="success" message={"Your email was updated!"} />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+        </div>
         <form className="standard-form" onSubmit={handleSubmit}>
+
+        
+
+
+          
           <label className="standard-label" htmlFor="email">
             New Email
           </label>

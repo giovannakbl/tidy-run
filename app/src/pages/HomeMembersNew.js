@@ -74,7 +74,18 @@ const HomeMemberNew = ({
     <>
       <Header></Header>
       <main>
-        {isSubmitted && homeMembers.status === "rejected" && (
+        
+          <button
+            className="go-back-button"
+            type="button"
+            onClick={() => navigate("/home-members")}
+          >
+            &#60;&#60; Go back to Home Members List
+          </button>
+        
+          <h1 className="page-main-title">New Home Member</h1>
+          <div className="alert-area">
+          {isSubmitted && homeMembers.status === "rejected" && (
           <Alert type="error" message={homeMembers.error.error_message_api} />
         )}
         {!homeMembers.loading &&
@@ -86,15 +97,7 @@ const HomeMemberNew = ({
           <Alert type="error" message={formErrorMessage} />
         ) : null}
         
-          <button
-            className="go-back-button"
-            type="button"
-            onClick={() => navigate("/home-members")}
-          >
-            &#60;&#60; Go back to Home Members List
-          </button>
-        
-          <h1 className="page-main-title">New Home Member</h1>
+          </div>
         <form className="standard-form" onSubmit={handleSubmit}>
           <label className="standard-label" htmlFor="name">Name</label>
           <input

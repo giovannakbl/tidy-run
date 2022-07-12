@@ -91,22 +91,7 @@ const ChallengeEdit = ({
     <>
       <Header></Header>
       <main>
-        {isSubmitted && challenge.status === "rejected" ? (
-          <Alert type="error" message={challenge.error.error_message_api} />
-        ) : null}
-        {isSubmitted && challenge.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "Your Challenge " +
-              challenge.data.challenge.name +
-              " was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+        
         {challenge.loading ||
         challenge.data.challenge.start_date === undefined ||
         challenge.data.challenge.end_date === undefined ? (
@@ -141,6 +126,24 @@ const ChallengeEdit = ({
               </button>
 
 <h1 className="page-main-title">Edit Challenge</h1>
+<div className="alert-area">
+{isSubmitted && challenge.status === "rejected" ? (
+          <Alert type="error" message={challenge.error.error_message_api} />
+        ) : null}
+        {isSubmitted && challenge.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "Your Challenge " +
+              challenge.data.challenge.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+</div>
             <form className="standard-form" onSubmit={handleSubmit}>
               <label className="standard-label" htmlFor="name">Name</label>
               <input

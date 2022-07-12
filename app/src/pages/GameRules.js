@@ -34,13 +34,13 @@ const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
             Let me explain a little bit about how it works.
           </p>
 
-          <h3 className="page-sec-title">Dynamic of the game:</h3>
+          <h3 className="page-sec-title-left">Dynamic of the game:</h3>
           <p className="account-info-text-sec">
             Tidy Run allows you to list all the tasks that need to be done and
             also indicate the period in which they should be completed. For
             example:
           </p>
-          <p className="account-info-text-sec">
+          <p className="page-sec-title-left">
             Tasks that need to be done between the 01 of July and the 10 of
             July:
           </p>
@@ -65,7 +65,7 @@ const GameRules = ({ auth, tidyUser, tidyUserRequest }) => {
             The members of the house are competitors in a challenge, where they
             perform those tasks and gain points for their completion.
           </p>
-          <h3 className="page-sec-title">
+          <h3 className="page-sec-title-left">
             The points earned for each task completion are calculated by adding
             the following:
           </h3>

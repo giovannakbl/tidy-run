@@ -75,22 +75,7 @@ const HomeMemberEdit = ({
     <>
       <Header></Header>
       <main>
-        {isSubmitted && homeMembers.status === "rejected" ? (
-          <Alert type="error" message={homeMembers.error.error_message_api} />
-        ) : null}
-        {isSubmitted && homeMembers.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "The Home Member " +
-              homeMembers.data.homeMember.name +
-              " was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+        
         {homeMembers.loading ? (
           <Spinner />
         ) : homeMembers.error ? (
@@ -111,6 +96,24 @@ const HomeMemberEdit = ({
             ) : (
               <>
               <h1 className="page-main-title">Edit Home Member</h1>
+              <div className="alert-area">
+              {isSubmitted && homeMembers.status === "rejected" ? (
+          <Alert type="error" message={homeMembers.error.error_message_api} />
+        ) : null}
+        {isSubmitted && homeMembers.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Home Member " +
+              homeMembers.data.homeMember.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+              </div>
                 <form className="standard-form" onSubmit={handleSubmit}>
                   <label className="standard-label" htmlFor="name">Name</label>
                   <input

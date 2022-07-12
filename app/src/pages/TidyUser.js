@@ -55,7 +55,7 @@ const TidyUser = ({
         <div className="account-info-container">
       
         <p className="account-info-text-main">Email: </p>
-                <p className="account-info-text-sec">
+                <p className="card-text-important-info">
                 {tidyUser.data.email}
                 </p>
          
@@ -76,7 +76,7 @@ const TidyUser = ({
         <div className="account-info-container">
           <div>
           <p className="account-info-text-main">Family Name: </p>
-          <p className="account-info-text-sec">
+          <p className="card-text-important-info">
           {tidyUser.data.home_name}
                 </p>
             

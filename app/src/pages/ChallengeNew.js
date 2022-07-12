@@ -76,7 +76,18 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
     <>
     <Header></Header>
     <main>
-    {isSubmitted && challenge.status === "rejected" && (
+    
+      {/* <div className="go-back-area"> */}
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge-list")}
+        >
+          &#60;&#60; Go back to Challenge List
+        </button>
+      {/* </div> */}
+      <h1 className="page-main-title">New Challenge</h1>
+      <div className="alert-area">
+      {isSubmitted && challenge.status === "rejected" && (
           <Alert type="error" message={challenge.error.error_message_api} />
         )}
         {isSubmitted && challenge.status === "succeeded" && (
@@ -90,15 +101,7 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      {/* <div className="go-back-area"> */}
-        <button
-          className="go-back-button"
-          onClick={() => navigate("/challenge-list")}
-        >
-          &#60;&#60; Go back to Challenge List
-        </button>
-      {/* </div> */}
-      <h1 className="page-main-title">New Challenge</h1>
+      </div>
       <form className="standard-form" onSubmit={handleSubmit}>
         <label className="standard-label" htmlFor="name">Name</label>
         <input

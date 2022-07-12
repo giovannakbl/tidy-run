@@ -54,7 +54,21 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     <>
     <Header></Header>
     <main>
-    {isSubmitted && tidyUser.status === "rejected" && (
+    
+      
+        <button
+          className="go-back-button"
+          onClick={() => {
+            navigate("/account");
+          }}
+          
+        >
+          &#60;&#60; Go back to user details
+        </button>
+      
+      <h2 className="page-main-title">Change your password</h2>
+      <div className="alert-area">
+      {isSubmitted && tidyUser.status === "rejected" && (
           <Alert type="error" message={tidyUser.error.error_message_api} />
         )}
         {isSubmitted && tidyUser.status === "succeeded" && (
@@ -68,18 +82,7 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      
-        <button
-          className="go-back-button"
-          onClick={() => {
-            navigate("/account");
-          }}
-          
-        >
-          &#60;&#60; Go back to user details
-        </button>
-      
-      <h2 className="page-main-title">Change your password</h2>
+      </div>
       <form className="standard-form" onSubmit={handleSubmit}>
         <label className="standard-label" htmlFor="password">New Password</label>
         <input

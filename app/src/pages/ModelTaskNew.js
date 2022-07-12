@@ -83,7 +83,16 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
     <>
     <Header></Header>
     <main>
-    {isSubmitted && modelTasks.status === "rejected" && (
+    
+      <button
+                className="go-back-button"
+                onClick={() => navigate("/model-tasks")}
+              >
+                &#60;&#60; Go back to Model Task List
+              </button>
+              <h1 className="page-main-title">New Model Task</h1>
+              <div className="alert-area">
+              {isSubmitted && modelTasks.status === "rejected" && (
           <Alert type="error" message={modelTasks.error.error_message_api} />
         )}
         {!modelTasks.loading && isSubmitted && modelTasks.status === "succeeded" && (
@@ -97,13 +106,8 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      <button
-                className="go-back-button"
-                onClick={() => navigate("/model-tasks")}
-              >
-                &#60;&#60; Go back to Model Task List
-              </button>
-              <h1 className="page-main-title">New Model Task</h1>
+              </div>
+              
       <form className="standard-form" onSubmit={handleSubmit}>
             <label className="standard-label" htmlFor="name">Name</label>
             <input

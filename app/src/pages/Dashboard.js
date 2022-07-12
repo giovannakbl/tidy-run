@@ -30,7 +30,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
         ) : null}
         <div className="account-info-container">
       
-        <p className="account-info-text-main">Task Models</p>
+        <p className="account-info-text-main">Model Tasks</p>
       
 
         <button
@@ -41,7 +41,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-bolt" />
           </div>
-          <div>Manage task models</div>
+          <div>Manage model tasks</div>
         </button>
         </div>
         <div className="account-info-container">

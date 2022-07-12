@@ -115,20 +115,7 @@ const TaskComplete = ({
     <>
       <Header></Header>
       <main>
-      {isSubmitted && tasks.status === "rejected" && (
-          <Alert type="error" message={tasks.error.error_message_api} />
-        )}
-        {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
-          <Alert
-            type="success"
-            message={
-              "The Task was completed!"
-            }
-          />
-        )}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+      
         
           <button
             className="go-back-button"
@@ -148,6 +135,22 @@ const TaskComplete = ({
         ) : (
           <>
           <h1 className="page-main-title">Complete Task</h1>
+          <div className="alert-area">
+            {isSubmitted && tasks.status === "rejected" && (
+          <Alert type="error" message={tasks.error.error_message_api} />
+        )}
+        {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
+          <Alert
+            type="success"
+            message={
+              "The Task was completed!"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+            </div>
             <div className="task-card">
             <div className="task-card-row-initial ">
              
@@ -189,7 +192,7 @@ const TaskComplete = ({
               
 
             </div>
-           
+            
             <form className="standard-form" onSubmit={handleSubmit}>
               <p className="standard-label">Who completed the task</p>
               <div className="radio-text-icon-list">
@@ -197,7 +200,12 @@ const TaskComplete = ({
               homeMembersInfo.length === 0
               ? (
                   <>
-                  <p className="standard-label">You need to add home members before completing tasks</p>             
+                  <div className="invisible-container">
+                  <p className="auxiliar-text">
+                  You need to add home members before completing tasks
+                  </p>
+                  </div>
+                
                   </>
                   ) : (<>
                 {homeMembersInfo.map((item) => (

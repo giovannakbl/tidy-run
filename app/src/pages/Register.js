@@ -40,7 +40,10 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
   return (
     <>
       <main>
-        {isSubmitted && tidyUser.status === "rejected" && (
+        
+             <h1 className="page-main-title">Tidy Run</h1>
+             <div className="alert-area">
+             {isSubmitted && tidyUser.status === "rejected" && (
           <Alert type="error" message={tidyUser.error.error_message_api} />
         )}
         {isSubmitted && tidyUser.status === "succeeded" && (
@@ -56,9 +59,9 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-             <h1 className="page-main-title">Tidy Run</h1>
+        </div>
         <form className="standard-form" onSubmit={handleSubmit}>
-
+        
         <h2 className="register-login-title">Register</h2>
           <label className="standard-label" htmlFor="email">Email</label>
           <input

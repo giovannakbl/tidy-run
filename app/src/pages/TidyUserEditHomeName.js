@@ -59,7 +59,27 @@ const TidyUserEditHomeName = ({
     <>
     <Header></Header>
     <main>
-    {isSubmitted && tidyUser.status === "rejected" ? (
+    
+        <button
+          className="go-back-button"
+          onClick={() => {
+            navigate("/account");
+          }}
+          
+        >
+          &#60;&#60; Go back to user details
+        </button>
+     
+      <h2 className="page-main-title">Change your Home Name</h2>
+      <div className="border-container">
+          <p className="account-info-text-main">Current Home Name: </p>
+          <p className="card-text-important-info">{tidyUser.data.home_name}</p>
+
+          
+        </div>
+
+        <div className="alert-area">
+        {isSubmitted && tidyUser.status === "rejected" ? (
           <Alert type="error" message={tidyUser.error.error_message_api} />
         ) : null}
         {isSubmitted && tidyUser.status === "succeeded" ? (
@@ -73,26 +93,8 @@ const TidyUserEditHomeName = ({
         {formErrorMessage ? (
           <Alert type="error" message={formErrorMessage} />
         ) : null}
-      <div className="go-back-area">
-        <button
-          className="go-back-button"
-          onClick={() => {
-            navigate("/account");
-          }}
-          
-        >
-          &#60;&#60; Go back to user details
-        </button>
-      </div>
-      <h2 className="page-main-title">Change your Home Name</h2>
-      <div className="account-info-container">
-          <p className="account-info-text-main">Current Home Name: </p>
-          <p className="account-info-text-sec">{tidyUser.data.home_name}</p>
-
-          
+     
         </div>
-
-      
       <form className="standard-form" onSubmit={handleSubmit}>
         <label className="standard-label" htmlFor="home_name">New Home Name</label>
         <input

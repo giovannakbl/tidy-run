@@ -75,20 +75,7 @@ const TaskEdit = ({
     <>
     <Header></Header>
     <main>
-    {isSubmitted && tasks.status === "rejected" ? (
-          <Alert type="error" message={tasks.error.error_message_api} />
-        ) : null}
-        {isSubmitted && tasks.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "The Task was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+   
       {tasks.loading ? (
         <Spinner/>
       ) : tasks.error ? (
@@ -105,6 +92,22 @@ const TaskEdit = ({
               &#60;&#60; Go back to Challenge
             </button>
             <h1 className="page-main-title">Edit Task</h1>
+            <div className="alert-area">
+            {isSubmitted && tasks.status === "rejected" ? (
+          <Alert type="error" message={tasks.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tasks.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Task was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+            </div>
           <form className="standard-form" onSubmit={handleSubmit}>
             <label className="standard-label" htmlFor="name">Name</label>
             <input

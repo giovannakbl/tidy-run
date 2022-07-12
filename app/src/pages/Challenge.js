@@ -137,7 +137,7 @@ const Challenge = ({
           <p>Error</p>
         ) : (
           <>
-            <h1 className="page-main-title">Challenge</h1>
+            <h1 className="page-main-title">Challenges</h1>
             <div className="challenge-card">
               <div className="card-row-center">
                 <h2 className="card-text-title">

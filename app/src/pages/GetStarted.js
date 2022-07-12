@@ -45,7 +45,7 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           <h3 className="page-sec-title-left">Step 3:</h3>
           <p className="account-info-text-sec">
             Let's create some of the tasks you usually need to get done in your
-            home. Go to Home &gt; Manage task models.{" "}
+            home. Go to Home &gt; Manage model tasks.{" "}
           </p>
           <h3 className="page-sec-title-left">Step 4:</h3>
           <p className="account-info-text-sec">
@@ -54,8 +54,8 @@ const GetStarted = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
             indicate the dates when it will start and end and what will be the
             prize for the winner. After that, you will need to add the tasks
             that need to be completed in this period. You can choose any task
-            you want from the task models you created before. You can always add
-            a new task model or edit them if you wish!
+            you want from the model tasks you created before. You can always add
+            a new model task or edit them if you wish!
           </p>
           <h3 className="page-sec-title-left">Step 5:</h3>
           <p className="account-info-text-sec">

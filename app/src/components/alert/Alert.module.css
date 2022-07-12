@@ -4,30 +4,33 @@
 }
 
 .alert {
-  width: 100%;
-  max-width: 300px;
+  width: 290px;
   text-align: center;
+  position: absolute;
+  align-self: flex-end;
 }
 .alert .inner {
   font-family: 'PublicSans-Regular';
-  font-size: 15px;
+  font-size: 18px;
   display: block;
-  margin: 0.8em auto;
-  padding: 0.8em;
-  border: 1px solid rgb(180, 180, 180);
+  margin: 5px auto;
+  padding: 5px;
+  border: 2px solid rgb(180, 180, 180);
   background-color: rgb(212, 212, 212);
-  border-radius: 0.3rem;
+  border-radius: 5px;
 }
 
 .alert .close {
   float: right;
-  margin: 1.1em 0.5em 0 0;
+  margin: 5px 5px 0 0;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .alert .inner,
 .alert .close {
-  color: rgb(88, 88, 88);
+  /* color: rgb(88, 88, 88); */
+  color: blue;
 }
 
 .alert input {
@@ -44,7 +47,7 @@
 }
 
 .alert.error .inner {
-  border: 1px solid rgb(238, 211, 215);
+  border: 2px solid rgb(238, 211, 215);
   background-color: rgb(242, 222, 222);
 }
 

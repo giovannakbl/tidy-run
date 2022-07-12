@@ -53,12 +53,16 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
   return (
     <>
       <main>
+        
+        <>
+        <h1 className="page-main-title">Tidy Run</h1>
+        <div className="alert-area">
         {isSubmitted && auth.status === "rejected" && (
           <Alert type="error" message={auth.error.error_message_api} />
         )}
-        <>
-        <h1 className="page-main-title">Tidy Run</h1>
+        </div>
           <form className="standard-form" onSubmit={handleSubmit}>
+          
           <h2 className="register-login-title">Login</h2>
             <label className="standard-label"
             htmlFor="username">Email</label>

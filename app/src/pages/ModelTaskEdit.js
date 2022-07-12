@@ -77,22 +77,7 @@ const ModelTaskEdit = ({
     <>
       <Header></Header>
       <main>
-        {isSubmitted && modelTasks.status === "rejected" ? (
-          <Alert type="error" message={modelTasks.error.error_message_api} />
-        ) : null}
-        {isSubmitted && modelTasks.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "The Task Model " +
-              modelTasks.data.modelTask.name +
-              " was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+        
         {modelTasks.loading ? (
           <Spinner />
         ) : modelTasks.error ? (
@@ -108,6 +93,24 @@ const ModelTaskEdit = ({
               </button>
         
               <h1 className="page-main-title">Edit Model Task</h1>
+              <div className="alert-area">
+              {isSubmitted && modelTasks.status === "rejected" ? (
+          <Alert type="error" message={modelTasks.error.error_message_api} />
+        ) : null}
+        {isSubmitted && modelTasks.status === "succeeded" ? (
+          <Alert
+            type="success"
+            message={
+              "The Model Task  " +
+              modelTasks.data.modelTask.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert type="error" message={formErrorMessage} />
+        ) : null}
+              </div>
             <form className="standard-form" onSubmit={handleSubmit}>
               <label className="standard-label" htmlFor="name">Name</label>
               <input
