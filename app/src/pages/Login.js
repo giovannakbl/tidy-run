@@ -62,7 +62,7 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
           handleInputChange={handleInputChange}  type="error" message={auth.error.error_message_api} />
         )}
         </div>
-          <form className="standard-form" onSubmit={handleSubmit}>
+          <form className="standard-form login-form" onSubmit={handleSubmit}>
           
           <h2 className="register-login-title">Login</h2>
             <label className="standard-label"

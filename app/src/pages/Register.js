@@ -65,7 +65,7 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
           handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
         </div>
-        <form className="standard-form" onSubmit={handleSubmit}>
+        <form className="standard-form login-form" onSubmit={handleSubmit}>
         
         <h2 className="register-login-title">Register</h2>
           <label className="standard-label" htmlFor="email">Email</label>

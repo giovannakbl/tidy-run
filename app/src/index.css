@@ -213,7 +213,9 @@ button {
   transform: scale(1.05);
   transition: all 0.3s ease-in-out;
 }
-
+form.login-form {
+  max-width: 400px;
+}
 
 
 
@@ -770,6 +772,7 @@ button {
   align-items: flex-start;
   justify-items: center;
   font-size: 12px;
+  cursor: pointer;
 }
 .register-login-text-main {
   margin-left: 5px;
