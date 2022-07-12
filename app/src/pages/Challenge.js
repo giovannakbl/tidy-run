@@ -329,7 +329,7 @@ const Challenge = ({
                       <div className="card-icon-button">
                         <FontAwesomeIcon icon="fa-xmark" />
                       </div>
-                      <div>Remove completion of task</div>
+                      <div>Remove completion</div>
                     </button>
                   ) : null}
                   {challenge.data.challenge.status != "terminated" &&

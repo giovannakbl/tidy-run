@@ -69,7 +69,7 @@ const TidyUser = ({
             <div className="card-icon-button">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
-            <div>Change your email</div>
+            <div>Change Email</div>
           </button>
    
         </div>
@@ -83,14 +83,14 @@ const TidyUser = ({
             
           </div>
           <button
-            className="card-button"
+            className="card-button complete-button"
             type="button"
             onClick={() => navigate("/account/home-name")}
           >
-            <div className="card-icon-button">
+            <div className="card-icon-button ">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
-            <div>Change your family name</div>
+            <div>Edit Family Name</div>
           </button>
         </div>
 
@@ -107,7 +107,7 @@ const TidyUser = ({
             <div className="card-icon-button">
               <FontAwesomeIcon icon="fa-pencil" />
             </div>
-            <div>Change your password</div>
+            <div>Change Password</div>
           </button>
         </div>
         <div className="account-info-container">
