@@ -34,13 +34,10 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(true);
     const [cookies, setCookie] = useCookies(["user"]);
     useEffect(() => {
-      console.log("Olhei cookie");
+     
       setIsAuthenticated(cookies.isLoggedIn === "yes");
     }, []);
-    // useEffect(() => {
-    //   console.log("Mudou store");
-    //   // setIsAuthenticated(cookies.isLoggedIn === "yes");
-    // }, [store]);
+    
     if (!isAuthenticated) return <Navigate to="/login" replace />;
     return children ? children : <Outlet />;
   };

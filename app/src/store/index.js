@@ -8,8 +8,6 @@ import { tasksReducer } from "./Tasks/reducer";
 import { tidyUserReducer } from "./TidyUser/reducer";
 import { scoreBoardsReducer } from "./ScoreBoards/reducer";
 
-// export const baseURL = "http://localhost:8000";
-// export const baseURL = "http://192.168.88.110:8000";
 
 
 export const standardOptions = {
@@ -122,12 +120,8 @@ export const standardOptions = {
       color: "rgb(17, 27, 87)",
     },
     {
-      name: "DarkRed",
-      color: "rgb(129, 39, 39)",
-    },
-    {
-      name: "DarkPink",
-      color: "rgb(106, 28, 87)",
+      name: "Orange",
+      color: "rgb(224, 122, 33)",
     },
   ],
   difficulty: [
@@ -158,10 +152,10 @@ export const standardOptions = {
       name: "Astronaut",
       icon: "fa-user-astronaut",
     },
-    {
-      name: "UserTie",
-      icon: "fa-user-tie",
-    },
+    // {
+    //   name: "UserTie",
+    //   icon: "fa-user-tie",
+    // },
     {
       name: "ChessQueen",
       icon: "fa-chess-queen",
@@ -174,10 +168,10 @@ export const standardOptions = {
       name: "Ghost",
       icon: "fa-ghost",
     },
-    {
-      name: "Doctor",
-      icon: "fa-user-doctor",
-    },
+    // {
+    //   name: "Doctor",
+    //   icon: "fa-user-doctor",
+    // },
     {
       name: "Biker",
       icon: "fa-person-biking",

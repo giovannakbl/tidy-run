@@ -15,7 +15,6 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
   const [formErrorMessage, setFormErrorMessage] = useState(undefined);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -24,13 +23,12 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
-    handleLogout(); }
+ } else {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
   };
   const getTidyUser = async () => {
     await tidyUserRequest();
-  };
-  const handleLogout = async () => {
-    // await logoutRequest();
   };
   useEffect(() => {
     getTidyUser();
@@ -54,27 +52,12 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
     <Header></Header>
     <main>
-    {isSubmitted && tidyUser.status === "rejected" && (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
-        )}
-        {isSubmitted && tidyUser.status === "succeeded" && (
-          <Alert
-            type="success"
-            message={
-              "Your password was updated"
-            }
-          />
-        )}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
-      <div className="go-back-area">
+    
+      
         <button
           className="go-back-button"
           onClick={() => {
@@ -84,19 +67,40 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
         >
           &#60;&#60; Go back to user details
         </button>
+      
+      <h2 className="page-main-title">Change your password</h2>
+      <div className="alert-area">
+      {isSubmitted && tidyUser.status === "rejected" && (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
+        )}
+        {isSubmitted && tidyUser.status === "succeeded" && (
+          <Alert
+          handleInputChange={handleInputChange} 
+            type="success"
+            message={
+              "Your password was updated"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
+        ) : null}
       </div>
-      <h2>Change your password</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="password">New Password</label>
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="password">New Password</label>
         <input
           id="password"
           name="password"
           type="password"
           onChange={handleInputChange}
           value={formValues.password}
-          className="input-text"
+          className="standard-text-input"
         />
-        <button type="submit">Save Changes</button>
+        <div className="card-row-buttons-center">
+            <button className="card-button" type="submit">Save Changes</button>
+      </div>
       </form>
       </main>
     </>

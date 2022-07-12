@@ -19,7 +19,6 @@ const TidyUserEditHomeName = ({
   const [formValues, setFormValues] = useState({ password: undefined });
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
@@ -30,7 +29,8 @@ const TidyUserEditHomeName = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
-    // navigate("/account");
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const getTidyUser = async () => {
@@ -57,27 +57,11 @@ const TidyUserEditHomeName = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
     <Header></Header>
     <main>
-    {isSubmitted && tidyUser.status === "rejected" ? (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
-        ) : null}
-        {isSubmitted && tidyUser.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "Your home name was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
-      <div className="go-back-area">
+    
         <button
           className="go-back-button"
           onClick={() => {
@@ -87,21 +71,48 @@ const TidyUserEditHomeName = ({
         >
           &#60;&#60; Go back to user details
         </button>
-      </div>
-      <h2>Change your Home Name</h2>
+     
+      <h2 className="page-main-title">Change your Home Name</h2>
+      <div className="border-container">
+          <p className="account-info-text-main">Current Home Name: </p>
+          <p className="card-text-important-info">{tidyUser.data.home_name}</p>
 
-      <p className="label-text">Current family name: {tidyUser.data.home_name}</p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="home_name">Home Name</label>
+          
+        </div>
+
+        <div className="alert-area">
+        {isSubmitted && tidyUser.status === "rejected" ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
+        ) : null}
+        {isSubmitted && tidyUser.status === "succeeded" ? (
+          <Alert
+          handleInputChange={handleInputChange} 
+            type="success"
+            message={
+              "Your home name was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
+        ) : null}
+     
+        </div>
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="home_name">New Home Name</label>
         <input
           id="home_name"
           name="home_name"
           type="home_name"
           onChange={handleInputChange}
           value={formValues.home_name}
-          className="input-text"
+          className="standard-text-input"
         />
-        <button type="submit">Save Changes</button>
+        <div className="card-row-buttons-center">
+            <button className="card-button" type="submit">Save Changes</button>
+      </div>
       </form>
       </main>
     </>

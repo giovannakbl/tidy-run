@@ -1,48 +1,55 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { logoutRequest } from "../store/Auth/actions";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
 
-const Header = ({auth, logoutRequest}) => {
-  let navigate = useNavigate(); 
+const Header = ({ auth, logoutRequest }) => {
+  let navigate = useNavigate();
   const handleLogout = async () => {
     await logoutRequest();
   };
 
-
   return (
     <>
-    <header className="header">
-      {/* <button onClick={handleLogout} >Logout</button> */}
-      <button onClick={() => {
-           navigate("/");
-          }} >Home</button>
-      <button onClick={() => {
-           navigate("/challenge-list");
-          }} >Challenges</button>
-          {/* <button onClick={() => {
-           navigate("/home-members");
-          }} >Members</button> */}
-          {/* <button onClick={() => {
-           navigate("/model-tasks");
-          }} >Model Tasks</button> */}
-           <button onClick={() => {
-           navigate("/account");
-          }} >Account</button>
-          </header>
+      <header >
+        <button className="header-button"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Home
+        </button>
+        <button className="header-button"
+          onClick={() => {
+            navigate("/challenge-list");
+          }}
+        >
+          Challenges
+        </button>
+        <button className="header-button"
+          onClick={() => {
+            navigate("/account");
+          }}
+        >
+          Account
+        </button>
+      </header>
     </>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    tidyUser:state.tidyUser,
-  }
-}
+    tidyUser: state.tidyUser,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    logoutRequest,
-  }, dispatch)
-}
+  return bindActionCreators(
+    {
+      logoutRequest,
+    },
+    dispatch
+  );
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

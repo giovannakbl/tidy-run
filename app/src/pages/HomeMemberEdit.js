@@ -35,11 +35,9 @@ const HomeMemberEdit = ({
   useEffect(() => {
     getHomeMember();
   }, []);
- 
+
   const getHomeMember = async () => {
-    const fetchedHomeMember = await fetchHomeMemberRequest(
-      homeMemberId
-    );
+    const fetchedHomeMember = await fetchHomeMemberRequest(homeMemberId);
     setFormValues({
       name: fetchedHomeMember.home_member.name,
       avatar_icon: fetchedHomeMember.home_member.avatar_icon,
@@ -48,19 +46,16 @@ const HomeMemberEdit = ({
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formValues);
     if (isFormValid()) {
       setIsSubmitted(true);
-    await editHomeMemberRequest(homeMemberId, formValues);
-    console.log(isSubmitted);
-    
-    // navigate("/home-members");
+      await editHomeMemberRequest(homeMemberId, formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const handleDeleteHomeMember = async () => {
@@ -68,33 +63,49 @@ const HomeMemberEdit = ({
     navigate("/home-members");
   };
 
-
   const isFormValid = () => {
-    
-    
     if (formValues.name) {
       if (formValues.name.trim().length === 0 || formValues.name === null) {
         setFormErrorMessage("The name must have at least a number or letter");
-        console.log("Vazio");
         return false;
       }
     }
     return true;
   };
 
-
-
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
-      {isSubmitted && homeMembers.status === "rejected" ? (
-          <Alert type="error" message={homeMembers.error.error_message_api} />
+        
+        {homeMembers.loading ? (
+          <Spinner />
+        ) : homeMembers.error ? (
+          <p>Error</p>
+        ) : (
+          <>
+            
+              <button
+                className="go-back-button"
+                onClick={() => navigate("/home-members")}
+              >
+                &#60;&#60; Go back to Home Members List
+              </button>
+            
+
+            {homeMembers.data.homeMember.deleted_at ? (
+              <h1 className="page-main-title">It is not possible to edit this home member</h1>
+            ) : (
+              <>
+              <h1 className="page-main-title">Edit Home Member</h1>
+              <div className="alert-area">
+              {isSubmitted && homeMembers.status === "rejected" ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={homeMembers.error.error_message_api} />
         ) : null}
         {isSubmitted && homeMembers.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Home Member " +
@@ -104,43 +115,27 @@ const HomeMemberEdit = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
-        {homeMembers.loading ? (
-          <Spinner/>
-        ) : homeMembers.error ? (
-          <p>Error</p>
-        ) : (
-          <>
-            <div className="go-back-area">
-              <button
-                className="go-back-button"
-                onClick={() => navigate("/home-members")}
-              >
-                &#60;&#60; Go back to Home Members List
-              </button>
-            </div>
-
-            {homeMembers.data.homeMember.deleted_at ? (
-              <p>It is not possible to edit this home member</p>
-            ) : (
-              <>
-                <form onSubmit={handleSubmit}>
-                  <label htmlFor="name">Name</label>
+              </div>
+                <form className="standard-form" onSubmit={handleSubmit}>
+                  <label className="standard-label" htmlFor="name">Name</label>
                   <input
                     id="name"
                     name="name"
                     type="text"
                     onChange={handleInputChange}
                     value={formValues.name}
-                    className="input-text"
+                    className="standard-text-input"
                     required
+                    
                   />
-                  <p className="label-text">Choose icon</p>
-                  <div className="radio-list icon-list">
+                  <p className="standard-label">Choose icon</p>
+                  <div className="icon-list">
                     {standardOptions.avatarIcon.map((item) => (
                       <>
-                        <div>
+                        <div className="icon-option">
                           <input
                             type="radio"
                             id={item.name}
@@ -149,9 +144,10 @@ const HomeMemberEdit = ({
                             value={item.name}
                             onChange={handleInputChange}
                             required
+                            
                           />
                           <label htmlFor={item.name}>
-                            <div className="fa-icons">
+                            <div className="icon-list-circle" >
                               <FontAwesomeIcon icon={item.icon} />
                             </div>
                           </label>
@@ -159,11 +155,11 @@ const HomeMemberEdit = ({
                       </>
                     ))}
                   </div>
-                  <p className="label-text">Choose color</p>
-                  <div className="radio-list icon-list">
+                  <p className="standard-label">Choose color</p>
+                  <div className="icon-list">
                     {standardOptions.iconColor.map((item) => (
                       <>
-                        <div>
+                        <div className="icon-option">
                           <input
                             type="radio"
                             id={item.name}
@@ -175,7 +171,7 @@ const HomeMemberEdit = ({
                           />
                           <label htmlFor={item.name}>
                             <div
-                              className="fa-icons"
+                              className="icon-list-circle"
                               style={{
                                 backgroundColor: item.color,
                               }}
@@ -185,13 +181,15 @@ const HomeMemberEdit = ({
                       </>
                     ))}
                   </div>
-                  <button type="submit">Save Changes</button>
+                  <div className="card-row-buttons-center">
+              <button className="card-button" type="submit">Save Changes</button>
+              </div>
                 </form>
                 <DeleButtton
-              isDeletedRequested={isDeletedRequested}
-              deleteFunction={handleDeleteHomeMember}
-              setIsDeletedRequested={setIsDeletedRequested}
-            />
+                  isDeletedRequested={isDeletedRequested}
+                  deleteFunction={handleDeleteHomeMember}
+                  setIsDeletedRequested={setIsDeletedRequested}
+                />
               </>
             )}
           </>

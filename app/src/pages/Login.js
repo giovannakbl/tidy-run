@@ -47,68 +47,57 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
   }
   };
   useEffect(() => {
-    console.log("verifiquei autenticacao na pag login");
     checkLogin();
   }, []);
-  useEffect(() => {
-    console.log(auth);
-    
-  }, [auth.status]);
-  // useEffect(() => {
-  //   if (cookies.isLoggedIn === "yes") {
-  //     checkLogin();
-  //     // console.log("redirecao");
-  //     // navigate("/");
-  //   }
-  // }, []);
-
-  // if (
-  //    !auth.idle && !auth.loading && auth.authenticated) 
-
-  //   return <Navigate to="/" replace />;
-  
 
   return (
     <>
       <main>
-        {isSubmitted && auth.status === "rejected" && (
-          <Alert type="error" message={auth.error.error_message_api} />
-        )}
-        {/* {auth.status === 'idle' || auth.status === 'loading'  ? <Spinner/> :  */}
+        
         <>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <h1>Login</h1>
-            <label htmlFor="username">Email</label>
+        <h1 className="page-main-title">Tidy Run</h1>
+        <div className="alert-area">
+        {isSubmitted && auth.status === "rejected" && (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={auth.error.error_message_api} />
+        )}
+        </div>
+          <form className="standard-form login-form" onSubmit={handleSubmit}>
+          
+          <h2 className="register-login-title">Login</h2>
+            <label className="standard-label"
+            htmlFor="username">Email</label>
             <input
               id="username"
               name="username"
               type="email"
               onChange={handleInputChange}
               value={formValues.username}
-              className="input-text"
+              className="standard-text-input"
               required
             />
-            <label htmlFor="password">Password</label>
+            <label className="standard-label" htmlFor="password">Password</label>
             <input
               id="password"
               name="password"
               type="password"
               onChange={handleInputChange}
               value={formValues.password}
-              className="input-text"
+              className="standard-text-input"
               required
             />
-            <button type="submit">Login</button>
+            <div className="card-row-buttons-center">
+            <button className="card-button login-button" type="submit">Login</button>
+            </div>
           </form>
           <button
             className="register-login-button"
             onClick={() => navigate("/register")}
           >
-            <p className="standard-info">You don't have an account?</p>
-            <p className="custom-info">Go to Register</p>
+            <p className="register-login-text-sec">You don't have an account?</p>
+            <p className="register-login-text-main">Go to Register</p>
           </button>
         </>
-        {/* } */}
       </main>
     </>
   );

@@ -91,6 +91,8 @@ const TaskComplete = ({
       await completeTaskRequest(taskId, formValues);
       navigate("/challenge/" + tasks.data.task.challenge_id);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -111,27 +113,12 @@ const TaskComplete = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
-      {isSubmitted && tasks.status === "rejected" && (
-          <Alert type="error" message={tasks.error.error_message_api} />
-        )}
-        {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
-          <Alert
-            type="success"
-            message={
-              "The Task was completed!"
-            }
-          />
-        )}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
-        <div className="go-back-area">
+      
+        
           <button
             className="go-back-button"
             onClick={() =>
@@ -140,7 +127,7 @@ const TaskComplete = ({
           >
             &#60;&#60; Go back to Challenge
           </button>
-        </div>
+        
         {tasks.loading ||
         homeMembers.loading ||
         !taskInfo.updated  ? (
@@ -149,33 +136,54 @@ const TaskComplete = ({
           <p>Error</p>
         ) : (
           <>
-            <div className="task-info">
-              <div className="flex-row-start">
-              <div >
-              {/* <div className="full-height"> */}
+          <h1 className="page-main-title">Complete Task</h1>
+          <div className="alert-area">
+            {isSubmitted && tasks.status === "rejected" && (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tasks.error.error_message_api} />
+        )}
+        {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
+          <Alert
+          handleInputChange={handleInputChange} 
+            type="success"
+            message={
+              "The Task was completed!"
+            }
+          />
+        )}
+        {formErrorMessage ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
+        ) : null}
+            </div>
+            <div className="task-card">
+            <div className="task-card-row-initial ">
+             
                 <div
-                  className="fa-icons"
+                  className="medium-icon-circle"
                   style={{
                     backgroundColor: taskInfo.color,
                   }}
                 >
                   <FontAwesomeIcon icon={taskInfo.icon} />
                 </div>
-                </div>
+             
 
 
-                <div className="flex-column-start full-width">
-                <div className=" task-main-text">
-                  <p
+                {/* <div className="flex-column-start full-width"> */}
+                {/* <div className=" task-main-text"> */}
+                  <p className="task-card-main-title"
                     style={{
                       color: taskInfo.color,
                     }}
                   >
                     {taskInfo.name}
                   </p>
-                </div>
-                <div className=" task-sec-text">
+                  </div>
+                {/* </div> */}
+                <div className="task-card-row-advance-one">
               <p
+              className="task-card-standard-text"
                 style={{
                   color: taskInfo.color,
                   
@@ -184,25 +192,30 @@ const TaskComplete = ({
                 Difficulty: {taskInfo.difficulty}
               </p>
               </div>
-              </div>
+              {/* </div> */}
 
-              </div>
+              
 
             </div>
-           
-            <form onSubmit={handleSubmit}>
-              <p className="label-text">Who completed the task</p>
-              <div className="radio-list">
+            
+            <form className="standard-form" onSubmit={handleSubmit}>
+              <p className="standard-label">Who completed the task</p>
+              <div className="radio-text-icon-list">
               {  
               homeMembersInfo.length === 0
               ? (
                   <>
-                  <p className="label-text">You need to add home members before completing tasks</p>             
+                  <div className="invisible-container">
+                  <p className="auxiliar-text">
+                  You need to add home members before completing tasks
+                  </p>
+                  </div>
+                
                   </>
                   ) : (<>
                 {homeMembersInfo.map((item) => (
                   <>
-                    <div className="flex-row-start">
+                    <div className="radio-text-icon-option">
                       <input
                         type="radio"
                         id={item.id}
@@ -219,7 +232,7 @@ const TaskComplete = ({
                       >
                         <div>
                         <div
-                          className="fa-icons"
+                          className="icon-list-circle" 
                           style={{
                             backgroundColor: item.color,
                           }}
@@ -238,37 +251,39 @@ const TaskComplete = ({
               
 <button
             type="button"
-                className="model-task-button"
+                className="new-item-form-button"
                 onClick={() => navigate("/home-member-new")}
               >
-                <div className="model-task-circle">
-                  <div className="white">+</div>
+                <div>
+                  <FontAwesomeIcon className="new-item-form-icon" icon="fa-plus" />
                 </div>
-                New Home Member
+                <div>New Home Member</div>
               </button>
 
               <button
               type="button"
-                  className="model-task-button"
+                  className="new-item-form-button"
                   onClick={() => navigate("/home-members")}
                 >
                   <div>
-                    <FontAwesomeIcon icon="fa-pencil" />
+                    <FontAwesomeIcon className="new-item-form-icon" icon="fa-pencil" />
                   </div>
                   <div>Manage Home Members</div>
                 </button>
               </div>
-              <label htmlFor="completed_at">Completed at</label>
+              <label className="standard-label extra-margin-top" htmlFor="completed_at">Completed at</label>
               <input
                 id="completed_at"
                 name="completed_at"
                 type="date"
                 onChange={handleInputChange}
                 value={formValues.completed_at}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <button type="submit">Complete Task</button>
+              <div className="card-row-buttons-center ">
+              <button className="card-button" type="submit">Complete Task</button>
+              </div>
             </form>
           </>
         )}

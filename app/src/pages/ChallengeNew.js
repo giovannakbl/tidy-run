@@ -26,7 +26,6 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
   };
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setIsSubmitted(false);
     setFormErrorMessage(undefined);
   };
@@ -39,6 +38,8 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
       let newChallenge = result.challenge;
       navigate("/challenge/" + newChallenge.id);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -71,18 +72,30 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
+  
   return (
     
     <>
     <Header></Header>
     <main>
-    {isSubmitted && challenge.status === "rejected" && (
-          <Alert type="error" message={challenge.error.error_message_api} />
+    
+      {/* <div className="go-back-area"> */}
+        <button
+          className="go-back-button"
+          onClick={() => navigate("/challenge-list")}
+        >
+          &#60;&#60; Go back to Challenge List
+        </button>
+      {/* </div> */}
+      <h1 className="page-main-title">New Challenge</h1>
+      <div className="alert-area">
+      {isSubmitted && challenge.status === "rejected" && (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={challenge.error.error_message_api} />
         )}
         {isSubmitted && challenge.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your Challenge was created!"
@@ -90,58 +103,54 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
-      <div className="go-back-area">
-        <button
-          className="go-back-button"
-          onClick={() => navigate("/challenge-list")}
-        >
-          &#60;&#60; Go back to Challenge List
-        </button>
       </div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+      <form className="standard-form" onSubmit={handleSubmit}>
+        <label className="standard-label" htmlFor="name">Name</label>
         <input
           id="name"
           name="name"
           type="text"
           onChange={handleInputChange}
           value={formValues.name}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="start_date">Start Date</label>
+        <label className="standard-label" htmlFor="start_date">Start Date</label>
         <input
           id="start_date"
           name="start_date"
           type="date"
           onChange={handleInputChange}
           value={formValues.start_date}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="end_date">End Date</label>
+        <label className="standard-label" htmlFor="end_date">End Date</label>
         <input
           id="end_date"
           name="end_date"
           type="date"
           onChange={handleInputChange}
           value={formValues.end_date}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <label htmlFor="prize">Prize</label>
+        <label className="standard-label" htmlFor="prize">Prize</label>
         <input
           id="prize"
           name="prize"
           type="text"
           onChange={handleInputChange}
           value={formValues.prize}
-          className="input-text"
+          className="standard-text-input"
           required
         />
-        <button type="submit">Create challenge</button>
+        <div className="card-row-buttons-center">
+        <button className="card-button" type="submit">Create challenge</button>
+        </div>
       </form>
       </main>
     </>

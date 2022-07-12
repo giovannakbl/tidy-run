@@ -42,84 +42,77 @@ const ModelTasksList = ({
   };
 
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
-<h1>Model Tasks</h1>
-        <button type="button" className="button-new-item"
+      <h1 className="page-main-title">Model Tasks</h1>
+        <button type="button" className="new-item-button"
         onClick={() => {
           navigate("/model-task-new");
         }}
-      ><div className="circle-new-item"><p>+</p></div>
+      ><div>
+      <FontAwesomeIcon className="new-item-icon" icon="fa-plus" />
+    </div>
         Create new Model Task
       </button>
 
 
 
         
-        {modelTasks.loading || modelTasksInfo.length === 0 ? (
+        {modelTasks.status === 'idle' || modelTasks.status === 'loading' 
+        // || modelTasksInfo.length === 0 
+        ? (
           <Spinner/>
         ) : modelTasks.error ? (
           <p>Error</p>
         ) : (
           <>
-
+<div className="task-area">
             {modelTasksInfo.map((item) => (
               <>
-                <div className="task-info">
-                  <div className="flex-row-start medium-margin-bottom">
-                  {/* <div className="flex-row-start"> */}
-                    <div
-                      className="fa-icons "
-                      style={{
-                        backgroundColor: item.color,
-                      }}
-                    >
-                      <FontAwesomeIcon icon={item.icon} />
-                    </div>
-                    <div>
-                    <div className="flex-column-start full-width">
-                            <div className="model-task-main-text">
-                      <p
-                        style={{
-                          color: item.color,
-                        }}
-                      >
-                        {item.name}
-                      </p>
-                      </div>
-                      <div className="model-task-sec-text">
-                      <p
-                        style={{
-                          color: item.color,
-                        }}
-                      >
-                        Difficulty: {item.difficulty}
-                      </p>
-                      </div>
-                      </div>
-                    </div>
+                <div className="task-card">
+     
+
+<div className="task-card-row-initial ">
+                  <div
+                    className="medium-icon-circle"
+                    style={{
+                      backgroundColor: item.color,
+                    }}
+                  >
+                    <FontAwesomeIcon icon={item.icon} />
                   </div>
 
-                 
+                  <p
+                    className="task-card-main-title"
+                    style={{
+                      color: item.color,
+                      
+                    }}
+                  >
+                    {item.name}
+                  </p>
+                </div>
+                <div className="card-row-buttons-left">
                   <button
-                  className="action-button"
+                  className="card-button"
                   type="button"
                   onClick={() => navigate("/model-task-edit/" + item.id)}
                 >
-                  <div>
+                   <div className="card-icon-button">
                     <FontAwesomeIcon icon="fa-pencil" />
                   </div>
                   <div>Edit Model Task</div>
                 </button>
                 </div>
+                </div>
               </>
             ))}
+            </div>
           </>
         )}
+        
       </main>
     </>
   );

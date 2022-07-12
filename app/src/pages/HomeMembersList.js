@@ -41,47 +41,49 @@ const HomeMemberList = ({
     setHomeMembersInfo(getHomeMembersInfo(allHomeMembersDetails));
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
     <Header></Header>
     <main>
  
-<h1>Home Members</h1>
-      <button className="button-new-item"
-      type="button"
-        onClick={() => {
-          navigate("/home-member-new");
-        }}
-      ><div className="circle-new-item"><p>+</p></div>
-        New Home Member
-      </button>
-      
- 
+<h1 className="page-main-title">Home Members</h1>
+<button
+                className="new-item-button"
+                onClick={() => navigate("/home-member-new")}
+              >
+                <div>
+                  <FontAwesomeIcon className="new-item-icon" icon="fa-plus" />
+                </div>
+                <div>New Home Member</div>
+              </button>
+
+
+
+
       {homeMembers.loading ? (
         <Spinner/>
       ) : homeMembers.error ? (
         <p>Error</p>
       ) : (
         <>
+        <div className="home-member-area">
 {homeMembersInfo.map((item) => (
                   <>
-                  <div className="task-info">
-                    <div className="member-main-text" style={{
+                  <div className="task-card">
+                    <div className="task-card-row-initial" style={{
                           color: item.color,
                         }}>
-                          <div className="member-main-text">
+                          {/* <div className="member-main-text"> */}
                         <div
-                          className="fa-icons"
+                          className="medium-icon-circle"
                           style={{
                             backgroundColor: item.color,
                           }}
                         >
                           <FontAwesomeIcon icon={item.icon} />
                         </div>
-                        </div>
-                        <div className="member-main-text">
+                        {/* </div> */}
+                        <div className="task-card-main-title">
                           <p 
                            
                           style={{
@@ -94,11 +96,11 @@ const HomeMemberList = ({
                     </div>
           
         <button
-                  className="action-button"
+                  className="card-button"
                   type="button"
                   onClick={() => navigate("/home-member-edit/" + item.id)}
                 >
-                  <div>
+                  <div className="card-icon-button">
                     <FontAwesomeIcon icon="fa-pencil" />
                   </div>
                   <div>Edit Home Member</div>
@@ -106,6 +108,7 @@ const HomeMemberList = ({
                     </div>
                   </>
                 ))}
+                </div>
         </>
       )}
       </main>

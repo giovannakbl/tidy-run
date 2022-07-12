@@ -46,7 +46,6 @@ const ChallengeEdit = ({
   const [isDeletedRequested, setIsDeletedRequested] = useState(false);
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setFormErrorMessage(undefined);
     setIsSubmitted(false);
     setIsDeletedRequested(false);
@@ -60,7 +59,9 @@ const ChallengeEdit = ({
         formValues
       );
       navigate("/challenge/" + challengeId);
-    } 
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
   const handleDeleteChallenge = async () => {
     await deleteChallengeRequest(challengeId);
@@ -88,28 +89,11 @@ const ChallengeEdit = ({
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
-
   return (
     <>
       <Header></Header>
       <main>
-        {isSubmitted && challenge.status === "rejected" ? (
-          <Alert type="error" message={challenge.error.error_message_api} />
-        ) : null}
-        {isSubmitted && challenge.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "Your Challenge " +
-              challenge.data.challenge.name +
-              " was updated!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
+        
         {challenge.loading ||
         challenge.data.challenge.start_date === undefined ||
         challenge.data.challenge.end_date === undefined ? (
@@ -121,7 +105,6 @@ const ChallengeEdit = ({
           challenge.data.challenge.status ===
           "completed"(
             <>
-              <div className="go-back-area">
                 <button
                   type="button"
                   className="go-back-button"
@@ -129,15 +112,13 @@ const ChallengeEdit = ({
                 >
                   &#60;&#60; Go back to Challenge
                 </button>
-              </div>
-              <h1>
-                You cannot edit this Challenge because it has already started
-              </h1>
+              {/* </div> */}
+              <h1 className="page-main-title">You cannot edit this Challenge because it has already started</h1>
+              
             </>
           )
         ) : (
           <>
-            <div className="go-back-area">
               <button
                 type="button"
                 className="go-back-button"
@@ -145,10 +126,31 @@ const ChallengeEdit = ({
               >
                 &#60;&#60; Go back to Challenge
               </button>
-            </div>
 
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="name">Name</label>
+<h1 className="page-main-title">Edit Challenge</h1>
+<div className="alert-area">
+{isSubmitted && challenge.status === "rejected" ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={challenge.error.error_message_api} />
+        ) : null}
+        {isSubmitted && challenge.status === "succeeded" ? (
+          <Alert
+          handleInputChange={handleInputChange} 
+            type="success"
+            message={
+              "Your Challenge " +
+              challenge.data.challenge.name +
+              " was updated!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
+        ) : null}
+</div>
+            <form className="standard-form" onSubmit={handleSubmit}>
+              <label className="standard-label" htmlFor="name">Name</label>
               <input
                 id="name"
                 name="name"
@@ -156,10 +158,10 @@ const ChallengeEdit = ({
                 onChange={handleInputChange}
                 defaultValue={challenge.data.challenge.name}
                 value={formValues.name}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <label htmlFor="start_date">Start Date</label>
+              <label className="standard-label" htmlFor="start_date">Start Date</label>
               <input
                 id="start_date"
                 name="start_date"
@@ -167,10 +169,10 @@ const ChallengeEdit = ({
                 onChange={handleInputChange}
                 defaultValue={challenge.data.challenge.start_date.split("T")[0]}
                 value={formValues.start_date}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <label htmlFor="end_date">End Date</label>
+              <label className="standard-label" htmlFor="end_date">End Date</label>
               <input
                 id="end_date"
                 name="end_date"
@@ -178,10 +180,10 @@ const ChallengeEdit = ({
                 onChange={handleInputChange}
                 defaultValue={challenge.data.challenge.end_date.split("T")[0]}
                 value={formValues.end_date}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <label htmlFor="prize">Prize</label>
+              <label className="standard-label" htmlFor="prize">Prize</label>
               <input
                 id="prize"
                 name="prize"
@@ -189,10 +191,12 @@ const ChallengeEdit = ({
                 onChange={handleInputChange}
                 defaultValue={challenge.data.challenge.prize}
                 value={formValues.prize}
-                className="input-text"
+                className="standard-text-input"
                 required
               />
-              <button type="submit">Save Changes</button>
+              <div className="card-row-buttons-center">
+              <button className="card-button" type="submit">Save Changes</button>
+              </div>
             </form>
 
             <DeleButtton

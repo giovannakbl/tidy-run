@@ -23,6 +23,8 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
     if (isFormValid()) {
       setIsSubmitted(true);
       await createTidyUserRequest(formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const isFormValid = () => {
@@ -40,11 +42,16 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
   return (
     <>
       <main>
-        {isSubmitted && tidyUser.status === "rejected" && (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
+        
+             <h1 className="page-main-title">Tidy Run</h1>
+             <div className="alert-area">
+             {isSubmitted && tidyUser.status === "rejected" && (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
         )}
         {isSubmitted && tidyUser.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your account was created with the email " +
@@ -54,55 +61,62 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
-        <form className="login-form" onSubmit={handleSubmit}>
-          <h1>Register</h1>
-          <label htmlFor="email">Email</label>
+        </div>
+        <form className="standard-form login-form" onSubmit={handleSubmit}>
+        
+        <h2 className="register-login-title">Register</h2>
+          <label className="standard-label" htmlFor="email">Email</label>
           <input
             id="email"
             name="email"
             type="email"
             onChange={handleInputChange}
             value={formValues.email}
-            className="input-text"
+            className="standard-text-input"
             required
           />
-          <label htmlFor="password">Password</label>
+          <label className="standard-label" htmlFor="password">Password</label>
           <input
             id="password"
             name="password"
             type="password"
             onChange={handleInputChange}
             value={formValues.password}
-            className="input-text"
+            className="standard-text-input"
             required
           />
-          <button type="submit">Create account</button>
+           <div className="card-row-buttons-center">
+            <button className="card-button" type="submit">Create account</button>
+            </div>
+         
         </form>
         <button
-          className="register-login-button"
-          onClick={() => navigate("/login")}
-        >
-          <p className="standard-info">Allready have an account?</p>
-          <p className="custom-info">Go to Login</p>
-        </button>
+            className="register-login-button"
+            onClick={() => navigate("/login")}
+          >
+            <p className="register-login-text-sec">Allready have an account?</p>
+            <p className="register-login-text-main">Go to Login</p>
+          </button>
+        
         <div className="game-explanation-container">
-          <h2 className="game-explanation-title">Tidy Run</h2>
-          <p className="game-explanation-text">
+          <h2 className="page-sec-title">Tidy Run</h2>
+          <p className="account-info-text-sec">
           If you share your house with family, your significant other or even with friends, I imagine you may struggle to organize and get done all the house chores. 
           </p>
-          <p className="game-explanation-text">
+          <p className="account-info-text-sec">
 Tidy Run provides a fun way to complete the household chores in a collaborative way!
 </p>
 
 
-<h3 className="game-explanation-title">Account creation:</h3>
+<h3 className="page-sec-title">Account creation:</h3>
 
-<p className="game-explanation-text">Only one person of the house needs to create an account! The login is unified and all of the people who live with you can get access the platform with these credentials. 
+<p className="account-info-text-sec">Only one person of the house needs to create an account! The login is unified and all of the people who live with you can get access the platform with these credentials. 
 </p>
 
-<p className="game-explanation-text">
+<p className="account-info-text-sec">
 Go ahead and create your account!
 </p>
         </div>

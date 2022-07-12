@@ -10,74 +10,70 @@ import Spinner from "../components/spinner/Spinner";
 import { useCookies } from "react-cookie";
 
 const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
-  // const [cookies, setCookie] = useCookies(["user"]);
+  
   let navigate = useNavigate();
-  // const checkLogin = () => {
-  //   console.log(cookies);
-  //   if(cookies.isLoggedIn === "no") {
-  //     navigate("/login");
-  //   }
-  // };
+  const getTidyUser = async () => {
+    await tidyUserRequest();
+  };
 
-  // useEffect(() => {
-  //   checkLogin();
-  // }, []);
-
-  // if ((auth.status !== 'idle' && auth.status !== 'loading' && !auth.authenticated)) return <Navigate to="/login" replace />;
-
+  useEffect(() => {
+    getTidyUser();
+  }, []);
+  
   return (
     <>
       <Header></Header>
       <main>
-        <h1>Hello there!</h1>
+        <h1 className="page-main-title">Hello there!</h1>
         {tidyUser.data.home_name !== null && tidyUser.data.home_name !== "" ? (
-          <h2>House: {tidyUser.data.home_name}</h2>
+          <h2 className="page-sec-title">House: {tidyUser.data.home_name}</h2>
         ) : null}
+        <div className="account-info-area">
         <div className="account-info-container">
-        <div>
-        <p className="label-text">Task Models</p>
-        </div>
+      
+        <p className="account-info-text-main">Manage your Model Tasks</p>
+      
 
         <button
-          className="action-button"
+          className="card-button"
           type="button"
           onClick={() => navigate("/model-tasks")}
         >
-          <div>
+          <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-bolt" />
           </div>
-          <div>Manage task models</div>
+          <div>Model Tasks</div>
         </button>
         </div>
         <div className="account-info-container">
-        <div>
-        <p className="label-text">Home Members</p>
-        </div>
+       
+        <p className="account-info-text-main">Manage your Home Members</p>
+        
 
         <button
-          className="action-button"
+          className="card-button"
           type="button"
           onClick={() => navigate("/home-members")}
         >
-          <div>
+          <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-people-roof" />
           </div>
-          <div>Manage home members</div>
+          <div>Home Members</div>
         </button>
         </div>
 
         <div className="account-info-container">
-        <div>
-        <p className="label-text">New here?</p>
-        <p className="game-explanation-text">Check out our quick tutorial on how to get started</p>
-        </div>
+       
+        <p className="account-info-text-main">New here?</p>
+        <p className="account-info-text-sec">Check out our quick tutorial on how to get started</p>
+       
 
         <button
-          className="action-button"
+          className="card-button"
           type="button"
           onClick={() => navigate("/get-started")}
         >
-          <div>
+          <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-circle-info" />
           </div>
           <div>See more details</div>
@@ -86,22 +82,24 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
 
         <div className="account-info-container">
         <div>
-        <p className="label-text">Game Rules</p>
-        <p className="game-explanation-text">A quick explanation about how Tidy Run works!</p>
+        <p className="account-info-text-main">Game Rules</p>
+        <p className="account-info-text-sec">A quick explanation about how Tidy Run works!</p>
         </div>
 
         <button
-          className="action-button"
+          className="card-button"
           type="button"
           onClick={() => navigate("/game-rules")}
         >
-          <div>
+          <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-circle-info" />
           </div>
           <div>See more details</div>
         </button>
-        </div>
+        
 
+        </div>
+        </div>
 
 
 

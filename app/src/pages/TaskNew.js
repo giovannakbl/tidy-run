@@ -54,7 +54,6 @@ const TaskNew = ({
 
   const handleInputChange = (e) => {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formValues);
     setIsSubmitted(false);
     setFormErrorMessage(undefined);
   };
@@ -66,6 +65,8 @@ const TaskNew = ({
       await createTaskRequest(formValues, challengeId);
       navigate("/challenge/" + challengeId);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -73,33 +74,20 @@ const TaskNew = ({
     if (
       !formValues.model_task_id 
     ) {
-      setFormErrorMessage("You must choose a task model");
+      setFormErrorMessage("You must choose a model task");
       return false;
     }
     return true;
   };
 
-  // if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
+  if (!auth.loading && !auth.authenticated) return <Navigate to="/login" replace />;
 
   return (
     <>
       <Header></Header>
       <main>
-      {isSubmitted && tasks.status === "rejected" ? (
-          <Alert type="error" message={tasks.error.error_message_api} />
-        ) : null}
-        {!tasks.loading && isSubmitted && tasks.status === "succeeded" ? (
-          <Alert
-            type="success"
-            message={
-              "The Task was created!"
-            }
-          />
-        ) : null}
-        {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
-        ) : null}
-        <div className="go-back-area">
+      
+    
           <button
             type="button"
             className="go-back-button"
@@ -107,23 +95,46 @@ const TaskNew = ({
           >
             &#60;&#60; Go back to Challenge
           </button>
-        </div>
+      
         {modelTasks.loading ? (
           <Spinner/>
         ) : (
           <>
-            <form onSubmit={handleSubmit}>
-              <p className="label-text">Choose a task from your task models</p>
-              <div className="radio-list">
+          <h1 className="page-main-title">New Task</h1>
+          <div className="alert-area">
+          {isSubmitted && tasks.status === "rejected" ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tasks.error.error_message_api} />
+        ) : null}
+        {!tasks.loading && isSubmitted && tasks.status === "succeeded" ? (
+          <Alert
+          handleInputChange={handleInputChange} 
+            type="success"
+            message={
+              "The Task was created!"
+            }
+          />
+        ) : null}
+        {formErrorMessage ? (
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
+        ) : null}
+          </div>
+            <form className="standard-form" onSubmit={handleSubmit}>
+              <p className="standard-label">Choose a task from your model tasks</p>
+              <div className="radio-text-icon-list">
                 {modelTasksInfo.length == 0 ? (
-                  <p className="label-text">
+                  <div className="invisible-container">
+                  <p className="auxiliar-text">
                     You need to create Model tasks in order to insert a task in
                     a challenge
                   </p>
+                  </div>
                 ) : (
                   <>
                     {modelTasksInfo.map((item) => (
                       <>
+                      <div className="radio-text-icon-option">
                         <input
                           type="radio"
                           id={item.id}
@@ -134,52 +145,60 @@ const TaskNew = ({
                           className="small-margin-bottom"
                         />
                         <label htmlFor={item.id} style={{ color: item.color }}>
-                          <div>
+                          <div className="task-option">
+                        <div className="task-card-row-initial ">
                             <div
-                              className="fa-icons "
+                              className="medium-icon-circle" 
                               style={{ backgroundColor: item.color }}
                             >
                               <FontAwesomeIcon icon={item.icon} />
                             </div>
-                          </div>
-                          <div className="flex-column-start full-width">
-                            <div className="model-task-main-text">
-                              <p>{item.name}</p>
+
+                            
+                         
+                          
+                              <p className="task-card-main-title">{item.name}</p>
                             </div>
-                            <div className="model-task-sec-text">
-                              <p>Difficulty: {item.difficulty}</p>
+                            
+                            <div className="task-card-row-advance-one">
+                              <p className="task-card-standard-text">Difficulty: {item.difficulty}</p>
                             </div>
-                          </div>
+                            </div>
                         </label>
+                        </div>
                       </>
                     ))}
                   </>
                 )}
 
+
                 <button
                   type="button"
-                  className="model-task-button"
+                  className="new-item-form-button"
                   onClick={() => navigate("/model-task-new")}
                 >
-                  <div className="model-task-circle">
-                    <div className="white">+</div>
-                  </div>
-                  New task model
+                  <div>
+                  <FontAwesomeIcon className="new-item-form-icon" icon="fa-plus" />
+                </div>
+                <div>New model task</div>
+                  
                 </button>
 
                 <button
                   type="button"
-                  className="model-task-button"
+                  className="new-item-form-button"
                   onClick={() => navigate("/model-tasks")}
                 >
                   <div>
-                    <FontAwesomeIcon icon="fa-pencil" />
+                    <FontAwesomeIcon className="new-item-form-icon" icon="fa-pencil" />
                   </div>
-                  <div>Manage task models</div>
+                  <div>Manage model tasks</div>
                 </button>
               </div>
 
-              <button type="submit">Add Task</button>
+              <div className="card-row-buttons-center ">
+              <button className="card-button" type="submit">Add Task</button>
+              </div>
             </form>
           </>
         )}
