@@ -66,6 +66,7 @@ const HomeMemberList = ({
         <p>Error</p>
       ) : (
         <>
+        <div className="home-member-area">
 {homeMembersInfo.map((item) => (
                   <>
                   <div className="task-card">
@@ -107,6 +108,7 @@ const HomeMemberList = ({
                     </div>
                   </>
                 ))}
+                </div>
         </>
       )}
       </main>

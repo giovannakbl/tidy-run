@@ -41,10 +41,14 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
       let newModelTask = result.model_task;
       navigate("/model-tasks");
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
+
   const isFormValid = () => {
+    setFormErrorMessage(undefined);
     if (
       !formValues.name 
     ) {
@@ -93,10 +97,12 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
               <h1 className="page-main-title">New Model Task</h1>
               <div className="alert-area">
               {isSubmitted && modelTasks.status === "rejected" && (
-          <Alert type="error" message={modelTasks.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange} type="error" message={modelTasks.error.error_message_api} />
         )}
         {!modelTasks.loading && isSubmitted && modelTasks.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Model Task was created!"
@@ -104,7 +110,9 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange} 
+          type="error" message={formErrorMessage} />
         ) : null}
               </div>
               
@@ -120,6 +128,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
               required
             />
             <p className="standard-label">Choose icon</p>
+        
             <div className="icon-list">
               {standardOptions.taskIcon.map((item) => (
                 <>
@@ -143,6 +152,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
                 </>
               ))}
             </div>
+  
             <p className="standard-label">Choose color</p>
             <div className="icon-list">
               {standardOptions.iconColor.map((item) => (
@@ -181,7 +191,7 @@ const ModelTaskNew = ({ auth, createModelTaskRequest, modelTasks, tidyUser, tidy
                       onChange={handleInputChange}
                     />
                     <label htmlFor={item.name}>
-                      <div className="text-list"                 
+                      <div className="task-card-main-title"                 
                       >{item.name}</div>
                     </label>
                   </div>

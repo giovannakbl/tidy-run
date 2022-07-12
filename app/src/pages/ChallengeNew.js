@@ -38,6 +38,8 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
       let newChallenge = result.challenge;
       navigate("/challenge/" + newChallenge.id);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -88,10 +90,12 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
       <h1 className="page-main-title">New Challenge</h1>
       <div className="alert-area">
       {isSubmitted && challenge.status === "rejected" && (
-          <Alert type="error" message={challenge.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={challenge.error.error_message_api} />
         )}
         {isSubmitted && challenge.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your Challenge was created!"
@@ -99,7 +103,8 @@ const ChallengeNew = ({ auth, tidyUser, createChallengeRequest, challenge, tidyU
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
       </div>
       <form className="standard-form" onSubmit={handleSubmit}>

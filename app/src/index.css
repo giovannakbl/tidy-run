@@ -21,7 +21,9 @@
   border: 0;
   font-size: 10px;
   font-family: "PublicSans-Bold";
+
   background-color: var(--white);
+
   --lightgray: #e9ecef;
   --mediumgray: #6c757d;
   --darkgray: #343a40;
@@ -33,7 +35,19 @@
   --green: rgb(16, 83, 21);
   min-width: 320px;
 }
-
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--white);
+  
+}
+#root {
+  width: 100%;
+  
+}
 main {
   width: 90vw;
   min-width: 290px;
@@ -44,22 +58,28 @@ main {
   justify-content: flex-start;
   align-items: center;
   margin: 90px auto 50px;
+  margin: 30px auto 50px;
   box-sizing: border-box;
   font-family: "PublicSans-Bold";
 }
 header {
   background-color: var(--darkpurple);
-  width: 100vw;
+  width: 100%;
   min-width: 320px;
   margin: 0;
+  box-sizing: border-box;
+  padding: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  position: fixed;
+  flex-wrap: nowrap;
+  position: -webkit-sticky; /* Safari */
+  position: sticky; 
   top: 0;
   left: 0;
+  right: 0;
+  z-index: 100;
 }
 button {
   font-family: "PublicSans-Bold";
@@ -68,9 +88,10 @@ button {
   background-color: transparent;
   color: white;
   border: 0;
-  margin: 0 10px;
+  /* margin: 0 10px; */
   height: 60px;
-  /* width: 100px; */
+  width: 150px;
+  min-width: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,6 +99,7 @@ button {
   text-align: center;
   padding: 0;
   font-size: 16px;
+  cursor: pointer;
 }
 
 /* Challenge */
@@ -88,6 +110,7 @@ button {
   margin-bottom: 10px;
   font-size: 15px;
   align-self: flex-start;
+  cursor: pointer;
 }
 .challenge-card {
   box-sizing: border-box;
@@ -131,7 +154,7 @@ button {
   color: var(--darkgray);
 }
 .card-button {
-  font-size: 12px;
+  font-size: 18px;
   min-width: 100px;
   display: flex;
   flex-direction: row;
@@ -143,11 +166,13 @@ button {
   border: 0;
   padding: 12px 18px;
   margin: 0 10px 0 0;
+  
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 .card-icon-button {
   margin: 0 8px 0 0;
+  
 }
 .card-row-left {
   display: flex;
@@ -157,6 +182,7 @@ button {
   flex-wrap: wrap;
   margin: 0 0 10px 0;
   padding: 0 0 0 0;
+  
 }
 .card-row-buttons-left {
   display: flex;
@@ -166,6 +192,12 @@ button {
   flex-wrap: nowrap;
   margin: 20px 0 0 0;
   padding: 0 0 0 0;
+}
+.card-row-buttons-left .complete-button {
+  margin-right: 0;
+}
+.card-row-buttons-center .login-button {
+  width: 140px;
 }
 .card-row-buttons-center {
   display: flex;
@@ -244,7 +276,7 @@ button {
   margin: 0;
 }
 .task-card-standard-text {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--mediumgray);
   margin: 0;
 }
@@ -292,6 +324,7 @@ button {
   background-color: var(--darkgray);
   border-radius: 50%;
   width: 50px;
+  min-width: 50px;
   height: 50px;
   margin: 0 5px 0 0;
   display: flex;
@@ -316,13 +349,13 @@ button {
   height: 30px;
   display: flex;
   justify-content: center;
-  align-items:flex-end;
+  align-items: flex-end;
 }
 .standard-label {
   color: var(--mediumpurple);
   font-size: 20px;
 }
-.invisible-container{
+.invisible-container {
   width: 100%;
   padding: 10px;
 }
@@ -340,6 +373,10 @@ button {
   padding: 10px;
   box-sizing: border-box;
   border: 0;
+  background-color: #fff;
+  min-height: 40px;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
 }
 .standard-text-input:focus {
   outline: none;
@@ -370,13 +407,13 @@ button {
 }
 .delete-button,
 .cancel-button {
-  width: 100px;
+  width: 140px;
 }
 .cancel-button {
   background-color: var(--mediumgray);
 }
 .delete-button-confirm {
-  width: 120px;
+  width: 140px;
   margin: 0 20px 0 0;
 }
 .delete-button,
@@ -386,7 +423,7 @@ button {
 .delete-button,
 .delete-button-confirm,
 .cancel-button {
-  font-size: 12px;
+  font-size: 18px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
@@ -395,10 +432,9 @@ button {
   border-radius: 5px;
   border: 0;
   padding: 12px 18px;
-
+  font-family: "PublicSans-ExtraBold";
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  height: 40px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -468,28 +504,32 @@ button {
   justify-content: center;
   align-items: center;
 }
+
 .icon-list {
-  /* cursor: pointer; */
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: var(--white);
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
   width: 100%;
-  border-radius: 5px;
+
+
+
+  background-color: var(--white);
+  border-radius: 5px; 
   padding: 10px 5px;
 }
+
 .icon-list input {
   visibility: hidden;
   height: 0;
   width: 0;
+  margin: 0;
 }
 .icon-list label {
   cursor: pointer;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: start;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -722,6 +762,14 @@ button {
   z-index: 10;
   font-size: 30px;
 }
+.task-area,
+.account-info-area,
+.challenge-area,
+.home-member-area {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(1, 1fr);
+}
 
 /* X-Small devices (portrait phones, less than 576px) */
 /* this is the default  */
@@ -729,6 +777,9 @@ button {
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
+  /* main {
+    max-width: 450px;
+  } */
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -737,6 +788,48 @@ button {
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+  .challenge-card,
+  .task-card {
+    max-width: 500px;
+    padding: 50px 40px;
+  }
+  .standard-form {
+    max-width: 500px;
+  }
+  main {
+    max-width: 800px;
+  }
+  .task-area,
+  .challenge-area,
+  .home-member-area,
+  .account-info-area {
+    align-self: center;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 30px;
+    row-gap: 10px;
+  }
+  .account-info-container {
+    padding: 20px 40px 40px 40px;
+    max-width: 400px;
+  }
+  .border-container {
+    max-width: 500px;
+  }
+  .delete-container {
+    padding-right: 150px;
+  }
+  .account-info-container .delete-container {
+    padding-right: 0;
+  }
+  .account-info-area {
+    margin-top: 50px;
+  }
+  .account-info-container .card-button {
+    margin-top: 30px;
+  }
+  .go-back-button {
+    margin-left: 150px;
+  }
 }
 
 /* X-Large devices (large desktops, 1200px and up) */

@@ -54,6 +54,8 @@ const TidyUserEditEmail = ({
 
       }
      
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const getTidyUser = async () => {
@@ -107,16 +109,20 @@ const TidyUserEditEmail = ({
         </div>
         <div className="alert-area">
         {isSubmitted && tidyUser.status === "rejected" ? (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
         ) : null}
         {isSubmitted && auth.status === "rejected" ? (
-          <Alert type="error" message={auth.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={auth.error.error_message_api} />
         ) : null}
         {isSubmitted && tidyUser.status === "succeeded" && auth.status === "succeeded" ? (
-          <Alert type="success" message={"Your email was updated!"} />
+          <Alert
+          handleInputChange={handleInputChange}  type="success" message={"Your email was updated!"} />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
         </div>
         <form className="standard-form" onSubmit={handleSubmit}>

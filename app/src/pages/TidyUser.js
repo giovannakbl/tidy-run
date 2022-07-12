@@ -52,6 +52,7 @@ const TidyUser = ({
         <button type="button" className="card-button logout-button" onClick={handleLogout}>
           Logout
         </button>
+        <div className="account-info-area">
         <div className="account-info-container">
       
         <p className="account-info-text-main">Email: </p>
@@ -112,13 +113,14 @@ const TidyUser = ({
         <div className="account-info-container">
 
           <p className="account-info-text-main">Delete your account</p>
-   
+          
 
         <DeleButtton
           isDeletedRequested={isDeletedRequested}
           deleteFunction={deleteTidyUser}
           setIsDeletedRequested={setIsDeletedRequested}
         />
+        </div>
         </div>
       </main>
     </>

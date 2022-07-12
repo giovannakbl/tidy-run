@@ -23,7 +23,9 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
- }
+ } else {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
   };
   const getTidyUser = async () => {
     await tidyUserRequest();
@@ -69,10 +71,12 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
       <h2 className="page-main-title">Change your password</h2>
       <div className="alert-area">
       {isSubmitted && tidyUser.status === "rejected" && (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
         )}
         {isSubmitted && tidyUser.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your password was updated"
@@ -80,7 +84,8 @@ const TidyUserEditPassword = ({ auth, tidyUser, tidyUserEdit, tidyUserRequest, l
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
       </div>
       <form className="standard-form" onSubmit={handleSubmit}>

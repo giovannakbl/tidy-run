@@ -44,6 +44,8 @@ const HomeMemberNew = ({
         await createHomeMemberRequest(formValues);
         navigate("/home-members");
       } catch (e) {}
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -86,15 +88,18 @@ const HomeMemberNew = ({
           <h1 className="page-main-title">New Home Member</h1>
           <div className="alert-area">
           {isSubmitted && homeMembers.status === "rejected" && (
-          <Alert type="error" message={homeMembers.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={homeMembers.error.error_message_api} />
         )}
         {!homeMembers.loading &&
           isSubmitted &&
           homeMembers.status === "succeeded" && (
-            <Alert type="success" message={"The Home member was created!"} />
+            <Alert
+          handleInputChange={handleInputChange}  type="success" message={"The Home member was created!"} />
           )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
         
           </div>

@@ -48,6 +48,7 @@ const ChallengeList = ({
         <p>Error</p>
       ) : (
         <>
+        <div className="challenge-area">
           {challenge.data.challengeList.map((item) => (
 
           <div className="challenge-card">
@@ -95,8 +96,9 @@ const ChallengeList = ({
 
           </div>
           ))}
-
+</div>
           </>
+
       )}
       </main>
     </>

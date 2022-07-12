@@ -3,7 +3,8 @@ import styles from "./Alert.module.css";
 const Alert = (props) => {
   return (
     <div className={`${styles.alert} ${styles[props.type]}`}>
-      <input type="checkbox" id="alert1" />
+      <input type="checkbox" id="alert1" onChange={
+        props.handleInputChange}/>
       <label className={styles.close} title="close" htmlFor="alert1">
         <strong>&times;</strong>
       </label>

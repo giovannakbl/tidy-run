@@ -199,7 +199,7 @@ const Challenge = ({
                     <div className="card-icon-button">
                       <FontAwesomeIcon icon="fa-lock-open" />
                     </div>
-                    <div>Reopen this Challenge</div>
+                    <div>Reopen</div>
                   </button>
                 ) : null}
               </div>
@@ -230,7 +230,8 @@ const Challenge = ({
           homeMembers.error ? (
           <p>Error</p>
         ) : (
-          <>
+           <>
+          <div className="task-area">
             {tasksInfo.map((item) => (
               <div className="task-card">
                 <div className="task-card-row-initial ">
@@ -263,7 +264,7 @@ const Challenge = ({
                       color: item.color,
                     }}
                   >
-                    Difficulty: {item.difficulty}
+                    {item.difficulty}
                   </p>
                 </div>
                 <div className="task-card-row-advance-one">
@@ -335,7 +336,7 @@ const Challenge = ({
                   !item.completedAt ? (
                     <>
                       <button
-                        className="card-button"
+                        className="card-button complete-button"
                         onClick={() => navigate("/task-complete/" + item.id)}
                       >
                         <div className="card-icon-button">
@@ -348,7 +349,8 @@ const Challenge = ({
                 </div>
               </div>
             ))}
-          </>
+            </div>
+           </> 
         )}
 
         {challenge.loading ? null : challenge.error ? null : challenge.data
@@ -400,8 +402,8 @@ const Challenge = ({
                     {/* </div> */}
                   </div>
                   <div className="task-card-row-advance-one">
-                        <p className="task-card-standard-text"
-                        >Total points: {item.total_points}</p>
+                        <p className="card-text-custom-info"
+                        >Points: {item.total_points}</p>
                       </div>
                 </div>
               </>

@@ -28,9 +28,10 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
         {tidyUser.data.home_name !== null && tidyUser.data.home_name !== "" ? (
           <h2 className="page-sec-title">House: {tidyUser.data.home_name}</h2>
         ) : null}
+        <div className="account-info-area">
         <div className="account-info-container">
       
-        <p className="account-info-text-main">Model Tasks</p>
+        <p className="account-info-text-main">Manage your Model Tasks</p>
       
 
         <button
@@ -41,12 +42,12 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-bolt" />
           </div>
-          <div>Manage model tasks</div>
+          <div>Model Tasks</div>
         </button>
         </div>
         <div className="account-info-container">
        
-        <p className="account-info-text-main">Home Members</p>
+        <p className="account-info-text-main">Manage your Home Members</p>
         
 
         <button
@@ -57,7 +58,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
           <div className="card-icon-button">
             <FontAwesomeIcon icon="fa-people-roof" />
           </div>
-          <div>Manage home members</div>
+          <div>Home Members</div>
         </button>
         </div>
 
@@ -98,7 +99,7 @@ const Dashboard = ({ auth, tidyUser, tidyUserRequest, logoutRequest }) => {
         
 
         </div>
-
+        </div>
 
 
 

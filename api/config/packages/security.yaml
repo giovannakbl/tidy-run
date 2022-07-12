@@ -40,7 +40,7 @@ security:
                     refresh_token:
                         path: /
                         samesite: lax
-                        domain: localhost                 # default value
+                        domain: 192.168.88.110                 # default value
                         # http_only: true              # default value
                         # secure: true                 # default value
                         # remove_token_from_body: true # default value

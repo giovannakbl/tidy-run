@@ -24,7 +24,7 @@ const DeleButtton = (props) => {
               <div className="card-icon-button">
                 <FontAwesomeIcon icon="fa-trash-can" />
               </div>
-              <div>Yes, Delete</div>
+              <div>Delete</div>
             </button>
             <button
               className="cancel-button"

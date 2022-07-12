@@ -55,6 +55,8 @@ const TaskEdit = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     await editTaskRequest(taskId, formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const handleDeleteTask = async () => {
@@ -94,10 +96,12 @@ const TaskEdit = ({
             <h1 className="page-main-title">Edit Task</h1>
             <div className="alert-area">
             {isSubmitted && tasks.status === "rejected" ? (
-          <Alert type="error" message={tasks.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tasks.error.error_message_api} />
         ) : null}
         {isSubmitted && tasks.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Task was updated!"
@@ -105,7 +109,8 @@ const TaskEdit = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
             </div>
           <form className="standard-form" onSubmit={handleSubmit}>
@@ -189,7 +194,7 @@ const TaskEdit = ({
                       onChange={handleInputChange}
                     />
                     <label htmlFor={item.name}>
-                      <div className="text-list"
+                      <div className="task-card-main-title"
                 
                         
                       >{item.name}</div>

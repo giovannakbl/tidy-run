@@ -65,6 +65,8 @@ const TaskNew = ({
       await createTaskRequest(formValues, challengeId);
       navigate("/challenge/" + challengeId);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -101,10 +103,12 @@ const TaskNew = ({
           <h1 className="page-main-title">New Task</h1>
           <div className="alert-area">
           {isSubmitted && tasks.status === "rejected" ? (
-          <Alert type="error" message={tasks.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tasks.error.error_message_api} />
         ) : null}
         {!tasks.loading && isSubmitted && tasks.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Task was created!"
@@ -112,7 +116,8 @@ const TaskNew = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
           </div>
             <form className="standard-form" onSubmit={handleSubmit}>

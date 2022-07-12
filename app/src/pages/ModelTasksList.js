@@ -68,7 +68,7 @@ const ModelTasksList = ({
           <p>Error</p>
         ) : (
           <>
-
+<div className="task-area">
             {modelTasksInfo.map((item) => (
               <>
                 <div className="task-card">
@@ -109,8 +109,10 @@ const ModelTasksList = ({
                 </div>
               </>
             ))}
+            </div>
           </>
         )}
+        
       </main>
     </>
   );

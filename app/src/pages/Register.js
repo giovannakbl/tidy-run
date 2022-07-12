@@ -23,6 +23,8 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
     if (isFormValid()) {
       setIsSubmitted(true);
       await createTidyUserRequest(formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const isFormValid = () => {
@@ -44,10 +46,12 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
              <h1 className="page-main-title">Tidy Run</h1>
              <div className="alert-area">
              {isSubmitted && tidyUser.status === "rejected" && (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
         )}
         {isSubmitted && tidyUser.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your account was created with the email " +
@@ -57,7 +61,8 @@ const Register = ({ createTidyUserRequest, tidyUser }) => {
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
         </div>
         <form className="standard-form" onSubmit={handleSubmit}>

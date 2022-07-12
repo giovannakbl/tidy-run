@@ -91,6 +91,8 @@ const TaskComplete = ({
       await completeTaskRequest(taskId, formValues);
       navigate("/challenge/" + tasks.data.task.challenge_id);
     } catch (e) {}
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   };
 
@@ -137,10 +139,12 @@ const TaskComplete = ({
           <h1 className="page-main-title">Complete Task</h1>
           <div className="alert-area">
             {isSubmitted && tasks.status === "rejected" && (
-          <Alert type="error" message={tasks.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tasks.error.error_message_api} />
         )}
         {!tasks.loading && isSubmitted && tasks.status === "succeeded" && (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Task was completed!"
@@ -148,7 +152,8 @@ const TaskComplete = ({
           />
         )}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
             </div>
             <div className="task-card">

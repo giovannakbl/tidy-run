@@ -58,7 +58,8 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
         <h1 className="page-main-title">Tidy Run</h1>
         <div className="alert-area">
         {isSubmitted && auth.status === "rejected" && (
-          <Alert type="error" message={auth.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={auth.error.error_message_api} />
         )}
         </div>
           <form className="standard-form" onSubmit={handleSubmit}>
@@ -86,7 +87,7 @@ const Login = ({ auth, loginRequest, tidyUserRequest, tidyUser }) => {
               required
             />
             <div className="card-row-buttons-center">
-            <button className="card-button" type="submit">Login</button>
+            <button className="card-button login-button" type="submit">Login</button>
             </div>
           </form>
           <button

@@ -54,6 +54,8 @@ const HomeMemberEdit = ({
     if (isFormValid()) {
       setIsSubmitted(true);
       await editHomeMemberRequest(homeMemberId, formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const handleDeleteHomeMember = async () => {
@@ -98,10 +100,12 @@ const HomeMemberEdit = ({
               <h1 className="page-main-title">Edit Home Member</h1>
               <div className="alert-area">
               {isSubmitted && homeMembers.status === "rejected" ? (
-          <Alert type="error" message={homeMembers.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={homeMembers.error.error_message_api} />
         ) : null}
         {isSubmitted && homeMembers.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Home Member " +
@@ -111,7 +115,8 @@ const HomeMemberEdit = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
               </div>
                 <form className="standard-form" onSubmit={handleSubmit}>

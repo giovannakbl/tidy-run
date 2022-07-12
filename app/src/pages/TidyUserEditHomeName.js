@@ -29,6 +29,8 @@ const TidyUserEditHomeName = ({
     if (isFormValid()) {
       setIsSubmitted(true);
     await tidyUserEdit(formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const getTidyUser = async () => {
@@ -80,10 +82,12 @@ const TidyUserEditHomeName = ({
 
         <div className="alert-area">
         {isSubmitted && tidyUser.status === "rejected" ? (
-          <Alert type="error" message={tidyUser.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={tidyUser.error.error_message_api} />
         ) : null}
         {isSubmitted && tidyUser.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "Your home name was updated!"
@@ -91,7 +95,8 @@ const TidyUserEditHomeName = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
      
         </div>

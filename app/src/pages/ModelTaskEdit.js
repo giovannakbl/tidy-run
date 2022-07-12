@@ -56,6 +56,8 @@ const ModelTaskEdit = ({
     if (isFormValid()) {
       setIsSubmitted(true);
       await editModelTaskRequest(modelTaskId, formValues);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   const handleDeleteModelTask = async () => {
@@ -95,10 +97,12 @@ const ModelTaskEdit = ({
               <h1 className="page-main-title">Edit Model Task</h1>
               <div className="alert-area">
               {isSubmitted && modelTasks.status === "rejected" ? (
-          <Alert type="error" message={modelTasks.error.error_message_api} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={modelTasks.error.error_message_api} />
         ) : null}
         {isSubmitted && modelTasks.status === "succeeded" ? (
           <Alert
+          handleInputChange={handleInputChange} 
             type="success"
             message={
               "The Model Task  " +
@@ -108,7 +112,8 @@ const ModelTaskEdit = ({
           />
         ) : null}
         {formErrorMessage ? (
-          <Alert type="error" message={formErrorMessage} />
+          <Alert
+          handleInputChange={handleInputChange}  type="error" message={formErrorMessage} />
         ) : null}
               </div>
             <form className="standard-form" onSubmit={handleSubmit}>
@@ -182,7 +187,7 @@ const ModelTaskEdit = ({
                         onChange={handleInputChange}
                       />
                       <label htmlFor={item.name}>
-                        <div >{item.name}</div>
+                        <div className="task-card-main-title">{item.name}</div>
                       </label>
                     </div>
                   </>
